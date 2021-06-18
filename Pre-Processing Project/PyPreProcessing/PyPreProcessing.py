@@ -4,7 +4,7 @@ import igraph
 print('Python version ', sys.version)
 print('MDV PreProcessor Version 0.2')
 print(' ')
-print(' ')
+print(' ')  # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\9606.reactome_PPI_reaction.edge
 
 
 nodePath = input("Enter node file path... ")         # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\4932.node_map.txt
@@ -27,9 +27,6 @@ print("-------------------------------")
 graphOption = input("Enter desired graphing algorithm... ")
 
 # Convert edge file to format for iGraph
-# igraphNodes (Should I use viz score?)
-igraphEdges = igraph.Graph.Read_Edgelist(edgeFile)
-
 
 # Creates a test graph
 graph = igraph.Graph(n=5, edges=[[0, 1], [2, 3]])
