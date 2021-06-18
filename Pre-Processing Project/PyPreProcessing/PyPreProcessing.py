@@ -1,8 +1,8 @@
 import sys
 import igraph
 
-print('Version is', sys.version)
-print('MDV PreProcessor Version 0.1')
+print('Python version ', sys.version)
+print('MDV PreProcessor Version 0.2')
 print(' ')
 print(' ')
 
@@ -38,9 +38,10 @@ edgeFile = open(edgePath, 'r').read()
 
 # Convert files to format for iGraph
 # igraphNodes (What to do with score?)
-# igraphEdges = Graph.Read_Edgelist(edgeFile)
+igraphEdges = igraph.Graph.Read_Edgelist(edgeFile)
 
-# Generates the graph layout
+
+# Creates a test graph
 graph = igraph.Graph(n=5, edges=[[0, 1], [2, 3]])
 graph.vs["knowENG_ID"] = ["Gene1", "Gene2", "Gene3", "Gene4", "Gene5"]
 graph.vs["Node_Value"] = [2, 3, 1, 4, 2]
