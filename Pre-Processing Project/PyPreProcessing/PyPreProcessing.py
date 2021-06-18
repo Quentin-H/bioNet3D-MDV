@@ -6,38 +6,28 @@ print('MDV PreProcessor Version 0.2')
 print(' ')
 print(' ')
 
-# E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\4932.node_map.txt
-# E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\features_ranked_per_phenotype.txt
-# E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\4932.blastp_homology.edge
 
-# Taking input from the user /Users/username/Desktop/sample.txt
-nodePath = input("Enter node file path... ")
-
-scorePath = input("Enter node score file path... ")
-
-edgePath = input("Enter edge file path... ")
+nodePath = input("Enter node file path... ")         # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\4932.node_map.txt
+# scorePath = input("Enter node score file path... ")  # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\features_ranked_per_phenotype.txt
+edgePath = input("Enter edge file path... ")         # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\4932.blastp_homology.edge
 
 outputPath = input("Enter output destination, leave blank for default... ")
 if not outputPath:
     outputPath = 'E:/Quentin/Github Repositories/bioNet3D-MDV/Sample Files/'
-
-# Prompt user for what graphing option they want
-print("-------------------------------")
-print("layout_fruchterman_reingold_3d")
-print("layout_kamada_kawai_3d")
-print("layout_random_3d")
-print("layout_sphere")
-print("-------------------------------")
-
-graphOption = input("Enter desired graphing algorithm... ")
-
-# Get files from input file paths (Add error handling here)
-nodeFile = open(nodePath, 'r').read()
-scoreFile = open(scorePath, 'r').read()
+nodeFile = open(nodePath, 'r').read() # add error handling for invalid paths
+# scoreFile = open(scorePath, 'r').read() 
 edgeFile = open(edgePath, 'r').read()
 
-# Convert files to format for iGraph
-# igraphNodes (What to do with score?)
+print("-------------------------------")
+print("layout_fruchterman_reingold_3d")
+print("layout_kamada_kawai_3d") # kk3d
+print("layout_random_3d") 
+print("layout_sphere")
+print("-------------------------------")
+graphOption = input("Enter desired graphing algorithm... ")
+
+# Convert edge file to format for iGraph
+# igraphNodes (Should I use viz score?)
 igraphEdges = igraph.Graph.Read_Edgelist(edgeFile)
 
 
