@@ -26,7 +26,8 @@ print("layout_sphere")
 print("-------------------------------")
 graphOption = input("Enter desired graphing algorithm... ")
 
-# Convert edge file to format for iGraph
+# take edges and nodes from given files and put them into an igraph graph
+
 
 # Creates a test graph
 graph = igraph.Graph(n=5, edges=[[0, 1], [2, 3]])
