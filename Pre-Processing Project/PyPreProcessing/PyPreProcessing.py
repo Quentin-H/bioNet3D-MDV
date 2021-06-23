@@ -26,9 +26,8 @@ print("layout_sphere")
 print("-------------------------------")
 graphOption = input("Enter desired graphing algorithm... ")
 
-# create an igraph containing just the nodes from the inputfile n^2 + 2n
-#graph = igraph.Graph(vertex_attrs={'Node_Value': 0}, edge_attrs={'Edge_Weight': 0})
-graph = igraph.Graph(vertex_attrs={'Node_Value': 0}, edge_attrs={'Edge_Weight': 0})
+# create an igraph containing just the nodes from the inputfile 
+graph = igraph.Graph(vertex_attrs={"Node_Value": 0}, edge_attrs={"Edge_Weight": 0})
 
 vertexsAdded = 0
 for nodeLine in nodeFileLines:
@@ -42,7 +41,7 @@ for nodeLine in nodeFileLines:
             # print(vizScore)
     
     # Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute, viz score
-    graph.add_vertex(nodeName, vertex_attrs={"Node_Value": vizScore})
+    graph.add_vertex(nodeName, Node_Value = vizScore)
 
 
 # go through the edge input file for each edge
