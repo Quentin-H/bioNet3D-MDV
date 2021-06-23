@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class NetworkSceneManager : MonoBehaviour
 {
-    private DataHolder dataHolder = GameObject.Find("DataHolder");
+    private GameObject dataHolder = GameObject.Find("DataHolder");
 }

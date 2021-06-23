@@ -8,15 +8,15 @@ print(' ')  # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\9606.reac
 
 
 nodePath = input("Enter node file path... ")         # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\4932.node_map.txt
-# scorePath = input("Enter node score file path... ")  # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\features_ranked_per_phenotype.txt
+scorePath = input("Enter node score file path... ")  # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\features_ranked_per_phenotype.txt
 edgePath = input("Enter edge file path... ")         # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\4932.blastp_homology.edge
 
 outputPath = input("Enter output destination, leave blank for default... ")
 if not outputPath:
     outputPath = 'E:/Quentin/Github Repositories/bioNet3D-MDV/Sample Files/'
-nodeFile = open(nodePath, 'r').read() # add error handling for invalid paths
-# scoreFile = open(scorePath, 'r').read() 
-edgeFile = open(edgePath, 'r').read()
+nodeFileLines = open(nodePath, 'r').readlines() # add error handling for invalid paths
+scoreFileLines = open(scorePath, 'r').readlines() 
+edgeFileLines = open(edgePath, 'r').readlines()
 
 print("-------------------------------")
 print("layout_fruchterman_reingold_3d")
@@ -26,14 +26,34 @@ print("layout_sphere")
 print("-------------------------------")
 graphOption = input("Enter desired graphing algorithm... ")
 
-# take edges and nodes from given files and put them into an igraph graph
+# create an igraph containing just the nodes from the inputfile n^2 + 2n
+#graph = igraph.Graph(vertex_attrs={'Node_Value': 0}, edge_attrs={'Edge_Weight': 0})
+graph = igraph.Graph(vertex_attrs={'Node_Value': 0}, edge_attrs={'Edge_Weight': 0})
+
+vertexsAdded = 0
+for nodeLine in nodeFileLines:
+    nodeName = nodeLine.split()[0]
+
+    vizScore = ""
+    for scoreLine in scoreFileLines:
+        i = 0
+        if scoreLine.split()[1] == nodeName:
+            vizScore = scoreLine.split()[5]
+            # print(vizScore)
+    
+    # Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute, viz score
+    graph.add_vertex(nodeName, vertex_attrs={"Node_Value": vizScore})
+
+
+# go through the edge input file for each edge
+# us the nodeIDs as indexes and make edges between connected nodes with the given weight
 
 
 # Creates a test graph
-graph = igraph.Graph(n=5, edges=[[0, 1], [2, 3]])
-graph.vs["knowENG_ID"] = ["Gene1", "Gene2", "Gene3", "Gene4", "Gene5"]
-graph.vs["Node_Value"] = [2, 3, 1, 4, 2]
-graph.es["Edge_Weight"] = [-0.2, 0.3]
+testGraph = igraph.Graph(n=5, edges=[[0, 1], [2, 3]])
+testGraph.vs["knowENG_ID"] = ["Gene1", "Gene2", "Gene3", "Gene4", "Gene5"]
+testGraph.vs["Node_Value"] = [2, 3, 1, 4, 2]
+testGraph.es["Edge_Weight"] = [-0.2, 0.3]
 graphLayout = graph.layout(graphOption)
 
 # Converts the layout object to a string 
@@ -43,11 +63,12 @@ layoutString = ''
 
 i = 0
 for coordinate in graphLayout:
-    currentLine = graph.vs[i]["knowENG_ID"]  + " " + str(coordinate) + " " + str(graph.vs[i]["Node_Value"]) + "\n"
+    # print(graph.vs[i]["Node_Value"])
+    currentLine = graph.vs[i]["name"]  + " " + str(coordinate) + " " + str(graph.vs[i]["Node_Value"]) + "\n"
     layoutString = layoutString + currentLine
     i += 1
 
-print("\n" + layoutString)
+# print("\n" + layoutString)
 
 # Saves the string we created as a "massive dataset visualizer layout file"
 outputFile = open(outputPath + "output.mdvl", "w")
