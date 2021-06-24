@@ -2,7 +2,7 @@ import sys
 import igraph
 
 print('Python version ', sys.version)
-print('MDV PreProcessor Version 0.2')
+print('MDV PreProcessor Version 0.7')
 print(' ')
 print(' ')  # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\9606.reactome_PPI_reaction.edge
 
