@@ -152,6 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe0725d31fc1d3746b0e515e0a731217, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodePrefab: {fileID: 3965336401097284566, guid: 70549e732c38e9b4ea38873e27940219, type: 3}
+  positionMultiplier: 10
 --- !u!4 &684218367
 Transform:
   m_ObjectHideFlags: 0

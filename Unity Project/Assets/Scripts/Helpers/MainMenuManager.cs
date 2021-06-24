@@ -70,11 +70,11 @@ public class MainMenuManager : MonoBehaviour
 		if (nodeLayoutFileSet && edgeFileSet) 
 		{
 			SceneManager.LoadScene("NetworkScene");  
-		}
+		} //else { throw new Exception("Not all files set"); }
+ 
 		/*take out bottom line for final release so it only goes to the next scene 
 		if both files are set, and make a pop up message appear if user attempts to start network scene without setting files*/
 		SceneManager.LoadScene("NetworkScene");  
-		throw new Exception("Not all files set");
 	}
 
 	public void ExitApplication()
