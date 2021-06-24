@@ -29,22 +29,24 @@ graphOption = input("Enter desired graphing algorithm... ")
 # create an igraph containing just the nodes from the inputfile 
 graph = igraph.Graph(vertex_attrs={"Node_Value": 0}, edge_attrs={"Edge_Weight": 0})
 
-vertexsAdded = 0
+i = 0
 for nodeLine in nodeFileLines:
     nodeName = nodeLine.split()[0]
 
-    vizScore = ""
+    vizScore = 0
     for scoreLine in scoreFileLines:
-        i = 0
         if scoreLine.split()[1] == nodeName:
             vizScore = scoreLine.split()[5]
-            # print(vizScore)
     
-    # Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute, viz score
-    graph.add_vertex(nodeName, Node_Value = vizScore)
+    # Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute
+    graph.add_vertex(name = nodeName, Node_Value = vizScore)
 
-
-# go through the edge input file for each edge
+# go through the edge input file for each edge the edges aren't changing the coordinates? at least with kk3d layout option
+for edgeLine in edgeFileLines:
+    node1 = edgeLine.split()[0]
+    node2 = edgeLine.split()[1]
+    weight = edgeLine.split()[2]
+    graph.add_edge(node1, node2, Edge_Weight = weight)
 # us the nodeIDs as indexes and make edges between connected nodes with the given weight
 
 
