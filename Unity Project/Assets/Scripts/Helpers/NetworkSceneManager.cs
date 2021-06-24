@@ -58,7 +58,7 @@ public class NetworkSceneManager : MonoBehaviour
             float value = float.Parse(line.Split(']')[1].Trim());
             coord.x = float.Parse(line.Split('[')[1].Split(',')[0].Trim()) * positionMultiplier;
             coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim()) * positionMultiplier;
-            coord.z = float.Parse(line.Split(',')[1].Split(']')[0].Trim()) * positionMultiplier;
+            coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim()) * positionMultiplier;
 
             Debug.Log(id);
             Debug.Log(coord);
