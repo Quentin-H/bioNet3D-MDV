@@ -18,6 +18,7 @@ public class NetworkSceneManager : MonoBehaviour
     private GameObject inputDataHolder;
 
     //If set to low number ex. 10, creates beautiful patterns
+    // Figure out a way to automatically set this based on the layout so points aren't too close together
     public float positionMultiplier;
 
 
@@ -76,7 +77,7 @@ public class NetworkSceneManager : MonoBehaviour
         };
 
         entityManager.AddComponentData(newNodeEntity, translation);
-        //set datta component
+        //set data component
         //entityManager.SetComponentData(spawnedEntity, new Translation() { Value = randomPosition });
     }
 }
