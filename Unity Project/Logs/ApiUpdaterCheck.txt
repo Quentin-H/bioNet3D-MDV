@@ -242,3 +242,270 @@ C# parse time         : 298ms
 candidates check time : 47ms
 console write time    : 0ms
 
+[api-updater (non-obsolete-error-filter)] 6/25/2021 2:19:52 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 640.8704ms
+moved types parse time: 84ms
+candidates parse time : 2ms
+C# parse time         : 1099ms
+candidates check time : 69ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/25/2021 2:21:04 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 109.423ms
+moved types parse time: 81ms
+candidates parse time : 2ms
+C# parse time         : 301ms
+candidates check time : 52ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/25/2021 2:21:51 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 113.1107ms
+moved types parse time: 84ms
+candidates parse time : 2ms
+C# parse time         : 293ms
+candidates check time : 53ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/25/2021 2:24:21 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 115.1824ms
+moved types parse time: 86ms
+candidates parse time : 2ms
+C# parse time         : 327ms
+candidates check time : 98ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/25/2021 2:24:30 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 111.367ms
+moved types parse time: 83ms
+candidates parse time : 2ms
+C# parse time         : 302ms
+candidates check time : 105ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/25/2021 2:33:48 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 113.7911ms
+moved types parse time: 83ms
+candidates parse time : 2ms
+C# parse time         : 313ms
+candidates check time : 113ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/25/2021 2:34:00 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 109.1615ms
+moved types parse time: 80ms
+candidates parse time : 2ms
+C# parse time         : 302ms
+candidates check time : 77ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/25/2021 2:34:29 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 116.8725ms
+moved types parse time: 83ms
+candidates parse time : 2ms
+C# parse time         : 306ms
+candidates check time : 77ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/25/2021 2:34:44 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 112.8248ms
+moved types parse time: 80ms
+candidates parse time : 2ms
+C# parse time         : 307ms
+candidates check time : 84ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/25/2021 2:35:00 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 119.4775ms
+moved types parse time: 87ms
+candidates parse time : 2ms
+C# parse time         : 324ms
+candidates check time : 80ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/25/2021 2:36:33 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 109.7284ms
+moved types parse time: 81ms
+candidates parse time : 2ms
+C# parse time         : 305ms
+candidates check time : 67ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/25/2021 2:38:12 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 110.8152ms
+moved types parse time: 80ms
+candidates parse time : 2ms
+C# parse time         : 298ms
+candidates check time : 70ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/28/2021 1:17:54 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 799.3775ms
+moved types parse time: 105ms
+candidates parse time : 2ms
+C# parse time         : 1008ms
+candidates check time : 51ms
+console write time    : 72ms
+
+[api-updater (non-obsolete-error-filter)] 6/28/2021 1:21:17 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 296.5463ms
+moved types parse time: 86ms
+candidates parse time : 2ms
+C# parse time         : 294ms
+candidates check time : 44ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/28/2021 1:27:26 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 356.6405ms
+moved types parse time: 87ms
+candidates parse time : 2ms
+C# parse time         : 646ms
+candidates check time : 77ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/28/2021 1:31:59 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 323.3056ms
+moved types parse time: 89ms
+candidates parse time : 2ms
+C# parse time         : 372ms
+candidates check time : 91ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/28/2021 4:53:30 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 607.5599ms
+moved types parse time: 80ms
+candidates parse time : 2ms
+C# parse time         : 1119ms
+candidates check time : 55ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/28/2021 4:53:52 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 124.1107ms
+moved types parse time: 83ms
+candidates parse time : 2ms
+C# parse time         : 315ms
+candidates check time : 52ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/29/2021 11:19:07 AM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 333.0511ms
+moved types parse time: 103ms
+candidates parse time : 2ms
+C# parse time         : 471ms
+candidates check time : 74ms
+console write time    : 47ms
+
+[api-updater (non-obsolete-error-filter)] 6/29/2021 11:19:27 AM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 303.8805ms
+moved types parse time: 89ms
+candidates parse time : 2ms
+C# parse time         : 288ms
+candidates check time : 75ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/29/2021 11:19:58 AM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 192.9133ms
+moved types parse time: 94ms
+candidates parse time : 2ms
+C# parse time         : 322ms
+candidates check time : 71ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/29/2021 11:20:18 AM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 122.7598ms
+moved types parse time: 85ms
+candidates parse time : 2ms
+C# parse time         : 273ms
+candidates check time : 63ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/29/2021 11:20:31 AM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 122.6073ms
+moved types parse time: 83ms
+candidates parse time : 2ms
+C# parse time         : 278ms
+candidates check time : 62ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/29/2021 11:21:09 AM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 129.969ms
+moved types parse time: 81ms
+candidates parse time : 2ms
+C# parse time         : 275ms
+candidates check time : 62ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/29/2021 11:27:06 AM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 112.9483ms
+moved types parse time: 85ms
+candidates parse time : 2ms
+C# parse time         : 284ms
+candidates check time : 58ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/29/2021 2:02:53 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] Exception caught while loading types from E:\Quentin\Github Repositories\bioNet3D-MDV\Unity Project\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll (some types may not be loaded)
+	Exception of type 'System.Reflection.ReflectionTypeLoadException' was thrown.
+	  at (wrapper managed-to-native) System.Reflection.Assembly.GetTypes(System.Reflection.Assembly,bool)
+  at System.Reflection.Assembly.GetTypes () [0x00000] in <695d1cc93cca45069c528c15c9fdd749>:0 
+  at APIUpdater.NonObsoleteApiUpdaterDetector.ExtraInfoParser+<LoadTypesWithMovedFromAttributeAsync>d__3.MoveNext () [0x000c8] in <68bff7873e0e4aa69a14dfc30bebbe3e>:0 
+	Could not load file or assembly 'UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' or one of its dependencies.
+
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 1104.5282ms
+moved types parse time: 97ms
+candidates parse time : 3ms
+C# parse time         : 1105ms
+candidates check time : 79ms
+console write time    : 33ms
+

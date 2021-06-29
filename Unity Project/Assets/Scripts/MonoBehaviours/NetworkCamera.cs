@@ -1,0 +1,125 @@
+using UnityEngine;
+using System.Collections;
+using Unity.Physics;
+using Unity.Physics.Systems;
+using Unity.Entities;
+using RaycastHit = Unity.Physics.RaycastHit;
+using Unity.Rendering;
+using Unity.Transforms;
+using Unity.Mathematics;
+using Unity.Collections;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class NetworkCamera : MonoBehaviour
+{
+    //Node Click Variables
+    [SerializeField]
+    Camera Cam = default;
+    const float RAYCAST_DISTANCE = 1000;
+    PhysicsWorld physicsWorld => World.DefaultGameObjectInjectionWorld.GetExistingSystem<BuildPhysicsWorld>().PhysicsWorld;
+    EntityManager entityManager => World.DefaultGameObjectInjectionWorld.EntityManager;
+    private Entity selectedEntity;
+    public GameObject selectedNodeUI;
+    public Text nodeNameText;
+    public Text nodeValueText;
+    public Text nodeDegreeText;
+    private bool nodeSelected;
+
+    // Fly Cam Variables
+    public float mainSpeed = 10.0f;   // Default speed
+    public float shiftAdd  = 25.0f;   // Amount to accelerate when shift is pressed
+    public float maxShift  = 100.0f;  // Maximum speed when holding shift
+    public float camSens   = 0.15f;   // Mouse sensitivity
+    private Vector3 lastMouse = new Vector3(255, 255, 255);  // middle of the screen, rather than at the top (play)
+    private float totalRun = 1.0f;
+    public Text UnlockCameraText;
+
+
+    void Update()
+    {
+        lastMouse = Input.mousePosition - lastMouse;
+        lastMouse = new Vector3(-lastMouse.y * camSens, lastMouse.x * camSens, 0);
+        lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);
+        transform.eulerAngles = lastMouse;
+        lastMouse = Input.mousePosition;
+
+        Vector3 p = GetBaseInput();
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            totalRun += Time.deltaTime;
+            p *= totalRun * shiftAdd;
+            p.x = Mathf.Clamp(p.x, -maxShift, maxShift);
+            p.y = Mathf.Clamp(p.y, -maxShift, maxShift);
+            p.z = Mathf.Clamp(p.z, -maxShift, maxShift);
+        }
+        else
+        {
+            totalRun = Mathf.Clamp(totalRun * 0.5f, 1f, 1000f);
+            p *= mainSpeed;
+        }
+
+        p *= Time.deltaTime;
+        transform.Translate(p);
+    }
+
+    private Vector3 GetBaseInput()
+    {
+        Vector3 p_Velocity = new Vector3();
+
+        // Forwards
+        if (Input.GetKey(KeyCode.W))
+            p_Velocity += new Vector3(0, 0, 1);
+
+        // Backwards
+        if (Input.GetKey(KeyCode.S))
+            p_Velocity += new Vector3(0, 0, -1);
+
+        // Left
+        if (Input.GetKey(KeyCode.A))
+            p_Velocity += new Vector3(-1, 0, 0);
+
+        // Right
+        if (Input.GetKey(KeyCode.D))
+            p_Velocity += new Vector3(1, 0, 0);
+
+        // Up
+        if (Input.GetKey(KeyCode.Space))
+            p_Velocity += new Vector3(0, 1, 0);
+
+        // Down
+        if (Input.GetKey(KeyCode.LeftControl))
+            p_Velocity += new Vector3(0, -1, 0);
+
+        return p_Velocity;
+    }
+
+    void LateUpdate()
+    {
+        if (Cam == null || !Input.GetMouseButtonDown(0)) return;
+
+        var position = Input.mousePosition;
+        var screenPointToRay = Cam.ScreenPointToRay(position);
+        var rayInput = new RaycastInput
+        {
+            Start = screenPointToRay.origin,
+            End = screenPointToRay.GetPoint(RAYCAST_DISTANCE),
+            Filter = CollisionFilter.Default
+        };
+
+        if (!physicsWorld.CastRay(rayInput, out RaycastHit hit) && !EventSystem.current.IsPointerOverGameObject()) 
+        {
+            nodeSelected = false;
+            selectedNodeUI.SetActive(false);
+            return;
+        }
+
+        selectedEntity = physicsWorld.Bodies[hit.RigidBodyIndex].Entity;
+        Debug.Log("hit");
+        nodeSelected = true;
+        nodeValueText.text = "Node Value: " + entityManager.GetComponentData<NodeData>(selectedEntity).nodeValue;
+        selectedNodeUI.SetActive(true);
+
+        Debug.Log(selectedEntity);
+    }
+}

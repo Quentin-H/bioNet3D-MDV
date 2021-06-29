@@ -6,20 +6,27 @@ using Unity.Mathematics;
 using Unity.Physics;
 using UnityEngine.UI;
 using Unity.Transforms;
+using UnityEngine.UI;
+using Unity.Rendering;
 
 public class NetworkSceneManager : MonoBehaviour
 {
     public static NetworkSceneManager instance;
 
     public GameObject nodePrefab;
-    private Entity nodeEntityPrefab;
-    private EntityManager entityManager;
-    private BlobAssetStore blobAssetStore;
-    private GameObject inputDataHolder;
-
-    //If set to low number ex. 10, creates beautiful patterns
+    //If set to low number ex. 10, creates beautiful patterns on layouts besides fr3d
     // Figure out a way to automatically set this based on the layout so points aren't too close together
     public float positionMultiplier;
+    private Entity nodeEntityPrefab;
+
+    private EntityManager entityManager;
+    private BlobAssetStore blobAssetStore;
+
+    private GameObject inputDataHolder;
+    private bool edgesShowing = false;
+    public Button showHideEdgesButton;
+    public Gradient nodeValueGradient;
+    
 
 
     private void Awake() 
@@ -53,6 +60,7 @@ public class NetworkSceneManager : MonoBehaviour
 
         foreach(string line in rawLayoutInputLines)
         {
+            //add try catches for index errors
             string id = line.Split(' ')[0];
             float3 coord;
             float value = float.Parse(line.Split(']')[1].Trim());
@@ -60,9 +68,6 @@ public class NetworkSceneManager : MonoBehaviour
             coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim()) * positionMultiplier;
             coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim()) * positionMultiplier;
 
-            Debug.Log(id);
-            Debug.Log(coord);
-            Debug.Log(value);
             SpawnNode(id, coord, value);
         }
     }
@@ -77,7 +82,16 @@ public class NetworkSceneManager : MonoBehaviour
         };
 
         entityManager.AddComponentData(newNodeEntity, translation);
+        //entityManager.SetComponentData(newNodeEntity, new NodeMaterialData { color = nodeValueGradient.Evaluate(value) });
         //set data component
-        //entityManager.SetComponentData(spawnedEntity, new Translation() { Value = randomPosition });
+        entityManager.SetComponentData(newNodeEntity, new NodeData { nodeValue = value });
+    }
+
+    public void showHideEdges()
+    {
+        edgesShowing = !edgesShowing;
+
+        if (edgesShowing) showHideEdgesButton.GetComponentInChildren<Text>().text = "Hide Edges";
+        if (!edgesShowing) showHideEdgesButton.GetComponentInChildren<Text>().text = "Show Edges";
     }
 }

@@ -14,6 +14,8 @@ public class MainMenuManager : MonoBehaviour
 	private void Start() 
 	{
 		FileBrowser.AddQuickLink( "Sample Files", "E:\\Quentin\\Github Repositories\\bioNet3D-MDV\\Sample Files", null );
+
+		//add a random layout of points to rotate around in the background
 	}
 
     public void OpenLayoutFileDialog()
