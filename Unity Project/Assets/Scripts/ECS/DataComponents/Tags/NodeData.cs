@@ -5,5 +5,5 @@ using Unity.Collections;
 public struct NodeData : IComponentData
 {
     public FixedString32 nodeName;
-    public float nodeValue;
+    public double nodeValue;
 }

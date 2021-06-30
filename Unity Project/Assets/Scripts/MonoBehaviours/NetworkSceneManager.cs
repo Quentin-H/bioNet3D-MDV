@@ -12,6 +12,7 @@ using Unity.Rendering;
 public class NetworkSceneManager : MonoBehaviour
 {
     public static NetworkSceneManager instance;
+    public static NetworkCamera networkCamera;
 
     public GameObject nodePrefab;
     //If set to low number ex. 10, creates beautiful patterns on layouts besides fr3d
@@ -61,8 +62,10 @@ public class NetworkSceneManager : MonoBehaviour
         {
             //add try catches for index errors
             string id = line.Split(' ')[0];
+
             float3 coord;
-            float value = float.Parse(line.Split(']')[1].Trim());
+
+            double value = double.Parse(line.Split(']')[1].Trim());
             coord.x = float.Parse(line.Split('[')[1].Split(',')[0].Trim()) * positionMultiplier;
             coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim()) * positionMultiplier;
             coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim()) * positionMultiplier;
@@ -71,7 +74,7 @@ public class NetworkSceneManager : MonoBehaviour
         }
     }
 
-    private void SpawnNode(string id, float3 coord, float value)
+    private void SpawnNode(string id, float3 coord, double value)
     {
         Entity newNodeEntity = entityManager.Instantiate(nodeEntityPrefab);
 
@@ -82,7 +85,7 @@ public class NetworkSceneManager : MonoBehaviour
 
         entityManager.AddComponentData(newNodeEntity, translation);
 
-        Color evaluatedColor = nodeValueGradient.Evaluate(value);
+        Color evaluatedColor = nodeValueGradient.Evaluate( (float)value);
         float4 colorF = new float4(evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a);
         MaterialColor mcc = new MaterialColor { Value = colorF };
         entityManager.AddComponentData<MaterialColor>(newNodeEntity, mcc);
@@ -92,8 +95,24 @@ public class NetworkSceneManager : MonoBehaviour
 
     public void showHideEdges()
     {
+        Entity selectedEntity = NetworkCamera.selectedEntity;
+
         edgesShowing = !edgesShowing;
-        if (edgesShowing) showHideEdgesButton.GetComponentInChildren<Text>().text = "Hide Edges";
-        if (!edgesShowing) showHideEdgesButton.GetComponentInChildren<Text>().text = "Show Edges";
+
+        if (edgesShowing) 
+        {
+            showHideEdgesButton.GetComponentInChildren<Text>().text = "Hide Edges";
+        }
+        if (!edgesShowing)
+        {
+            showHideEdgesButton.GetComponentInChildren<Text>().text = "Show Edges";
+        } 
     }
+}
+
+public struct nodeEdgePosition
+{
+    public Entity nodeA;
+    public Entity nodeB;
+    public double weight;
 }

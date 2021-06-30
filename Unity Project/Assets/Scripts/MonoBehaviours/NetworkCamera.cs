@@ -13,13 +13,15 @@ using UnityEngine.EventSystems;
 
 public class NetworkCamera : MonoBehaviour
 {
+    public NetworkSceneManager networkSceneManager;
+    
     //Node Click Variables
     [SerializeField]
     Camera Cam = default;
     const float RAYCAST_DISTANCE = 1000;
     PhysicsWorld physicsWorld => World.DefaultGameObjectInjectionWorld.GetExistingSystem<BuildPhysicsWorld>().PhysicsWorld;
     EntityManager entityManager => World.DefaultGameObjectInjectionWorld.EntityManager;
-    private Entity selectedEntity;
+    public static Entity selectedEntity;
     public GameObject selectedNodeUI;
     public Text nodeNameText;
     public Text nodeValueText;
@@ -39,14 +41,14 @@ public class NetworkCamera : MonoBehaviour
     private bool cursorLocked = false;
 
 
-    void Update()
+    private void Update()
     {
         if (cameraLocked == false)
         {
             moveCamera();
         }
     }
-    void LateUpdate()
+    private void LateUpdate()
     {
         selectNode();
         locking();
@@ -81,11 +83,13 @@ public class NetworkCamera : MonoBehaviour
 
     private void moveCamera()
     {
+        //replace with a better fps mouselook
         lastMouse = Input.mousePosition - lastMouse;
         lastMouse = new Vector3(-lastMouse.y * camSens, lastMouse.x * camSens, 0);
         lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);
         transform.eulerAngles = lastMouse;
         lastMouse = Input.mousePosition;
+        //________________________
 
         Vector3 p = GetBaseInput();
         if (Input.GetKey(KeyCode.LeftShift))
@@ -104,6 +108,14 @@ public class NetworkCamera : MonoBehaviour
 
         p *= Time.deltaTime;
         transform.Translate(p);
+
+        float lookSpeed = 3;
+        Vector2 rotation = Vector2.zero;
+        rotation.y += Input.GetAxis("Mouse X");
+        rotation.x += -Input.GetAxis("Mouse Y");
+        rotation.x = Mathf.Clamp(rotation.x, -15f, 15f);
+        transform.eulerAngles = new Vector2(0,rotation.y) * lookSpeed;
+        Camera.main.transform.localRotation = Quaternion.Euler(rotation.x * lookSpeed, 0, 0);
     }
 
     private Vector3 GetBaseInput()

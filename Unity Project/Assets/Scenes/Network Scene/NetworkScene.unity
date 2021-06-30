@@ -1720,6 +1720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6f6dedbd0e40a541ae141f22e0d94a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkSceneManager: {fileID: 0}
   Cam: {fileID: 1956825213}
   selectedNodeUI: {fileID: 1172524561}
   nodeNameText: {fileID: 1132965271}
