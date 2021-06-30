@@ -33,10 +33,53 @@ public class NetworkCamera : MonoBehaviour
     public float camSens   = 0.15f;   // Mouse sensitivity
     private Vector3 lastMouse = new Vector3(255, 255, 255);  // middle of the screen, rather than at the top (play)
     private float totalRun = 1.0f;
-    public Text UnlockCameraText;
+    public Text lockCameraText;
+    public Text lockCursorText;
+    private bool cameraLocked = false;
+    private bool cursorLocked = false;
 
 
     void Update()
+    {
+        if (cameraLocked == false)
+        {
+            moveCamera();
+        }
+    }
+    void LateUpdate()
+    {
+        selectNode();
+        locking();
+    }
+
+    private void locking()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            cameraLocked = !cameraLocked;
+
+            if (cameraLocked) { lockCameraText.text = "Press C to unlock camera"; }
+            if (!cameraLocked) { lockCameraText.text = "Press C to lock camera"; }
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            cursorLocked = !cursorLocked;
+
+            if (cursorLocked) 
+            { 
+                lockCursorText.text = "Press F to unlock cursor"; 
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            if (!cursorLocked) 
+            { 
+                lockCursorText.text = "Press F to lock cursor"; 
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
+    }
+
+    private void moveCamera()
     {
         lastMouse = Input.mousePosition - lastMouse;
         lastMouse = new Vector3(-lastMouse.y * camSens, lastMouse.x * camSens, 0);
@@ -94,7 +137,7 @@ public class NetworkCamera : MonoBehaviour
         return p_Velocity;
     }
 
-    void LateUpdate()
+    private void selectNode()
     {
         if (Cam == null || !Input.GetMouseButtonDown(0)) return;
 
@@ -117,6 +160,8 @@ public class NetworkCamera : MonoBehaviour
         selectedEntity = physicsWorld.Bodies[hit.RigidBodyIndex].Entity;
         Debug.Log("hit");
         nodeSelected = true;
+        nodeNameText.text = "Node Name: " + entityManager.GetComponentData<NodeData>(selectedEntity).nodeName;
+        nodeDegreeText.text = "Node Degrees: notimplemented";
         nodeValueText.text = "Node Value: " + entityManager.GetComponentData<NodeData>(selectedEntity).nodeValue;
         selectedNodeUI.SetActive(true);
 

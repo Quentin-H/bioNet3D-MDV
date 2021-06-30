@@ -28,7 +28,6 @@ public class NetworkSceneManager : MonoBehaviour
     public Gradient nodeValueGradient;
     
 
-
     private void Awake() 
     {
         inputDataHolder = GameObject.Find("InputDataHolder");
@@ -82,15 +81,18 @@ public class NetworkSceneManager : MonoBehaviour
         };
 
         entityManager.AddComponentData(newNodeEntity, translation);
-        //entityManager.SetComponentData(newNodeEntity, new NodeMaterialData { color = nodeValueGradient.Evaluate(value) });
-        //set data component
-        entityManager.SetComponentData(newNodeEntity, new NodeData { nodeValue = value });
+
+        Color evaluatedColor = nodeValueGradient.Evaluate(value);
+        float4 colorF = new float4(evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a);
+        MaterialColor mcc = new MaterialColor { Value = colorF };
+        entityManager.AddComponentData<MaterialColor>(newNodeEntity, mcc);
+        
+        entityManager.SetComponentData(newNodeEntity, new NodeData { nodeName = id, nodeValue = value });
     }
 
     public void showHideEdges()
     {
         edgesShowing = !edgesShowing;
-
         if (edgesShowing) showHideEdgesButton.GetComponentInChildren<Text>().text = "Hide Edges";
         if (!edgesShowing) showHideEdgesButton.GetComponentInChildren<Text>().text = "Show Edges";
     }

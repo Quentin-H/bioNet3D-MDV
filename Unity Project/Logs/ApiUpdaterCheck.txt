@@ -509,3 +509,93 @@ C# parse time         : 1105ms
 candidates check time : 79ms
 console write time    : 33ms
 
+[api-updater (non-obsolete-error-filter)] 6/29/2021 3:05:08 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 126.4954ms
+moved types parse time: 88ms
+candidates parse time : 2ms
+C# parse time         : 355ms
+candidates check time : 61ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/29/2021 3:05:24 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 111.411ms
+moved types parse time: 83ms
+candidates parse time : 2ms
+C# parse time         : 324ms
+candidates check time : 52ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/29/2021 3:09:24 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 112.7889ms
+moved types parse time: 81ms
+candidates parse time : 2ms
+C# parse time         : 326ms
+candidates check time : 51ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/29/2021 3:09:34 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 128.2558ms
+moved types parse time: 217ms
+candidates parse time : 3ms
+C# parse time         : 524ms
+candidates check time : 71ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/29/2021 3:12:55 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 120.6935ms
+moved types parse time: 83ms
+candidates parse time : 2ms
+C# parse time         : 323ms
+candidates check time : 52ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/29/2021 3:14:20 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 114.0436ms
+moved types parse time: 81ms
+candidates parse time : 2ms
+C# parse time         : 337ms
+candidates check time : 55ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/30/2021 3:41:20 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 2906.2449ms
+moved types parse time: 100ms
+candidates parse time : 2ms
+C# parse time         : 1529ms
+candidates check time : 56ms
+console write time    : 64ms
+
+[api-updater (non-obsolete-error-filter)] 6/30/2021 3:43:19 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 310.6893ms
+moved types parse time: 78ms
+candidates parse time : 2ms
+C# parse time         : 258ms
+candidates check time : 56ms
+console write time    : 0ms
+
+[api-updater (non-obsolete-error-filter)] 6/30/2021 3:44:16 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 336.3883ms
+moved types parse time: 88ms
+candidates parse time : 2ms
+C# parse time         : 272ms
+candidates check time : 76ms
+console write time    : 0ms
+
