@@ -48,10 +48,16 @@ public class NetworkCamera : MonoBehaviour
             moveCamera();
         }
     }
+
     private void LateUpdate()
     {
         selectNode();
-        locking();
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            focusOnNode();
+        }
+       // locking();
     }
 
     private void locking()
@@ -63,19 +69,19 @@ public class NetworkCamera : MonoBehaviour
             if (cameraLocked) { lockCameraText.text = "Press C to unlock camera"; }
             if (!cameraLocked) { lockCameraText.text = "Press C to lock camera"; }
         }
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.V))
         {
             cursorLocked = !cursorLocked;
 
             if (cursorLocked) 
             { 
-                lockCursorText.text = "Press F to unlock cursor"; 
+                lockCursorText.text = "Press V to unlock cursor"; 
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.lockState = CursorLockMode.Locked;
             }
             if (!cursorLocked) 
             { 
-                lockCursorText.text = "Press F to lock cursor"; 
+                lockCursorText.text = "Press V to lock cursor"; 
                 Cursor.lockState = CursorLockMode.None;
             }
         }
@@ -89,7 +95,7 @@ public class NetworkCamera : MonoBehaviour
         lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);
         transform.eulerAngles = lastMouse;
         lastMouse = Input.mousePosition;
-        //________________________
+        //
 
         Vector3 p = GetBaseInput();
         if (Input.GetKey(KeyCode.LeftShift))
@@ -108,14 +114,6 @@ public class NetworkCamera : MonoBehaviour
 
         p *= Time.deltaTime;
         transform.Translate(p);
-
-        float lookSpeed = 3;
-        Vector2 rotation = Vector2.zero;
-        rotation.y += Input.GetAxis("Mouse X");
-        rotation.x += -Input.GetAxis("Mouse Y");
-        rotation.x = Mathf.Clamp(rotation.x, -15f, 15f);
-        transform.eulerAngles = new Vector2(0,rotation.y) * lookSpeed;
-        Camera.main.transform.localRotation = Quaternion.Euler(rotation.x * lookSpeed, 0, 0);
     }
 
     private Vector3 GetBaseInput()
@@ -178,5 +176,16 @@ public class NetworkCamera : MonoBehaviour
         selectedNodeUI.SetActive(true);
 
         Debug.Log(selectedEntity);
+    }
+
+    private void focusOnNode()
+    {
+        // move camera to the node with an ofset, angle the camera properly, check if colliding with node, if so keep moving the camera until no longer colliding
+        /*
+        Translation translation = new Translation()
+        {
+            entityManager.GetComponentData<Translation>(selectedEntity)        
+        };
+        */
     }
 }
