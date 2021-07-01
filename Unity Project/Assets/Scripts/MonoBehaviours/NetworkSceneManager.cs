@@ -61,13 +61,13 @@ public class NetworkSceneManager : MonoBehaviour
         blobAssetStore.Dispose();
     }
 
-    private void ConvertRawInputNodes()
+    private void ConvertRawInputNodes() // this should probably be a coroutine
     {
         Debug.Log("started node conversion");
 
         string[] rawLayoutInputLines = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile.Split('\n');
 
-        foreach(string line in rawLayoutInputLines)
+        foreach(string line in rawLayoutInputLines) 
         {
             //add try catches for index errors
             string id = "";
