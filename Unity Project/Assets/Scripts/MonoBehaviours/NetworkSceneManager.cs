@@ -53,7 +53,6 @@ public class NetworkSceneManager : MonoBehaviour
         
         ConvertRawInputNodes();
         StartCoroutine("ConvertRawInputEdges");
-        Debug.Log("3");
     }
 
     private void OnDestroy() 
