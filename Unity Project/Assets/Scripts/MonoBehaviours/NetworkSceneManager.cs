@@ -51,10 +51,8 @@ public class NetworkSceneManager : MonoBehaviour
         GameObjectConversionSettings settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
         nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(nodePrefab, settings);
         
-        Debug.Log("1");
         ConvertRawInputNodes();
-        Debug.Log("2");
-        ConvertRawInputEdges();
+        StartCoroutine("ConvertRawInputEdges");
         Debug.Log("3");
     }
 
@@ -72,48 +70,61 @@ public class NetworkSceneManager : MonoBehaviour
         foreach(string line in rawLayoutInputLines)
         {
             //add try catches for index errors
-            string id = line.Split(' ')[0];
+            string id = "";
 
-            float3 coord;
+            float3 coord = new float3(0,0,0);
+            double value = 0;
 
-            double value = double.Parse(line.Split(']')[1].Trim());
-            coord.x = float.Parse(line.Split('[')[1].Split(',')[0].Trim()) * positionMultiplier;
-            coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim()) * positionMultiplier;
-            coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim()) * positionMultiplier;
+            try
+            {
+                id = line.Split(' ')[0];
+                value = double.Parse(line.Split(']')[1].Trim());
+                coord.x = float.Parse(line.Split('[')[1].Split(',')[0].Trim()) * positionMultiplier;
+                coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim()) * positionMultiplier;
+                coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim()) * positionMultiplier;
+            } catch { }
 
             SpawnNode(id, coord, value);
-            Debug.Log("spawned");
         }
         //why isnt this reached
         Debug.Log("Done Spawning");
-        return;
     }
 
-    private void ConvertRawInputEdges()
+    IEnumerator ConvertRawInputEdges()
     {
-        Debug.Log("started edge conversion");
+        Debug.Log("Started edge conversion");
         string[] rawEdgeInputLines = inputDataHolder.GetComponent<DataHolder>().rawEdgeFile.Split('\n');
         Debug.Log(inputDataHolder.GetComponent<DataHolder>().rawEdgeFile);
 
-        foreach(string line in rawEdgeInputLines)
+        foreach(string line in rawEdgeInputLines) //add try catches
         {
-            Debug.Log(line);
+            string node1Name = "";
+            float4 coord1 = new float4(0,0,0,0);
+            float3 node1Coords = new float3(0,0,0);;
+            string node2Name = "";
+            float4 coord2 = new float4(0,0,0,0);
+            float3 node2Coords = new float3(0,0,0);
+            double edgeWeight = 0.0;
 
-            string node1Name = line.Split()[0];
-            float4 coord1 =  entityManager.GetComponentData<LocalToWorld>(searchForNode(node1Name)).Value[3];
-            float3 node1Coords = new float3(coord1.x,coord1.y, coord1.z);
+            try 
+            {
+                node1Name = line.Split()[0];
+                coord1 =  entityManager.GetComponentData<LocalToWorld>(searchForNode(node1Name)).Value[3];
+                node1Coords = new float3(coord1.x,coord1.y, coord1.z);
 
-            string node2Name = line.Split()[1];
-            float4 coord2 =  entityManager.GetComponentData<LocalToWorld>(searchForNode(node2Name)).Value[3];
-            float3 node2Coords =  new float3(coord2.x,coord2.y, coord2.z);
+                node2Name = line.Split()[1];
+                coord2 =  entityManager.GetComponentData<LocalToWorld>(searchForNode(node2Name)).Value[3];
+                node2Coords =  new float3(coord2.x,coord2.y, coord2.z);
 
-            double edgeWeight = double.Parse(line.Split()[2]);
+                edgeWeight = double.Parse(line.Split()[2]);
+            } catch { }
 
             NodeEdgePosition newEdge = new NodeEdgePosition(new FixedString32(node1Name), node1Coords, new FixedString32(node2Name), node2Coords, edgeWeight);
 
             edgeList.Add(newEdge);
+            yield return null;
         }
-        return;
+        Debug.Log("Done converting edges");
     }
 
     private void SpawnNode(string id, float3 coord, double value)
