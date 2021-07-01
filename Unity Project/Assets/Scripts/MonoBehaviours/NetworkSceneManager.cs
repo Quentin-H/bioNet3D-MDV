@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using Unity.Transforms;
 using UnityEngine.UI;
 using Unity.Rendering;
+using Unity.Collections;
 
 public class NetworkSceneManager : MonoBehaviour
 {
@@ -27,9 +28,13 @@ public class NetworkSceneManager : MonoBehaviour
     private bool edgesShowing = false;
     public Button showHideEdgesButton;
     public Gradient nodeValueGradient;
+
+    private List<Entity> sceneNodeEntities = new List<Entity>();
+
+    private List<NodeEdgePosition> edgeList = new List<NodeEdgePosition>();
     
 
-    private void Awake() 
+    private void Start() 
     {
         inputDataHolder = GameObject.Find("InputDataHolder");
 
@@ -46,7 +51,11 @@ public class NetworkSceneManager : MonoBehaviour
         GameObjectConversionSettings settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
         nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(nodePrefab, settings);
         
+        Debug.Log("1");
         ConvertRawInputNodes();
+        Debug.Log("2");
+        ConvertRawInputEdges();
+        Debug.Log("3");
     }
 
     private void OnDestroy() 
@@ -56,6 +65,8 @@ public class NetworkSceneManager : MonoBehaviour
 
     private void ConvertRawInputNodes()
     {
+        Debug.Log("started node conversion");
+
         string[] rawLayoutInputLines = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile.Split('\n');
 
         foreach(string line in rawLayoutInputLines)
@@ -71,7 +82,38 @@ public class NetworkSceneManager : MonoBehaviour
             coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim()) * positionMultiplier;
 
             SpawnNode(id, coord, value);
+            Debug.Log("spawned");
         }
+        //why isnt this reached
+        Debug.Log("Done Spawning");
+        return;
+    }
+
+    private void ConvertRawInputEdges()
+    {
+        Debug.Log("started edge conversion");
+        string[] rawEdgeInputLines = inputDataHolder.GetComponent<DataHolder>().rawEdgeFile.Split('\n');
+        Debug.Log(inputDataHolder.GetComponent<DataHolder>().rawEdgeFile);
+
+        foreach(string line in rawEdgeInputLines)
+        {
+            Debug.Log(line);
+
+            string node1Name = line.Split()[0];
+            float4 coord1 =  entityManager.GetComponentData<LocalToWorld>(searchForNode(node1Name)).Value[3];
+            float3 node1Coords = new float3(coord1.x,coord1.y, coord1.z);
+
+            string node2Name = line.Split()[1];
+            float4 coord2 =  entityManager.GetComponentData<LocalToWorld>(searchForNode(node2Name)).Value[3];
+            float3 node2Coords =  new float3(coord2.x,coord2.y, coord2.z);
+
+            double edgeWeight = double.Parse(line.Split()[2]);
+
+            NodeEdgePosition newEdge = new NodeEdgePosition(new FixedString32(node1Name), node1Coords, new FixedString32(node2Name), node2Coords, edgeWeight);
+
+            edgeList.Add(newEdge);
+        }
+        return;
     }
 
     private void SpawnNode(string id, float3 coord, double value)
@@ -91,6 +133,8 @@ public class NetworkSceneManager : MonoBehaviour
         entityManager.AddComponentData<MaterialColor>(newNodeEntity, mcc);
         
         entityManager.SetComponentData(newNodeEntity, new NodeData { nodeName = id, nodeValue = value });
+
+        sceneNodeEntities.Add(newNodeEntity);
     }
 
     public void showHideEdges()
@@ -108,11 +152,37 @@ public class NetworkSceneManager : MonoBehaviour
             showHideEdgesButton.GetComponentInChildren<Text>().text = "Show Edges";
         } 
     }
+
+    private Entity searchForNode(string query)
+    {
+        foreach(Entity curEntity in sceneNodeEntities)
+        {
+            if (entityManager.GetComponentData<NodeData>(curEntity).nodeName == query)
+            {
+                return curEntity;
+            }
+        }
+        Debug.Log("Entity not found!");
+        return new Entity();
+    }
 }
 
-public struct nodeEdgePosition
+public struct NodeEdgePosition
 {
-    public Entity nodeA;
-    public Entity nodeB;
+    public FixedString32 nodeAName;
+    public float3 nodeACoords;
+    
+    public FixedString32 nodeBName;
+    public float3 nodeBCoords;
+
     public double weight;
+
+    public NodeEdgePosition(FixedString32 setNodeAName, float3 setNodeACoords, FixedString32 setNodeBName, float3 setNodeBCoords, double setWeight)
+    {
+        nodeACoords = setNodeACoords;
+        nodeAName = setNodeAName;
+        nodeBCoords = setNodeBCoords;
+        nodeBName = setNodeBName;
+        weight = setWeight;
+    }
 }

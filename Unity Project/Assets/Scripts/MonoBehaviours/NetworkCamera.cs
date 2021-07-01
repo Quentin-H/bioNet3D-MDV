@@ -13,7 +13,7 @@ using UnityEngine.EventSystems;
 
 public class NetworkCamera : MonoBehaviour
 {
-    public NetworkSceneManager networkSceneManager;
+    public static NetworkSceneManager networkSceneManager;
     
     //Node Click Variables
     [SerializeField]
