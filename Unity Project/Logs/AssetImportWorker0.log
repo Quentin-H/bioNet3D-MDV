@@ -12456,3 +12456,236 @@ Received Import Request.
 Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '22262b204409f9455a508a83e9e14762') in 0.008253 seconds
   Import took 0.024530 seconds .
 
+========================================================================
+Received Import Request.
+  Time since last request: 563.949643 seconds.
+  path: Assets/HDRPDefaultResources/DefaultLookDevProfile.asset
+  artifactKey: Guid(723af1884bbebb242857215121f4d2df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRPDefaultResources/DefaultLookDevProfile.asset using Guid(723af1884bbebb242857215121f4d2df) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '920c305a6e280f2ab162716079f808d0') in 0.015872 seconds
+  Import took 0.031067 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000293 seconds.
+  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
+  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'acbb146aaa0f32740f1b38e97c16843a') in 0.014809 seconds
+  Import took 0.027335 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 155.070867 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a6a7e42f2e30fff5b5b401bc80b96a71') in 0.012822 seconds
+  Import took 0.026159 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 20.084817 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5b24bf15b8a81e2755d7c5ceb03100a9') in 0.006814 seconds
+  Import took 0.019361 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.033589 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5b24bf15b8a81e2755d7c5ceb03100a9') in 0.007248 seconds
+  Import took 0.019731 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 30.996851 seconds.
+  path: Assets/HDRP Stuff/NetworkLighting.lighting
+  artifactKey: Guid(0f923e5b3f975e8468527639e3439db7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkLighting.lighting using Guid(0f923e5b3f975e8468527639e3439db7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f76e2f6a2b7c07447ff675f987c6d301') in 0.017398 seconds
+  Import took 0.030656 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 19.386256 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c10e47a2f9db18e361e52ca287982df1') in 0.006338 seconds
+  Import took 0.018993 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.019159 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c10e47a2f9db18e361e52ca287982df1') in 0.007564 seconds
+  Import took 0.019941 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 49.316562 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5163a848370aec42e16dcc32721167d5') in 0.006773 seconds
+  Import took 0.018489 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.018573 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5163a848370aec42e16dcc32721167d5') in 0.007620 seconds
+  Import took 0.021382 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 15.976982 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e40a52ef6488c4cd0d5ac5bb35ba3f5e') in 0.014071 seconds
+  Import took 0.036914 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 112.490570 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2577f28a4d2cff69cf11c319ed63d40c') in 0.007882 seconds
+  Import took 0.020688 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.009868 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2577f28a4d2cff69cf11c319ed63d40c') in 0.007396 seconds
+  Import took 0.023671 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 34.127944 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '27c621c50f3c73e2c12246ec14467cd5') in 0.006291 seconds
+  Import took 0.019349 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.015618 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '27c621c50f3c73e2c12246ec14467cd5') in 0.006672 seconds
+  Import took 0.020876 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 34.804995 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5d64a67a61cd44a21456ee9b68b9aa6d') in 0.006937 seconds
+  Import took 0.042937 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 237.388189 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2450377b180c955e3c9d85050d03ca98') in 0.007159 seconds
+  Import took 0.021077 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.011944 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2450377b180c955e3c9d85050d03ca98') in 0.008902 seconds
+  Import took 0.023351 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.905774 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e89670bdc31deff87cfd4f49574522a8') in 0.006907 seconds
+  Import took 0.020195 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.014305 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e89670bdc31deff87cfd4f49574522a8') in 0.007140 seconds
+  Import took 0.022424 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 8.005321 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6ea38cac824181d469b8a73619fe5a14') in 0.006042 seconds
+  Import took 0.018273 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.010055 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6ea38cac824181d469b8a73619fe5a14') in 0.006847 seconds
+  Import took 0.023547 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 7.401089 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '35e0c9ff9e6830f89b9782831f541980') in 0.005921 seconds
+  Import took 0.018282 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.009404 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '35e0c9ff9e6830f89b9782831f541980') in 0.007287 seconds
+  Import took 0.022598 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.505902 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9b0d42ec6868dd82ef44398a5fbbfd60') in 0.005757 seconds
+  Import took 0.018815 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.007709 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9b0d42ec6868dd82ef44398a5fbbfd60') in 0.006375 seconds
+  Import took 0.021445 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 1.998100 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd5645cf7c9f9409c3764818b2f661662') in 0.005865 seconds
+  Import took 0.018400 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.009557 seconds.
+  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
+  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd5645cf7c9f9409c3764818b2f661662') in 0.007052 seconds
+  Import took 0.019987 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 7228.386862 seconds.
+  path: Assets/Scenes/Network Scene/NetworkScene.unity
+  artifactKey: Guid(eeaf4cd020fef1d4a88156f53e17b7c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scenes/Network Scene/NetworkScene.unity using Guid(eeaf4cd020fef1d4a88156f53e17b7c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c64adae95537e99571fe45f47c4ca54a') in 0.025778 seconds
+  Import took 0.055219 seconds .
+
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file

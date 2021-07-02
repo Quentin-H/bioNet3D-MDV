@@ -1,0 +1,15 @@
+- Data shown on select:
+	- rank (row in score file)
+	- column 4 instead of 2 (feature ID) for name
+	- description
+	- baseline score
+	- degree
+- No shadows, unlit
+- Halos on top 200
+- self organizing maps
+- highlight outline on select
+- focus on a few features
+- do hashmaps with keys being feature ID 
+
+- add emmisiveness 
+- make highlighted node blue halo
