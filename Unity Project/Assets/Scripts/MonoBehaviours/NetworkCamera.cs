@@ -57,7 +57,7 @@ public class NetworkCamera : MonoBehaviour
         {
             focusOnNode();
         }
-       // locking();
+       locking();
     }
 
     private void locking()
@@ -149,7 +149,7 @@ public class NetworkCamera : MonoBehaviour
 
     private void selectNode()
     {
-        if (Cam == null || !Input.GetMouseButtonDown(0)) return;
+        if (Cam == null || !Input.GetMouseButtonDown(0) || EventSystem.current.IsPointerOverGameObject()) return;
 
         var position = Input.mousePosition;
         var screenPointToRay = Cam.ScreenPointToRay(position);

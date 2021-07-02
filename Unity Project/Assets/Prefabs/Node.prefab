@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1831211081269285723}
   - component: {fileID: 6570097685447678631}
   - component: {fileID: 3965336401097284564}
+  - component: {fileID: 6699405484281467671}
   m_Layer: 0
   m_Name: Node
   m_TagString: Untagged
@@ -97,6 +98,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b07ffcf2b2c03d47ad1fa75ddc6cf0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodeName:
+    utf8LengthInBytes: 0
+    bytes:
+      offset0000:
+        byte0000: 0
+        byte0001: 0
+        byte0002: 0
+        byte0003: 0
+        byte0004: 0
+        byte0005: 0
+        byte0006: 0
+        byte0007: 0
+        byte0008: 0
+        byte0009: 0
+        byte0010: 0
+        byte0011: 0
+        byte0012: 0
+        byte0013: 0
+        byte0014: 0
+        byte0015: 0
+      byte0016: 0
+      byte0017: 0
+      byte0018: 0
+      byte0019: 0
+      byte0020: 0
+      byte0021: 0
+      byte0022: 0
+      byte0023: 0
+      byte0024: 0
+      byte0025: 0
+      byte0026: 0
+      byte0027: 0
+      byte0028: 0
+      byte0029: 0
   nodeValue: 0
 --- !u!114 &1831211081269285723
 MonoBehaviour:
@@ -304,3 +339,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConversionMode: 0
+--- !u!114 &6699405484281467671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3965336401097284566}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7d849f6ed953e947a0ea6954432e1ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overrideAsset: {fileID: 11400000, guid: 5c095dce05d9d344392aa638b2684479, type: 2}
+  overrideList:
+  - name: _Color
+    displayName: _Color
+    shaderName: Assets/Materials/NodeShaderGraph.shadergraph
+    materialName: NodeMaterial
+    type: 0
+    value: {x: 0.035333157, y: 0, z: 0.5, w: 1}
+    instanceOverride: 0
