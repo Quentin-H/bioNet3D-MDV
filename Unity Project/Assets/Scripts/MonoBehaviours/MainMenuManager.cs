@@ -67,6 +67,11 @@ public class MainMenuManager : MonoBehaviour
         } 
 	}
 
+	public void ChangePositionMultiplier(string multiplier)
+	{
+		dataHolder.positionMultiplier = float.Parse(multiplier);
+	}
+
 	public void OpenNetworkScene()
 	{
 		if (nodeLayoutFileSet && edgeFileSet) 

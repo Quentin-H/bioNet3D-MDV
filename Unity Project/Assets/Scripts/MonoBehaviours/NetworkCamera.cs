@@ -24,7 +24,9 @@ public class NetworkCamera : MonoBehaviour
     public static Entity selectedEntity;
     public GameObject selectedNodeUI;
     public Text nodeNameText;
-    public Text nodeValueText;
+    public Text nodeDescriptionText;
+    public Text nodeNetworkRank;
+    public Text nodeBaselineScore;
     public Text nodeDegreeText;
     private bool nodeSelected;
 
@@ -170,9 +172,13 @@ public class NetworkCamera : MonoBehaviour
         selectedEntity = physicsWorld.Bodies[hit.RigidBodyIndex].Entity;
         Debug.Log("hit");
         nodeSelected = true;
-        nodeNameText.text = "Node Name: " + entityManager.GetComponentData<NodeData>(selectedEntity).nodeName;
-        nodeDegreeText.text = "Node Degrees: notimplemented";
-        nodeValueText.text = "Node Value: " + entityManager.GetComponentData<NodeData>(selectedEntity).nodeValue;
+        
+        nodeNameText.text = "Node Name: " + entityManager.GetComponentData<NodeData>(selectedEntity).displayName;
+        nodeDescriptionText.text = "Description: " + entityManager.GetComponentData<NodeData>(selectedEntity).description;
+        nodeNetworkRank.text = "Network Rank: " + entityManager.GetComponentData<NodeData>(selectedEntity).networkRank;
+        nodeBaselineScore.text = "Baseline Value: " + entityManager.GetComponentData<NodeData>(selectedEntity).baselineScore;
+        nodeDegreeText.text = "Degree: " + entityManager.GetComponentData<NodeData>(selectedEntity).degree;
+
         selectedNodeUI.SetActive(true);
 
         Debug.Log(selectedEntity);

@@ -64,5 +64,5 @@ for coordinate in graphLayout:
 
 # Saves the string we created as a "massive dataset visualizer layout file"
 outputFile = open(outputPath + ("output - " + graphOption + ".mdvl"), "w")
-outputFile.write(layoutString)
+outputFile.write(layoutString) # change this to write to binary
 outputFile.close
