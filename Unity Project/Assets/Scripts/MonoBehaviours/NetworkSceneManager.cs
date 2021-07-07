@@ -78,31 +78,41 @@ public class NetworkSceneManager : MonoBehaviour
 
         foreach(string line in rawLayoutInputLines) 
         {
-            string id = "";
-
+            string fID = "";
             float3 coord = new float3(0,0,0);
-            double value = 0;
+            string dName = "";
+            string desc = "";
+            int nRank = 0;
+            double blineScore = 0;
+            int deg = 0;
 
             try
             {
-                id = line.Split(' ')[0];
-                value = double.Parse(line.Split(']')[1].Trim());
+                fID = line.Split('|')[0];
+                
                 coord.x = float.Parse(line.Split('[')[1].Split(',')[0].Trim()) * positionMultiplier;
                 coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim()) * positionMultiplier;
                 coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim()) * positionMultiplier;
-            } catch { }
 
-            SpawnNode(id, coord, value);
+                dName = line.Split('|')[2];
+                desc = line.Split('|')[3];
+                nRank = int.Parse(line.Split('|')[4].Trim());
+                blineScore = double.Parse(line.Split('|')[5].Trim());
+                deg = int.Parse(line.Split('|')[6].Trim());
+
+                SpawnNode(fID, coord, dName, desc, nRank, blineScore, deg);
+            } catch { Debug.Log("Error parsing a node from file."); }
         }
         Debug.Log("Done Spawning");
     }
 
-    private void SpawnNode(string id, float3 coord, double value)
+    private void SpawnNode(string fID, float3 coord, string dName, string desc, int nRank, double blineScore, int deg)
     {
-        if (id == "" || id == null)
+        if (fID == "" || fID == null)
         {
             return;
         }
+
         Entity newNodeEntity = entityManager.Instantiate(nodeEntityPrefab);
 
         Translation translation = new Translation()
@@ -112,7 +122,7 @@ public class NetworkSceneManager : MonoBehaviour
 
         entityManager.AddComponentData(newNodeEntity, translation);
 
-        Color evaluatedColor = nodeValueGradient.Evaluate( (float)value);
+        Color evaluatedColor = nodeValueGradient.Evaluate( (float) blineScore);
         float4 colorF = new float4(evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a);
         //MaterialColor mcc = new MaterialColor { Value = colorF };
         //entityManager.AddComponentData<MaterialColor>(newNodeEntity, mcc);
@@ -123,9 +133,15 @@ public class NetworkSceneManager : MonoBehaviour
         renderMesh.material = mat;
         entityManager.SetSharedComponentData(newNodeEntity, renderMesh);
 
-        entityManager.SetComponentData(newNodeEntity, new NodeData { featureID = id, baselineScore = value });
+        entityManager.SetComponentData(newNodeEntity, new NodeData { 
+            featureID = fID, 
+            displayName = dName, 
+            description = desc, 
+            networkRank = nRank,
+            baselineScore = blineScore,
+            degree = deg });
 
-        FixedString32 idAsFixed = id;
+        FixedString32 idAsFixed = fID;
         sceneNodeEntities.Add(idAsFixed, newNodeEntity);
     }
 

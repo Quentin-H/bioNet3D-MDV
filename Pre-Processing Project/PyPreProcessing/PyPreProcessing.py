@@ -43,7 +43,7 @@ i = 1
 for nodeLine in nodeFileLines:
     featureID = nodeLine.split()[0]
     dName = nodeLine.split()[3]
-    desc = nodeLine.split("\t")[1]
+    desc = nodeLine.split("\t")[4]
     nRank = i
     bScore = 0
 
@@ -54,7 +54,7 @@ for nodeLine in nodeFileLines:
     
     # Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute
     graph.add_vertex(name = featureID, displayName = dName, description = desc, networkRank = nRank, baselineScore = bScore)
-    i =+ 1
+    i += 1
 
 # go through the edge input file for each edge
 for edgeLine in edgeFileLines:
