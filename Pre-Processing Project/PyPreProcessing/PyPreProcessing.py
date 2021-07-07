@@ -27,20 +27,34 @@ print("-------------------------------")
 graphOption = input("Enter desired graphing algorithm... ")
 
 # create an igraph containing just the nodes from the inputfile 
-graph = igraph.Graph(vertex_attrs={"Node_Value": 0}, edge_attrs={"Edge_Weight": 0})
+graph = igraph.Graph(
+    vertex_attrs={
+        "displayName": "",
+        "description": "",
+        "networkRank": 0,
+        "baselineScore": 0,
+        # degrees is fetched with a function and the feature ID is the name of the vertex
+    }, 
+    edge_attrs={
+        "Edge_Weight": 0
+    })
 
-i = 0
+i = 1
 for nodeLine in nodeFileLines:
-    nodeName = nodeLine.split()[0]
+    featureID = nodeLine.split()[0]
+    dName = nodeLine.split()[3]
+    desc = nodeLine.split("\t")[1]
+    nRank = i
+    bScore = 0
 
-    vizScore = 0
     for scoreLine in scoreFileLines:
-        if scoreLine.split()[1] == nodeName:
-            vizScore = scoreLine.split()[5]
+        if scoreLine.split()[1] == featureID:
+            bScore = scoreLine.split()[4]
             break
     
     # Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute
-    graph.add_vertex(name = nodeName, Node_Value = vizScore)
+    graph.add_vertex(name = featureID, displayName = dName, description = desc, networkRank = nRank, baselineScore = bScore)
+    i =+ 1
 
 # go through the edge input file for each edge
 for edgeLine in edgeFileLines:
@@ -58,7 +72,15 @@ graphLayout = graph.layout(graphOption)
 layoutString = ''
 i = 0
 for coordinate in graphLayout:
-    currentLine = graph.vs[i]["name"]  + " " + str(coordinate) + " " + str(graph.vs[i]["Node_Value"]) + "\n"
+    currentLine = (graph.vs[i]["name"] # feature ID
+    + "|" + str(coordinate) 
+    + "|" + str(graph.vs[i]["displayName"]) 
+    + "|" + str(graph.vs[i]["description"]) 
+    + "|" + str(graph.vs[i]["networkRank"]) 
+    + "|" + str(graph.vs[i]["baselineScore"]) 
+    + "|" + str(graph.vs[i].degree())
+    + "\n")
+
     layoutString = layoutString + currentLine
     i += 1
 
