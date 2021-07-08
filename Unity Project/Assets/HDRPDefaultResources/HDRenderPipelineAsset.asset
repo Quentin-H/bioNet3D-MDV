@@ -197,10 +197,10 @@ MonoBehaviour:
     sssCustomSampleBudget: 20
     materialQuality: 0
   m_RenderPipelineSettings:
-    supportShadowMask: 1
+    supportShadowMask: 0
     supportSSR: 0
     supportSSRTransparent: 0
-    supportSSAO: 1
+    supportSSAO: 0
     supportSSGI: 1
     supportSubsurfaceScattering: 1
     sssSampleBudget:
@@ -226,10 +226,10 @@ MonoBehaviour:
     customBufferFormat: 12
     supportedLitShaderMode: 2
     planarReflectionResolution:
-      m_Values: 000100000004000000080000
+      m_Values: 000100000004000000040000
       m_SchemaId:
         m_Id: With3Levels
-    supportDecals: 1
+    supportDecals: 0
     supportDecalLayers: 0
     decalLayerName0: Decal Layer default
     decalLayerName1: Decal Layer 1
@@ -345,7 +345,7 @@ MonoBehaviour:
       DoFHighQualityFiltering: 000101
       DoFPhysicallyBased: 000000
       MotionBlurSampleCount: 04000000080000000c000000
-      BloomRes: 040000000200000002000000
+      BloomRes: 020000000200000002000000
       BloomHighQualityFiltering: 000101
       BloomHighQualityPrefiltering: 000001
       ChromaticAberrationMaxSamples: 03000000060000000c000000
