@@ -129,7 +129,7 @@ public class NetworkSceneManager : MonoBehaviour
         var renderMesh = entityManager.GetSharedComponentData<RenderMesh>(newNodeEntity);
         var mat = new UnityEngine.Material(renderMesh.material);
         mat.SetColor("_Color", evaluatedColor);
-        mat.SetColor("_GlowColor", selectedGlowColor);
+        //mat.SetColor("_GlowColor", selectedGlowColor);
         renderMesh.material = mat;
         entityManager.SetSharedComponentData(newNodeEntity, renderMesh);
 
