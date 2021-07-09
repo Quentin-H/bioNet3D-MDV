@@ -3602,3 +3602,4 @@ Received Import Request.
 Start importing Assets/Prefabs/GlowObject.mat using Guid(42d519bc1c2623b45b73cfedfb6735d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f2677bd842a0dfe51e5f1d24f9ce12ea') in 0.842081 seconds
   Import took 0.917166 seconds .
 
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
