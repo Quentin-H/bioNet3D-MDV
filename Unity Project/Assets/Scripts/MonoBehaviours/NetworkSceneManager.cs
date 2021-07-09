@@ -40,6 +40,7 @@ public class NetworkSceneManager : MonoBehaviour
     private IDictionary<FixedString32, Entity> sceneNodeEntities = new Dictionary<FixedString32, Entity>();
     //maybe add dictionary with keys as coordinates if we want a feature that finds the connected node
     private List<NodeEdgePosition> edgeList = new List<NodeEdgePosition>();
+    private Dictionary<Entity, List<NodeEdgePosition>> entitiesToEdges = new Dictionary<Entity, List<NodeEdgePosition>>();
 
 
     private void Start() 
@@ -176,10 +177,28 @@ public class NetworkSceneManager : MonoBehaviour
             } catch { }
 
             //Debug.Log(node1Coords + "|" + node2Coords);
+            //edgeList.Add(newEdge);
 
-            NodeEdgePosition newEdge = new NodeEdgePosition(new FixedString32(node1Name), node1Coords, new FixedString32(node2Name), node2Coords, edgeWeight);
+            NodeEdgePosition newEdge1 = new NodeEdgePosition(new FixedString32(node1Name), node1Coords, new FixedString32(node2Name), node2Coords, edgeWeight);
+            try
+            {
+                entitiesToEdges[sceneNodeEntities[node1Name]].Add(newEdge1);
+            }
+            catch
+            {
+                entitiesToEdges.Add(sceneNodeEntities[node1Name], new List<NodeEdgePosition>(){newEdge1});
+            }
 
-            edgeList.Add(newEdge);
+            NodeEdgePosition newEdge2 = new NodeEdgePosition(new FixedString32(node2Name), node2Coords, new FixedString32(node1Name), node1Coords, edgeWeight);
+            try 
+            {
+                entitiesToEdges[sceneNodeEntities[node2Name]].Add(newEdge2);
+            }
+            catch
+            {
+                entitiesToEdges.Add(sceneNodeEntities[node2Name], new List<NodeEdgePosition>(){newEdge2});
+            }
+
             edgeConversionSteps++;
             edgeConversionProgressText.text = "Edge importation in progress. (" + String.Format("{0:0.00}", ((float)edgeConversionSteps / (float)rawEdgeInputLines.Length) * 100.0f) + "%)";
             yield return null;

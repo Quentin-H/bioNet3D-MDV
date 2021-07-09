@@ -15,11 +15,11 @@ E:/Quentin/Github Repositories/bioNet3D-MDV/Unity Project
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-49891
+58424
 Successfully changed project path to: E:/Quentin/Github Repositories/bioNet3D-MDV/Unity Project
 E:/Quentin/Github Repositories/bioNet3D-MDV/Unity Project
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 296.95 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 186.76 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.11f1 (99c7afb366b3)
 [Subsystems] Discovering subsystems at path E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Resources/UnitySubsystems
@@ -35,38 +35,38 @@ Initialize mono
 Mono path[0] = 'E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Managed'
 Mono path[1] = 'E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56332
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56180
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.008381 seconds.
+Registered in 0.007779 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 198.95 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 237.03 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  3.033 seconds
+- Completed reload, in  2.671 seconds
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.025723 seconds.
+Registered in 0.031530 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 196.20 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 246.71 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-TypeManager.Initialize took: 394ms
+TypeManager.Initialize took: 425ms
 Mono: successfully reloaded assembly
-- Completed reload, in  5.407 seconds
+- Completed reload, in  5.825 seconds
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
-Refreshing native plugins compatible for Editor in 1.47 ms, found 1 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
+Refreshing native plugins compatible for Editor in 1.79 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 5240 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 239.6 MB.
-System memory in use after: 240.0 MB.
+Unloading 5245 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 241.7 MB.
+System memory in use after: 242.1 MB.
 
-Unloading 29 unused Assets to reduce memory usage. Loaded Objects now: 5691.
-Total: 8.442300 ms (FindLiveObjects: 1.043200 ms CreateObjectMapping: 0.323700 ms MarkObjects: 6.932500 ms  DeleteObjects: 0.140700 ms)
+Unloading 29 unused Assets to reduce memory usage. Loaded Objects now: 5690.
+Total: 9.295700 ms (FindLiveObjects: 1.018500 ms CreateObjectMapping: 0.832300 ms MarkObjects: 7.285000 ms  DeleteObjects: 0.157700 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:DOTSType/UnityEngine.EventSystems.EventSystem: 2c81b6c3f3277fcd2c81b6c3f3277fcd -> 
@@ -348,8 +348,9 @@ AssetImportParameters requested are different than current active one (requested
   custom:DOTSType/UnityEditor.VFX.VFXGraphCompiledData+VFXImplicitContextOfExposedExpression: 98429f7d078d0ec998429f7d078d0ec9 -> 
   custom:DOTSType/UnityEditor.LightProbeGroupInspector: 20d8caecfea817ce20d8caecfea817ce -> 
   custom:DOTSType/UnityEditor.VFX.VFXSlotVector: 4761d648571abaf94761d648571abaf9 -> 
-  custom:DOTSType/UnityEditor.CapsuleColliderEditor: 26ad230c710a8cf126ad230c710a8cf1 -> 
   custom:DOTSType/UnityEditor.Experimental.TerrainAPI.PaintTreesTool: 3e43c92c9ac73def3e43c92c9ac73def -> 
+  custom:DOTSType/UnityEditor.CapsuleColliderEditor: 26ad230c710a8cf126ad230c710a8cf1 -> 
+  custom:DOTSType/HDRPSamples.HDRPLensFlare: c1ab76ae1f4c1404c1ab76ae1f4c1404 -> 
   custom:DOTSType/Unity.Transforms.PostRotationEulerXYZ: 17f8b8a5675d11eb17f8b8a5675d11eb -> 
   custom:DOTSType/UnityEditor.Rendering.HighDefinition.CubeLutImporter: f5e35447e65cacabf5e35447e65cacab -> 
   custom:DOTSType/UnityEditor.VFX.Operator.Floor: 207200ea78f3c8b4207200ea78f3c8b4 -> 
@@ -788,8 +789,8 @@ AssetImportParameters requested are different than current active one (requested
   custom:DOTSType/Unity.Transforms.Frozen: f6aac45797677a67f6aac45797677a67 -> 
   custom:DOTSType/UnityEditor.VFX.Block.PositionDepth: 4bcc5519c241c19e4bcc5519c241c19e -> 
   custom:DOTSType/UnityEditor.VFX.Operator.Asin: d9204cdad9440bf4d9204cdad9440bf4 -> 
-  custom:DOTSType/UnityEditor.VFX.Block.SubpixelAA: 6bec782af864ba2d6bec782af864ba2d -> 
   custom:DOTSType/UnityEditor.VFX.Block.ConformToSDF: 455064befc8a210a455064befc8a210a -> 
+  custom:DOTSType/UnityEditor.VFX.Block.SubpixelAA: 6bec782af864ba2d6bec782af864ba2d -> 
   custom:DOTSType/UnityEditor.Audio.AudioMixerController: 9df423c536aa25719df423c536aa2571 -> 
   custom:DOTSType/UnityEditor.FixedJointEditor: f5772da89cad4192f5772da89cad4192 -> 
   custom:DOTSType/UnityEditor.LicenseManagementWindow: 24fd14067a9168b724fd14067a9168b7 -> 
@@ -881,9 +882,9 @@ AssetImportParameters requested are different than current active one (requested
   custom:DOTSType/UnityEngine.VFX.Utility.VFXInputAxisBinder: 76c41cabb8eee6f376c41cabb8eee6f3 -> 
   custom:DOTSType/UnityEditor.WebCamTextureInspector: f3ee8ae331d309c4f3ee8ae331d309c4 -> 
   custom:DOTSType/UnityEngine.Playables.PlayableDirector: 5e646bbf57f9128a5e646bbf57f9128a -> 
+  custom:DOTSType/UnityEditor.PopupWindowWithoutFocus: a20bfe313d7f63a5a20bfe313d7f63a5 -> 
   custom:DOTSType/UnityEditor.TagManagerInspector: eebcac03c368e19beebcac03c368e19b -> 
   custom:DOTSType/UnityEditor.VFX.VFXSlotTextureCubeArray: 3de1e262d997f5e73de1e262d997f5e7 -> 
-  custom:DOTSType/UnityEditor.PopupWindowWithoutFocus: a20bfe313d7f63a5a20bfe313d7f63a5 -> 
   custom:DOTSType/UnityEditor.TimeManagerEditor: d797300757aad311d797300757aad311 -> 
   custom:DOTSType/UnityEditor.VideoClipImporter: 99da53fb54c1bf7b99da53fb54c1bf7b -> 
   custom:DOTSType/UnityEditor.GUIStyleHolder: b43e450a4ff5f4c2b43e450a4ff5f4c2 -> 
@@ -1191,14 +1192,14 @@ AssetImportParameters requested are different than current active one (requested
   custom:DOTSType/UnityEditor.WindowFocusState: afc02077a0c9f31dafc02077a0c9f31d -> 
   custom:DOTSType/UnityEditor.VFX.Operator.Lerp: 93205d50d2e205ae93205d50d2e205ae -> 
   custom:DOTSType/UnityEngine.AudioHighPassFilter: 50def1341511b24b50def1341511b24b -> 
-  custom:DOTSType/UnityEditor.AnimationWindowEvent: 2a7e844c8e2f58ce2a7e844c8e2f58ce -> 
   custom:DOTSType/UnityEditor.TerrainColliderEditor: 1018b257c91239ba1018b257c91239ba -> 
-  custom:DOTSType/Unity.Rendering.FrozenRenderSceneTag: cb3c396f39158777cb3c396f39158777 -> 
   custom:DOTSType/UnityEditor.TextureInspector: 5cc1300853537fca5cc1300853537fca -> 
-  custom:DOTSType/UnityEditor.Audio.AudioMixerSnapshotController: 690844117723ac0c690844117723ac0c -> 
-  custom:DOTSType/UnityEditor.SphereColliderEditor: aaa5afdd62c82d13aaa5afdd62c82d13 -> 
+  custom:DOTSType/Unity.Rendering.FrozenRenderSceneTag: cb3c396f39158777cb3c396f39158777 -> 
   custom:DOTSType/UnityEngine.Rendering.HighDefinition.Compositor.AlphaInjection: f83cb73ba95acae5f83cb73ba95acae5 -> 
+  custom:DOTSType/UnityEditor.Audio.AudioMixerSnapshotController: 690844117723ac0c690844117723ac0c -> 
+  custom:DOTSType/UnityEditor.AnimationWindowEvent: 2a7e844c8e2f58ce2a7e844c8e2f58ce -> 
   custom:DOTSType/UnityEngine.CanvasGroup: da0cac3229587319da0cac3229587319 -> 
+  custom:DOTSType/UnityEditor.SphereColliderEditor: aaa5afdd62c82d13aaa5afdd62c82d13 -> 
   custom:DOTSType/UnityEditor.TestTools.TestRunner.EditModeLauncher+BackgroundListener: c80c9a2ebf99517cc80c9a2ebf99517c -> 
   custom:DOTSType/UnityEditor.Rendering.DebugStateBool: ac68ba4843e2737aac68ba4843e2737a -> 
   custom:DOTSType/UnityEditor.Rendering.HighDefinition.HDRenderPipelineEditor: 760ba384dedf3372760ba384dedf3372 -> 
@@ -1242,16 +1243,16 @@ AssetImportParameters requested are different than current active one (requested
   custom:DOTSType/UnityEditor.AssetImportInProgressProxyEditor: be9ed6e99fe31deebe9ed6e99fe31dee -> 
   custom:DOTSType/UnityEditor.VFX.Operator.AABoxVolume: 41738d03aa617f6e41738d03aa617f6e -> 
   custom:DOTSType/Unity.Scenes.LiveLinkPatcher+LiveLinkedSceneState: cb132f5898e26433cb132f5898e26433 -> 
-  custom:DOTSType/UnityEngine.Rendering.HighDefinition.FilmGrain: 2f0a2815cc60b5022f0a2815cc60b502 -> 
+  custom:DOTSType/UnityEditor.VFX.VFXSubgraphBlock: 63a5153d16931b8563a5153d16931b85 -> 
   custom:DOTSType/UnityEditor.VFX.Operator.LogicalNot: 826cda99b4cee384826cda99b4cee384 -> 
   custom:DOTSType/UnityEngine.VFX.Utility.HDRPCameraBinder: 389873d47db9f4cd389873d47db9f4cd -> 
   custom:DOTSType/Unity.Scenes.LiveLinkPlayerAssetRefreshSystem+ResourceRequested: 0d4a5392ad289bf70d4a5392ad289bf7 -> 
   custom:DOTSType/UnityEditor.ScaleTool: 90fd87bb34e81bae90fd87bb34e81bae -> 
   custom:DOTSType/UnityEditor.VFX.Operator.Absolute: 6f68795ef6a96b4a6f68795ef6a96b4a -> 
   custom:DOTSType/UnityEngine.UI.Slider: 620e869212445678620e869212445678 -> 
-  custom:DOTSType/UnityEditor.VFX.VFXSubgraphBlock: 63a5153d16931b8563a5153d16931b85 -> 
   custom:DOTSType/UnityEditor.Graphing.GraphObject: efad995cd546e3d6efad995cd546e3d6 -> 
   custom:DOTSType/Unity.Transforms.CopyInitialTransformFromGameObjectAuthoring: 07ff4b9bcaadcc2407ff4b9bcaadcc24 -> 
+  custom:DOTSType/UnityEngine.Rendering.HighDefinition.FilmGrain: 2f0a2815cc60b5022f0a2815cc60b502 -> 
   custom:DOTSType/UnityEditor.VFX.Operator.DistanceToLine: e2cf8fee8833bb22e2cf8fee8833bb22 -> 
   custom:DOTSType/UnityEditor.VFX.Operator.SquaredLength: 9d8dcf3c959eb7969d8dcf3c959eb796 -> 
   custom:DOTSType/UnityEditor.LightmapPreviewWindow: 2c5e84bd7e5c90b22c5e84bd7e5c90b2 -> 
@@ -1520,13 +1521,13 @@ AssetImportParameters requested are different than current active one (requested
   custom:DOTSType/UnityEditor.Presets.DefaultPresetReorderableList+PresetChanged: b8e1066acf2a1acbb8e1066acf2a1acb -> 
   custom:DOTSType/UnityEditor.TargetJoint2DEditor: d0afe84dab832f00d0afe84dab832f00 -> 
   custom:DOTSType/MaterialOverrideEditor: 759457b444524f3d759457b444524f3d -> 
-  custom:DOTSType/Unity.Transforms.WorldToLocal: f09a59232ebb35a6f09a59232ebb35a6 -> 
+  custom:DOTSType/UnityEngine.EventSystems.EventTrigger: 9d80099ea27fe7d29d80099ea27fe7d2 -> 
   custom:DOTSType/UnityEditorInternal.State: 12a1edf3e65a9a8f12a1edf3e65a9a8f -> 
   custom:DOTSType/UnityEditor.EventSystems.EventSystemEditor: a4ad983006d27d58a4ad983006d27d58 -> 
-  custom:DOTSType/DebugStream+DrawComponent: f993a99b01c32449f993a99b01c32449 -> 
+  custom:DOTSType/Unity.Transforms.WorldToLocal: f09a59232ebb35a6f09a59232ebb35a6 -> 
   custom:DOTSType/UnityEditor.Rendering.HighDefinition.DensityVolumeEditor: 12668d28b35efff912668d28b35efff9 -> 
   custom:DOTSType/TMPro.TMP_ProjectConversionUtility: 2111f0fcea957bd52111f0fcea957bd5 -> 
-  custom:DOTSType/UnityEngine.EventSystems.EventTrigger: 9d80099ea27fe7d29d80099ea27fe7d2 -> 
+  custom:DOTSType/DebugStream+DrawComponent: f993a99b01c32449f993a99b01c32449 -> 
   custom:DOTSType/UnityEditor.VFX.Operator.LookAt: 76040fddb95a5f5076040fddb95a5f50 -> 
   custom:DOTSType/UnityEngine.Rendering.AdditionalShadowData: 9e8d2823086670189e8d282308667018 -> 
   custom:DOTSType/Unity.Entities.CodeGen.Tests.TestTypes.TagComponentInAnotherAssembly: 6c618cddf336b88b6c618cddf336b88b -> 
@@ -1544,10 +1545,10 @@ AssetImportParameters requested are different than current active one (requested
   custom:DOTSType/Unity.Entities.CodeGen.Tests.TestTypes.TranslationInAnotherAssembly: 286cd1beec2c2823286cd1beec2c2823 -> 
   custom:DOTSType/UnityEngine.TestTools.TestRunner.Callbacks.TestResultRendererCallback: 6b0b8e32ec113db96b0b8e32ec113db9 -> 
   custom:DOTSType/UnityEditor.SurfaceEffector2DEditor: 38c7580b21237b6038c7580b21237b60 -> 
-  custom:DOTSType/Unity.Entities.Editor.EntityHierarchyWindow: 1313c64a411364c01313c64a411364c0 -> 
-  custom:DOTSType/Unity.Rendering.BuiltinMaterialPropertyUnity_ProbeVolumeSizeInv: 08e4b3b7eb19a99408e4b3b7eb19a994 -> 
-  custom:DOTSType/UnityEngine.Animations.AimConstraint: 14a7001b865acf2d14a7001b865acf2d -> 
   custom:DOTSType/UnityEngine.UI.AspectRatioFitter: 0e2bc559704cca670e2bc559704cca67 -> 
+  custom:DOTSType/Unity.Entities.Editor.EntityHierarchyWindow: 1313c64a411364c01313c64a411364c0 -> 
+  custom:DOTSType/UnityEngine.Animations.AimConstraint: 14a7001b865acf2d14a7001b865acf2d -> 
+  custom:DOTSType/Unity.Rendering.BuiltinMaterialPropertyUnity_ProbeVolumeSizeInv: 08e4b3b7eb19a99408e4b3b7eb19a994 -> 
   custom:DOTSType/Unity.Scenes.ReferencedUnityObjects: b8073d4731436522b8073d4731436522 -> 
   custom:DOTSType/Unity.Rendering.BlendShapeTag: b76df7e273aca6a0b76df7e273aca6a0 -> 
   custom:DOTSType/UnityEditor.UIElements.EditorWindowViewData: 955214f4629c4f5a955214f4629c4f5a -> 
@@ -1751,8 +1752,8 @@ AssetImportParameters requested are different than current active one (requested
   custom:DOTSType/UnityEditor.ViewModeToolCustomEditor: 6419ff5253218d3c6419ff5253218d3c -> 
   custom:DOTSType/UnityEditor.VFX.Operator.SampleTextureCube: 586be343682bc938586be343682bc938 -> 
   custom:DOTSType/UnityEngine.Animations.LookAtConstraint: e325a2fcf3d5a159e325a2fcf3d5a159 -> 
-  custom:DOTSType/UnityEditor.VFX.VFXSlotFloat4: ae86f2dc282788e1ae86f2dc282788e1 -> 
   custom:DOTSType/UnityEditor.AudioImporterInspector: 4f6b63b8ce601ea64f6b63b8ce601ea6 -> 
+  custom:DOTSType/UnityEditor.VFX.VFXSlotFloat4: ae86f2dc282788e1ae86f2dc282788e1 -> 
   custom:DOTSType/UnityEditor.VFX.Block.ConnectTarget: f85084dab0e27461f85084dab0e27461 -> 
   custom:DOTSType/UnityEngine.Avatar: 307ee883d3216b57307ee883d3216b57 -> 
   custom:DOTSType/UnityEditor.Rendering.HighDefinition.HDReflectionProbeEditor: b7f2abde1f73443cb7f2abde1f73443c -> 
@@ -1768,180 +1769,132 @@ AssetImportParameters requested are different than current active one (requested
   custom:DOTSType/UnityEditor.NavMeshObstacleInspector: e09ab8310b8a0334e09ab8310b8a0334 -> 
 ========================================================================
 Received Import Request.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '628f59b0d3457698e7cddc17b7d2715c') in 0.082358 seconds
-  Import took 0.095069 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000415 seconds.
-  path: Assets/HDRPDefaultResources/HDRenderPipelineAsset.asset
-  artifactKey: Guid(c6844185e312cf7409e703a685d7139e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/HDRenderPipelineAsset.asset using Guid(c6844185e312cf7409e703a685d7139e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '68e7264fe560bb00cf11486d97dcfeed') in 0.027203 seconds
-  Import took 0.041397 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 61.095094 seconds.
-  path: Assets/HDRP Stuff/NetworkVolumeProfile.asset
-  artifactKey: Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRP Stuff/NetworkVolumeProfile.asset using Guid(708afc43e45df9f49933b2ca9c540ca0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e7ced463831db1aae418dede018ab5fb') in 0.014240 seconds
-  Import took 0.025959 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 2.058057 seconds.
-  path: Assets/Materials/NodeMaterial.mat
-  artifactKey: Guid(a9aaa359ef8bd124290cae94b6bc9ad5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Materials/NodeMaterial.mat using Guid(a9aaa359ef8bd124290cae94b6bc9ad5) Importer(815301076,1909f56bfc062723c751e8b465ee728b) Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
+  path: Assets/HDRP Lens Flare/Materials/Flare_arc_white_01.mat
+  artifactKey: Guid(b645619360c70d0478b0eb4794a6788b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Lens Flare/Materials/Flare_arc_white_01.mat using Guid(b645619360c70d0478b0eb4794a6788b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
- -> (artifact id: 'a0eef23d2a0947d05dd3220c07cf7c44') in 2.042521 seconds
-  Import took 2.060750 seconds .
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
+ -> (artifact id: 'cd6cf8061993d05648513042afae595e') in 2.203038 seconds
+  Import took 2.439249 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 33.020557 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0aa77ad3ad04f9afa5228ae97c363b5b') in 0.007587 seconds
-  Import took 0.020638 seconds .
+  Time since last request: 0.000413 seconds.
+  path: Assets/HDRP Lens Flare/Materials/Flare2.mat
+  artifactKey: Guid(5c8e619bc1ecc1b4895c78267b22894e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Lens Flare/Materials/Flare2.mat using Guid(5c8e619bc1ecc1b4895c78267b22894e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '99a9d92fc1c775ac158617f6b6be02d9') in 0.066390 seconds
+  Import took 0.246943 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.070497 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0aa77ad3ad04f9afa5228ae97c363b5b') in 0.006647 seconds
-  Import took 0.019678 seconds .
+  Time since last request: 0.000402 seconds.
+  path: Assets/HDRP Lens Flare/Materials/Flare2b.mat
+  artifactKey: Guid(fd72469de895bfd4cbc90f2721c63aa2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Lens Flare/Materials/Flare2b.mat using Guid(fd72469de895bfd4cbc90f2721c63aa2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c08ca70a6149a0cca59c0b36866e5795') in 0.068377 seconds
+  Import took 0.115656 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 2.486528 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '35e55639e512a5a3667d78b99cfde947') in 0.007221 seconds
-  Import took 0.021328 seconds .
+  Time since last request: 0.000345 seconds.
+  path: Assets/HDRP Lens Flare/Materials
+  artifactKey: Guid(c83682d16a3f6bd458adec25ca66674d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Lens Flare/Materials using Guid(c83682d16a3f6bd458adec25ca66674d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e2a48301ec848093be5949d4c80f8d39') in 0.010571 seconds
+  Import took 0.025140 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 2.011396 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '47042246123c6b6c0d900f8d05d7d564') in 0.006478 seconds
-  Import took 0.018951 seconds .
+  Time since last request: 0.000342 seconds.
+  path: Assets/HDRP Lens Flare/Materials/Star1.mat
+  artifactKey: Guid(0d2cfd6f1b7e2874eb98d9485235fa67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Lens Flare/Materials/Star1.mat using Guid(0d2cfd6f1b7e2874eb98d9485235fa67) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7ab2014afe91556779e217b38a484038') in 0.060763 seconds
+  Import took 0.077267 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 8.302377 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9f35335e9fae39af472b1f3b992dd202') in 0.007654 seconds
-  Import took 0.020908 seconds .
+  Time since last request: 0.000290 seconds.
+  path: Assets/HDRP Lens Flare/Materials/Star2.mat
+  artifactKey: Guid(b70c7a64ae901db40a0f55dea40b4808) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Lens Flare/Materials/Star2.mat using Guid(b70c7a64ae901db40a0f55dea40b4808) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '205c95821bc15af1a3eb1442d4a425a5') in 0.060832 seconds
+  Import took 0.077605 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 2.225208 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b54eb9fb6eaa2e3c0f76c2462a391fc9') in 0.020451 seconds
-  Import took 0.040381 seconds .
+  Time since last request: 0.000330 seconds.
+  path: Assets/HDRP Lens Flare/Materials/Star3.mat
+  artifactKey: Guid(0ff22baf64df00a458e8a11093ecb078) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Lens Flare/Materials/Star3.mat using Guid(0ff22baf64df00a458e8a11093ecb078) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b129c3c54c949eced21ee8d6df163a97') in 0.059436 seconds
+  Import took 0.080457 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 2.592026 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'aa542831ffba985b07e00322d9e5b367') in 0.006196 seconds
-  Import took 0.019985 seconds .
+  Time since last request: 0.000308 seconds.
+  path: Assets/HDRP Lens Flare/Materials/Star4.mat
+  artifactKey: Guid(e5d6ce8810d43cd4fbb11b7749e5d4db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Lens Flare/Materials/Star4.mat using Guid(e5d6ce8810d43cd4fbb11b7749e5d4db) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'eae407fcc5e00fcf88d9b2ea6cb918ac') in 0.062483 seconds
+  Import took 0.111044 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 422.133896 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '22283a15f1090305e1513d4c03110830') in 0.006927 seconds
-  Import took 0.020719 seconds .
+  Time since last request: 0.000397 seconds.
+  path: Assets/HDRP Lens Flare/Materials/Flare0.mat
+  artifactKey: Guid(e9cf9ad03875c9c4a9d1e310a8f77043) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Lens Flare/Materials/Flare0.mat using Guid(e9cf9ad03875c9c4a9d1e310a8f77043) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c0053ba0e843dd59f4b85fc4beae54be') in 0.054698 seconds
+  Import took 0.100101 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.010167 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '22283a15f1090305e1513d4c03110830') in 0.007072 seconds
-  Import took 0.019201 seconds .
+  Time since last request: 0.000324 seconds.
+  path: Assets/HDRP Lens Flare/Materials/Flare1.mat
+  artifactKey: Guid(1035031f1816c9d4b9802683b374ac71) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Lens Flare/Materials/Flare1.mat using Guid(1035031f1816c9d4b9802683b374ac71) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0e44d1099b70151c2e9baaf9a9613849') in 0.060874 seconds
+  Import took 0.073432 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 92.675295 seconds.
-  path: Assets/Prefabs/Node.prefab
-  artifactKey: Guid(70549e732c38e9b4ea38873e27940219) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Node.prefab using Guid(70549e732c38e9b4ea38873e27940219) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '822d840b99a233eac3d5c76a332a9d3d') in 0.533191 seconds
-  Import took 0.545679 seconds .
+  Time since last request: 0.000298 seconds.
+  path: Assets/HDRP Lens Flare/Materials/Debug.mat
+  artifactKey: Guid(a2eb141d4f1dcba4c8b0bfd969060b41) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Lens Flare/Materials/Debug.mat using Guid(a2eb141d4f1dcba4c8b0bfd969060b41) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ced50802f624508f4e7026d4503bab2e') in 0.059623 seconds
+  Import took 0.084833 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 21.727898 seconds.
-  path: Assets/Materials/NodeShaderGraphUnlit.shadergraph
-  artifactKey: Guid(ce41a91941878f749a7328e1d302c049) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Materials/NodeShaderGraphUnlit.shadergraph using Guid(ce41a91941878f749a7328e1d302c049) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5577fe6a3b9b5abca8fb6e96725d538b') in 0.016569 seconds
-  Import took 0.029083 seconds .
+  Time since last request: 0.000583 seconds.
+  path: Assets/HDRP Lens Flare/Materials/Flare_round_white_01.mat
+  artifactKey: Guid(3c82e49c214160f499b3a2f790e8258c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Lens Flare/Materials/Flare_round_white_01.mat using Guid(3c82e49c214160f499b3a2f790e8258c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '07e389d8bbf6cdf58c2c73046f712a51') in 0.056354 seconds
+  Import took 0.072744 seconds .
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.001842 seconds.
-  path: Assets/Materials/NodeShaderGraphUnlit.shadergraph
-  artifactKey: Guid(ce41a91941878f749a7328e1d302c049) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Materials/NodeShaderGraphUnlit.shadergraph using Guid(ce41a91941878f749a7328e1d302c049) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5577fe6a3b9b5abca8fb6e96725d538b') in 0.215843 seconds
-  Import took 0.229727 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 59.128301 seconds.
-  path: Assets/Materials/NodeShaderGraphUnlit.shadergraph
-  artifactKey: Guid(ce41a91941878f749a7328e1d302c049) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Materials/NodeShaderGraphUnlit.shadergraph using Guid(ce41a91941878f749a7328e1d302c049) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c4e2e37c7d7ebcbfefc9825be9521713') in 0.008910 seconds
-  Import took 0.021533 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 30.400877 seconds.
-  path: Assets/Materials/NodeShaderGraph.shadergraph
-  artifactKey: Guid(eea2baba929054e4793cea5f8b65210f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Materials/NodeShaderGraph.shadergraph using Guid(eea2baba929054e4793cea5f8b65210f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0a34a1dad14e537956c85b3f08302163') in 0.012016 seconds
-  Import took 0.023816 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 30.377298 seconds.
-  path: Assets/Scripts/MonoBehaviours/NetworkSceneManager.cs
-  artifactKey: Guid(fe0725d31fc1d3746b0e515e0a731217) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/MonoBehaviours/NetworkSceneManager.cs using Guid(fe0725d31fc1d3746b0e515e0a731217) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd6fd6dcf088efe58ad89183ac0f67f24') in 0.064927 seconds
-  Import took 0.077649 seconds .
+  Time since last request: 0.000459 seconds.
+  path: Assets/HDRP Lens Flare/Materials/Flare_polygon_red_01.mat
+  artifactKey: Guid(4af52c05b528e4b4e9253d41faa946f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/HDRP Lens Flare/Materials/Flare_polygon_red_01.mat using Guid(4af52c05b528e4b4e9253d41faa946f1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'caee37c35f3a9b77519de741008d4d15') in 0.053294 seconds
+  Import took 0.068674 seconds .
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.022392 seconds.
+Registered in 0.028977 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 1.60 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 1.81 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-TypeManager.Initialize took: 333ms
+TypeManager.Initialize took: 372ms
 Mono: successfully reloaded assembly
-- Completed reload, in  3.622 seconds
+- Completed reload, in  3.840 seconds
 Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 1.50 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 2.03 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4974 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 236.6 MB.
-System memory in use after: 237.0 MB.
+Unloading 4972 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 238.7 MB.
+System memory in use after: 239.1 MB.
 
-Unloading 34 unused Assets to reduce memory usage. Loaded Objects now: 5861.
-Total: 8.316300 ms (FindLiveObjects: 1.090000 ms CreateObjectMapping: 0.350400 ms MarkObjects: 6.089300 ms  DeleteObjects: 0.784400 ms)
+Unloading 24 unused Assets to reduce memory usage. Loaded Objects now: 5864.
+Total: 9.695800 ms (FindLiveObjects: 1.034200 ms CreateObjectMapping: 0.353100 ms MarkObjects: 8.202900 ms  DeleteObjects: 0.103500 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:DOTSType/UnityEngine.EventSystems.EventSystem: 2c81b6c3f3277fcd2c81b6c3f3277fcd -> 
@@ -3643,17 +3596,10 @@ AssetImportParameters requested are different than current active one (requested
   custom:DOTSType/UnityEditor.NavMeshObstacleInspector: e09ab8310b8a0334e09ab8310b8a0334 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 71.782668 seconds.
-  path: Assets/Scripts/MonoBehaviours/NetworkSceneManager.cs
-  artifactKey: Guid(fe0725d31fc1d3746b0e515e0a731217) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Scripts/MonoBehaviours/NetworkSceneManager.cs using Guid(fe0725d31fc1d3746b0e515e0a731217) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'acbfd37bdf64754ccb229eabefbb0033') in 0.012609 seconds
-  Import took 0.024497 seconds .
+  Time since last request: 362.895781 seconds.
+  path: Assets/Prefabs/GlowObject.mat
+  artifactKey: Guid(42d519bc1c2623b45b73cfedfb6735d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Prefabs/GlowObject.mat using Guid(42d519bc1c2623b45b73cfedfb6735d0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f2677bd842a0dfe51e5f1d24f9ce12ea') in 0.842081 seconds
+  Import took 0.917166 seconds .
 
-========================================================================
-Received Import Request.
-  Time since last request: 99.473032 seconds.
-  path: Assets/Materials/NodeMaterial.mat
-  artifactKey: Guid(a9aaa359ef8bd124290cae94b6bc9ad5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Materials/NodeMaterial.mat using Guid(a9aaa359ef8bd124290cae94b6bc9ad5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd8990c3e47aac916814cdd3342f3fdd7') in 0.792185 seconds
-  Import took 0.806082 seconds .
-
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
