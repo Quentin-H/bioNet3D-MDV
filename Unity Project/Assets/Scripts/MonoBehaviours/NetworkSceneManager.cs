@@ -30,16 +30,17 @@ public class NetworkSceneManager : MonoBehaviour
     private BlobAssetStore blobAssetStore;
 
     private GameObject inputDataHolder;
-    //private bool edgesShowing = false;
-    //public Button showHideEdgesButton;
+    private bool edgesShowing = false;
+    public Button showHideEdgesButton;
     public Text edgeConversionProgressText;
     private int edgeConversionPercent;
     private int edgeConversionSteps;
-    //public LineRenderer lineRenderer;
+    public LineRenderer lineRenderer;
+    public GameObject top200Object;
 
     private IDictionary<FixedString32, Entity> sceneNodeEntities = new Dictionary<FixedString32, Entity>();
     //maybe add dictionary with keys as coordinates if we want a feature that finds the connected node
-    private List<NodeEdgePosition> edgeList = new List<NodeEdgePosition>();
+    //private List<NodeEdgePosition> edgeList = new List<NodeEdgePosition>();
     private Dictionary<Entity, List<NodeEdgePosition>> entitiesToEdges = new Dictionary<Entity, List<NodeEdgePosition>>();
 
 
@@ -112,6 +113,11 @@ public class NetworkSceneManager : MonoBehaviour
         if (fID == "" || fID == null)
         {
             return;
+        }
+
+        if (nRank <= 200)
+        {
+            Instantiate(top200Object, new Vector3(coord.x, coord.y, coord.z), Quaternion.identity);
         }
 
         Entity newNodeEntity = entityManager.Instantiate(nodeEntityPrefab);
@@ -207,7 +213,7 @@ public class NetworkSceneManager : MonoBehaviour
         Debug.Log("Done converting edges");
     }
 
-    /*public void showHideEdges()
+    public void showHideEdges()
     {
         Entity selectedEntity = NetworkCamera.selectedEntity;
 
@@ -217,10 +223,10 @@ public class NetworkSceneManager : MonoBehaviour
         {
             showHideEdgesButton.GetComponentInChildren<Text>().text = "Hide Edges";
 
-            foreach(NodeEdgePosition nodeEdgePos in edgeList)
+            foreach(NodeEdgePosition nodeEdgePos in entitiesToEdges[selectedEntity])
             {
                 //add coloring based on user provided color gradient of lines
-                if (nodeEdgePos.nodeAName == entityManager.GetComponentData<NodeData>(selectedEntity).nodeName ^ nodeEdgePos.nodeBName == entityManager.GetComponentData<NodeData>(selectedEntity).nodeName)
+                /*if (nodeEdgePos.nodeAName == entityManager.GetComponentData<NodeData>(selectedEntity).nodeName ^ nodeEdgePos.nodeBName == entityManager.GetComponentData<NodeData>(selectedEntity).nodeName)
                 {
                     Vector3[] points = new Vector3[2];
                     points[0] = new Vector3(nodeEdgePos.nodeACoords.x, nodeEdgePos.nodeACoords.y, nodeEdgePos.nodeACoords.z);
@@ -228,17 +234,22 @@ public class NetworkSceneManager : MonoBehaviour
                     Instantiate(lineRenderer, new Vector3(0, 0, 0), Quaternion.identity);
                     lineRenderer.SetPositions(points);
                     continue; // if this is true it cant be self connecting so we skip
-                }
+                }*/
                 //if the node connects to itself
-                if (nodeEdgePos.nodeAName == entityManager.GetComponentData<NodeData>(selectedEntity).nodeName && nodeEdgePos.nodeBName == entityManager.GetComponentData<NodeData>(selectedEntity).nodeName)
+                /*if (nodeEdgePos.nodeAName == entityManager.GetComponentData<NodeData>(selectedEntity).nodeName && nodeEdgePos.nodeBName == entityManager.GetComponentData<NodeData>(selectedEntity).nodeName)
                 {
                     
-                }
+                }*/
             }
         }
         if (!edgesShowing) // hide em
         {
             showHideEdgesButton.GetComponentInChildren<Text>().text = "Show Edges";
         } 
-    }*/
+    }
+
+    public void setViewAxis(int view)
+    {
+
+    }
 }

@@ -1,18 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+//using UnityEngine.rendering;
 
+[RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshRenderer))]
+[RequireComponent(typeof(Material))]
 public class Billboard : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public float scale = 1.0f;
+    private Camera camera;
+    private Vector3 initialScale; 
+
+    private void Awake() 
     {
-        
+        camera = Camera.main;
+        initialScale = transform.localScale; 
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        transform.LookAt(camera.transform);
+
+        Plane plane = new Plane(camera.transform.forward, camera.transform.position); 
+		float dist = plane.GetDistanceToPoint(transform.position); 
+		transform.localScale = initialScale * dist * scale; 
     }
 }
