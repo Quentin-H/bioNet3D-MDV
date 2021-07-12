@@ -261,29 +261,36 @@ public class NetworkSceneManager : MonoBehaviour
 
     public void setViewAxis(int view)
     {
-        if (view == 0) //x (830,290,535)
+        if (view == 0) { return; }
+        if (view == 1) //x 
         {
-            Camera.main.transform.position = new Vector3(830, 290, 535);
+            Camera.main.transform.position = new float3(1650, 290, 535);
+            Camera.main.transform.eulerAngles = new float3(0, -90, 0);
         }
-        if (view == 1) //y
+        if (view == 2) //y
         {
-            
+            Camera.main.transform.position = new float3(275, 1700, 100);
+            Camera.main.transform.eulerAngles = new float3(90, 0, 0);
         }
-        if (view == 2) //z
+        if (view == 3) //z
         {
-            
+            Camera.main.transform.position = new float3(430, 620, -990);
+            Camera.main.transform.eulerAngles = new float3(0, 0, 0);
         }
-        if (view == 3) //-x (-830,290,535) r = (0,90,0)
+        if (view == 4) //-x (-830,290,535) r = (0,90,0)
         {
-
+            Camera.main.transform.position = new float3(-830, 290, 535);
+            Camera.main.transform.eulerAngles = new float3(0, 90, 0);
         }
-        if (view == 4) //-y
+        if (view == 5) //-y
         {
-            
+            Camera.main.transform.position = new float3(500, -900, 600);
+            Camera.main.transform.eulerAngles = new float3(-90, 0, 0);
         }
-        if (view == 5) //-z
+        if (view == 6) //-z
         {
-            
+            Camera.main.transform.position = new float3(645, 175, 1650);
+            Camera.main.transform.eulerAngles = new float3(0, 180, 0);
         }
     }
 }

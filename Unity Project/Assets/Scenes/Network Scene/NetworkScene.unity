@@ -1017,7 +1017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -1053,6 +1053,8 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
+    - m_Text: 
+      m_Image: {fileID: 0}
     - m_Text: X
       m_Image: {fileID: 0}
     - m_Text: Y
@@ -2091,7 +2093,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: X
+  m_Text: 
 --- !u!222 &1256003503
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2964,8 +2966,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1956825214}
   - component: {fileID: 1956825213}
-  - component: {fileID: 1956825217}
-  - component: {fileID: 1956825212}
   - component: {fileID: 1956825215}
   - component: {fileID: 1956825216}
   m_Layer: 0
@@ -2975,14 +2975,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1956825212
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956825211}
-  m_Enabled: 0
 --- !u!20 &1956825213
 Camera:
   m_ObjectHideFlags: 0
@@ -3132,8 +3124,8 @@ MonoBehaviour:
     m_Bits: 1
   volumeAnchorOverride: {fileID: 0}
   antialiasing: 3
-  SMAAQuality: 2
-  dithering: 1
+  SMAAQuality: 0
+  dithering: 0
   stopNaNs: 0
   taaSharpenStrength: 0.5
   TAAQuality: 1
@@ -3179,14 +3171,6 @@ MonoBehaviour:
       data1: 0
       data2: 0
   defaultFrameSettings: 0
---- !u!124 &1956825217
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956825211}
-  m_Enabled: 1
 --- !u!1 &2026159216
 GameObject:
   m_ObjectHideFlags: 0
