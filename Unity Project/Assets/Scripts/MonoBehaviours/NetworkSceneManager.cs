@@ -19,6 +19,7 @@ public class NetworkSceneManager : MonoBehaviour
 
     public GameObject nodePrefab;
     public Gradient nodeValueGradient;
+    public Gradient edgeValueGradient;
     [ColorUsage(true, true)]
     public Color selectedGlowColor; // HDR
     //If set to low number ex. 10, creates beautiful patterns on layouts besides fr3d
@@ -40,7 +41,6 @@ public class NetworkSceneManager : MonoBehaviour
 
     private IDictionary<FixedString32, Entity> sceneNodeEntities = new Dictionary<FixedString32, Entity>();
     //maybe add dictionary with keys as coordinates if we want a feature that finds the connected node
-    //private List<NodeEdgePosition> edgeList = new List<NodeEdgePosition>();
     private Dictionary<Entity, List<NodeEdgePosition>> entitiesToEdges = new Dictionary<Entity, List<NodeEdgePosition>>();
     private List<GameObject> activeLines = new List<GameObject>();
 
@@ -237,8 +237,10 @@ public class NetworkSceneManager : MonoBehaviour
 
                     LineRenderer lr = line.GetComponent<LineRenderer>();
                     //lr.material = new UnityEngine.Material(Shader.Find("Particles/Alpha Blended Premultiply"));
-                    //lr.SetColors(color, color);
-                    lr.SetWidth(0.1f, 0.1f);
+                    Color evaluatedColor = edgeValueGradient.Evaluate((float)nodeEdgePos.weight);
+                    lr.startColor = evaluatedColor;
+                    lr.endColor = evaluatedColor;
+                    lr.SetWidth(0.25f, 0.25f);
                     Debug.Log(nodeEdgePos.nodeACoords);
                     lr.SetPosition(0, nodeEdgePos.nodeACoords);
                     Debug.Log(nodeEdgePos.nodeBCoords);
@@ -259,6 +261,29 @@ public class NetworkSceneManager : MonoBehaviour
 
     public void setViewAxis(int view)
     {
+        if (view == 0) //x (830,290,535)
+        {
+            Camera.main.transform.position = new Vector3(830, 290, 535);
+        }
+        if (view == 1) //y
+        {
+            
+        }
+        if (view == 2) //z
+        {
+            
+        }
+        if (view == 3) //-x (-830,290,535) r = (0,90,0)
+        {
 
+        }
+        if (view == 4) //-y
+        {
+            
+        }
+        if (view == 5) //-z
+        {
+            
+        }
     }
 }

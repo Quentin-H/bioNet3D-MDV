@@ -170,7 +170,6 @@ public class NetworkCamera : MonoBehaviour
         }
 
         selectedEntity = physicsWorld.Bodies[hit.RigidBodyIndex].Entity;
-        Debug.Log("hit");
         nodeSelected = true;
         
         nodeNameText.text = "Node Name: " + entityManager.GetComponentData<NodeData>(selectedEntity).displayName;
@@ -180,8 +179,6 @@ public class NetworkCamera : MonoBehaviour
         nodeDegreeText.text = "Degree: " + entityManager.GetComponentData<NodeData>(selectedEntity).degree;
 
         selectedNodeUI.SetActive(true);
-
-        Debug.Log(selectedEntity);
     }
 
     private void focusOnNode()

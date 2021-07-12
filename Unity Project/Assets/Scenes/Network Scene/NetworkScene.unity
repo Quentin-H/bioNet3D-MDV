@@ -914,6 +914,35 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  edgeValueGradient:
+    serializedVersion: 2
+    key0: {r: 0, g: 0.29019642, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 1, g: 1, b: 1, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
   selectedGlowColor: {r: 0, g: 421.64706, b: 1024, a: 0}
   positionMultiplier: 8
   showHideEdgesButton: {fileID: 828938461}
@@ -968,7 +997,7 @@ RectTransform:
   - {fileID: 1952222523}
   - {fileID: 1243823485}
   m_Father: {fileID: 2030246622}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -1039,9 +1068,9 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 728852452}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Dropdown, UnityEngine.UI
-        m_MethodName: set_value
+      - m_Target: {fileID: 684218366}
+        m_TargetAssemblyTypeName: NetworkSceneManager, Assembly-CSharp
+        m_MethodName: setViewAxis
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1200,12 +1229,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 819326624}
-  m_Father: {fileID: 1157408729}
-  m_RootOrder: 5
+  m_Father: {fileID: 2030246622}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -45, y: -174.9}
+  m_AnchoredPosition: {x: -314.99997, y: -192.28978}
   m_SizeDelta: {x: 140, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &828938461
@@ -1763,7 +1792,6 @@ RectTransform:
   - {fileID: 2070442559}
   - {fileID: 223081636}
   - {fileID: 1636541939}
-  - {fileID: 828938460}
   m_Father: {fileID: 2030246622}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3415,6 +3443,7 @@ RectTransform:
   - {fileID: 531001293}
   - {fileID: 2026159217}
   - {fileID: 1157408729}
+  - {fileID: 828938460}
   - {fileID: 728852451}
   m_Father: {fileID: 0}
   m_RootOrder: 3
