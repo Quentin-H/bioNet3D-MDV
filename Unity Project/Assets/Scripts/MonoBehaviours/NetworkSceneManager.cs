@@ -42,6 +42,8 @@ public class NetworkSceneManager : MonoBehaviour
     //maybe add dictionary with keys as coordinates if we want a feature that finds the connected node
     //private List<NodeEdgePosition> edgeList = new List<NodeEdgePosition>();
     private Dictionary<Entity, List<NodeEdgePosition>> entitiesToEdges = new Dictionary<Entity, List<NodeEdgePosition>>();
+    private List<GameObject> activeLines = new List<GameObject>();
+
 
 
     private void Start() 
@@ -176,14 +178,11 @@ public class NetworkSceneManager : MonoBehaviour
                 node1Coords = new float3(coord1.x,coord1.y, coord1.z);
 
                 node2Name = line.Split()[1];
-                coord2 =  entityManager.GetComponentData<LocalToWorld>(sceneNodeEntities[node1Name]).Value[3];
+                coord2 =  entityManager.GetComponentData<LocalToWorld>(sceneNodeEntities[node2Name]).Value[3];
                 node2Coords =  new float3(coord2.x,coord2.y, coord2.z);
 
                 edgeWeight = double.Parse(line.Split()[2]);
             } catch { }
-
-            //Debug.Log(node1Coords + "|" + node2Coords);
-            //edgeList.Add(newEdge);
 
             NodeEdgePosition newEdge1 = new NodeEdgePosition(new FixedString32(node1Name), node1Coords, new FixedString32(node2Name), node2Coords, edgeWeight);
             try
@@ -223,27 +222,37 @@ public class NetworkSceneManager : MonoBehaviour
         {
             showHideEdgesButton.GetComponentInChildren<Text>().text = "Hide Edges";
 
-            foreach(NodeEdgePosition nodeEdgePos in entitiesToEdges[selectedEntity])
+            try //if the degree is 0 then there will not be a key in the dictionary so it will throw an error, but that's fine, we don't need to do anything in that case
             {
-                //add coloring based on user provided color gradient of lines
-                /*if (nodeEdgePos.nodeAName == entityManager.GetComponentData<NodeData>(selectedEntity).nodeName ^ nodeEdgePos.nodeBName == entityManager.GetComponentData<NodeData>(selectedEntity).nodeName)
+                foreach(NodeEdgePosition nodeEdgePos in entitiesToEdges[selectedEntity])
                 {
-                    Vector3[] points = new Vector3[2];
-                    points[0] = new Vector3(nodeEdgePos.nodeACoords.x, nodeEdgePos.nodeACoords.y, nodeEdgePos.nodeACoords.z);
-                    points[1] = new Vector3(nodeEdgePos.nodeBCoords.x, nodeEdgePos.nodeBCoords.y, nodeEdgePos.nodeBCoords.z);
-                    Instantiate(lineRenderer, new Vector3(0, 0, 0), Quaternion.identity);
-                    lineRenderer.SetPositions(points);
-                    continue; // if this is true it cant be self connecting so we skip
-                }*/
-                //if the node connects to itself
-                /*if (nodeEdgePos.nodeAName == entityManager.GetComponentData<NodeData>(selectedEntity).nodeName && nodeEdgePos.nodeBName == entityManager.GetComponentData<NodeData>(selectedEntity).nodeName)
-                {
-                    
-                }*/
-            }
+                    //Debug.Log(entityManager.GetComponentData<NodeData>(selectedEntity).displayName);
+                    // test if it is a self connection and if it is , continuie and skip steps if it connects to another
+                    //if ()
+
+                    GameObject line = new GameObject();
+                    activeLines.Add(line);
+                    line.transform.position = nodeEdgePos.nodeACoords;
+                    line.AddComponent<LineRenderer>();
+
+                    LineRenderer lr = line.GetComponent<LineRenderer>();
+                    //lr.material = new UnityEngine.Material(Shader.Find("Particles/Alpha Blended Premultiply"));
+                    //lr.SetColors(color, color);
+                    lr.SetWidth(0.1f, 0.1f);
+                    Debug.Log(nodeEdgePos.nodeACoords);
+                    lr.SetPosition(0, nodeEdgePos.nodeACoords);
+                    Debug.Log(nodeEdgePos.nodeBCoords);
+                    lr.SetPosition(1, nodeEdgePos.nodeBCoords);
+                }
+            } catch { }
+            
         }
-        if (!edgesShowing) // hide em
+        if (!edgesShowing)
         {
+            foreach(GameObject cur in activeLines)
+            {
+                Destroy(cur);
+            }
             showHideEdgesButton.GetComponentInChildren<Text>().text = "Show Edges";
         } 
     }

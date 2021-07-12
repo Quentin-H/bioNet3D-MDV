@@ -916,7 +916,9 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   selectedGlowColor: {r: 0, g: 421.64706, b: 1024, a: 0}
   positionMultiplier: 8
+  showHideEdgesButton: {fileID: 828938461}
   edgeConversionProgressText: {fileID: 2026159218}
+  lineRenderer: {fileID: 0}
   top200Object: {fileID: 8138096982709289787, guid: 08884c52dea0e784a90715356828bd52, type: 3}
 --- !u!4 &684218367
 Transform:
@@ -1252,7 +1254,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 684218366}
         m_TargetAssemblyTypeName: NetworkSceneManager, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: showHideEdges
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
