@@ -20,8 +20,6 @@ public class NetworkSceneManager : MonoBehaviour
     public GameObject nodePrefab;
     public Gradient nodeValueGradient;
     public Gradient edgeValueGradient;
-    [ColorUsage(true, true)]
-    public Color selectedGlowColor; // HDR
     //If set to low number ex. 10, creates beautiful patterns on layouts besides fr3d
     // Figure out a way to automatically set this based on the layout so points aren't too close together
     public float positionMultiplier;
@@ -57,7 +55,7 @@ public class NetworkSceneManager : MonoBehaviour
 
         inputDataHolder = GameObject.Find("InputDataHolder");
 
-        positionMultiplier = inputDataHolder.GetComponent<DataHolder>().positionMultiplier;
+        try { positionMultiplier = inputDataHolder.GetComponent<DataHolder>().positionMultiplier; } catch { }
 
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         blobAssetStore = new BlobAssetStore();
@@ -78,7 +76,8 @@ public class NetworkSceneManager : MonoBehaviour
     {
         Debug.Log("started node conversion");
 
-        string[] rawLayoutInputLines = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile.Split('\n');
+        string[] rawLayoutInputLines = new string[0];
+        try { rawLayoutInputLines = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile.Split('\n'); } catch { }
 
         foreach(string line in rawLayoutInputLines) 
         {
@@ -138,7 +137,6 @@ public class NetworkSceneManager : MonoBehaviour
         var renderMesh = entityManager.GetSharedComponentData<RenderMesh>(newNodeEntity);
         var mat = new UnityEngine.Material(renderMesh.material);
         mat.SetColor("_Color", evaluatedColor);
-        //mat.SetColor("_GlowColor", selectedGlowColor);
         renderMesh.material = mat;
         entityManager.SetSharedComponentData(newNodeEntity, renderMesh);
 
@@ -154,7 +152,6 @@ public class NetworkSceneManager : MonoBehaviour
         sceneNodeEntities.Add(idAsFixed, newNodeEntity);
     }
 
-    //edge stuff
     IEnumerator ConvertRawInputEdges()
     {
         Debug.Log("Started edge conversion");
@@ -212,6 +209,10 @@ public class NetworkSceneManager : MonoBehaviour
         Debug.Log("Done converting edges");
     }
 
+    //  U      U    I
+    //  U      U    I
+    //  U      U    I
+    //   UUUUUU     I
     public void showHideEdges()
     {
         Entity selectedEntity = NetworkCamera.selectedEntity;
@@ -226,7 +227,6 @@ public class NetworkSceneManager : MonoBehaviour
             {
                 foreach(NodeEdgePosition nodeEdgePos in entitiesToEdges[selectedEntity])
                 {
-                    //Debug.Log(entityManager.GetComponentData<NodeData>(selectedEntity).displayName);
                     // test if it is a self connection and if it is , continuie and skip steps if it connects to another
                     //if ()
 
@@ -234,16 +234,12 @@ public class NetworkSceneManager : MonoBehaviour
                     activeLines.Add(line);
                     line.transform.position = nodeEdgePos.nodeACoords;
                     line.AddComponent<LineRenderer>();
-
                     LineRenderer lr = line.GetComponent<LineRenderer>();
-                    //lr.material = new UnityEngine.Material(Shader.Find("Particles/Alpha Blended Premultiply"));
                     Color evaluatedColor = edgeValueGradient.Evaluate((float)nodeEdgePos.weight);
-                    lr.startColor = evaluatedColor;
-                    lr.endColor = evaluatedColor;
+                    lr.material = new UnityEngine.Material(Shader.Find("Unlit/Color"));
+                    lr.GetComponent<Renderer>().material.color = evaluatedColor;
                     lr.SetWidth(0.25f, 0.25f);
-                    Debug.Log(nodeEdgePos.nodeACoords);
                     lr.SetPosition(0, nodeEdgePos.nodeACoords);
-                    Debug.Log(nodeEdgePos.nodeBCoords);
                     lr.SetPosition(1, nodeEdgePos.nodeBCoords);
                 }
             } catch { }
@@ -253,10 +249,37 @@ public class NetworkSceneManager : MonoBehaviour
         {
             foreach(GameObject cur in activeLines)
             {
+                
+                //Destroy(cur.GetComponent<Renderer>().material);   //Prevents a memory leak because we manually created the material when spawning the line (do we need this?)
                 Destroy(cur);
             }
             showHideEdgesButton.GetComponentInChildren<Text>().text = "Show Edges";
         } 
+    }
+
+    public void editNodeGradient() 
+    {
+        GradientPicker.Create(nodeValueGradient, "Choose Node Baseline Value Gradient...", SetColor, editNodeGradientFinished);
+    }
+
+    private void editNodeGradientFinished(Gradient finalGradient)
+    {
+
+    }
+
+    public void editEdgeGradient()
+    {
+        GradientPicker.Create(edgeValueGradient, "Choose Edge Weight Gradient...", SetColor, editEdgeGradientFinished);
+    }
+
+    public void editEdgeGradientFinished(Gradient finalGradient)
+    {
+
+    }
+
+    private void SetColor(Gradient currentGradient)
+    {
+
     }
 
     public void setViewAxis(int view)
