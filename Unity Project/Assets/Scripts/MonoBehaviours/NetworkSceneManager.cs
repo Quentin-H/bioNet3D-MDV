@@ -156,7 +156,9 @@ public class NetworkSceneManager : MonoBehaviour
     {
         Debug.Log("Started edge conversion");
 
-        string[] rawEdgeInputLines = inputDataHolder.GetComponent<DataHolder>().rawEdgeFile.Split('\n');
+        string[] rawEdgeInputLines = new string[0];
+
+        try { rawEdgeInputLines = inputDataHolder.GetComponent<DataHolder>().rawEdgeFile.Split('\n'); } catch { }
 
         foreach(string line in rawEdgeInputLines)  // convert this to parralel for job
         {
@@ -264,7 +266,8 @@ public class NetworkSceneManager : MonoBehaviour
 
     private void editNodeGradientFinished(Gradient finalGradient)
     {
-
+        nodeValueGradient = finalGradient;
+        // add something that respawns the nodes, or figure out a way to use material overrides and have it reference the gradient and send all nodes a message to update their color to the gradient reference
     }
 
     public void editEdgeGradient()
@@ -274,13 +277,10 @@ public class NetworkSceneManager : MonoBehaviour
 
     public void editEdgeGradientFinished(Gradient finalGradient)
     {
-
+        edgeValueGradient = finalGradient;
     }
 
-    private void SetColor(Gradient currentGradient)
-    {
-
-    }
+    private void SetColor(Gradient currentGradient) { }
 
     public void setViewAxis(int view)
     {
