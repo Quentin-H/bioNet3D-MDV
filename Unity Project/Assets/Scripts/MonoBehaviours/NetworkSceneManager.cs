@@ -237,7 +237,7 @@ public class NetworkSceneManager : MonoBehaviour
                     line.transform.position = nodeEdgePos.nodeACoords;
                     line.AddComponent<LineRenderer>();
                     LineRenderer lr = line.GetComponent<LineRenderer>();
-                    Color evaluatedColor = edgeValueGradient.Evaluate((float)nodeEdgePos.weight);
+                    Color evaluatedColor = edgeValueGradient.Evaluate((float)nodeEdgePos.weight * 10000);
                     lr.material = new UnityEngine.Material(Shader.Find("Unlit/Color"));
                     lr.GetComponent<Renderer>().material.color = evaluatedColor;
                     lr.SetWidth(0.25f, 0.25f);
