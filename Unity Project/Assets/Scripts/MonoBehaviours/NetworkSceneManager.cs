@@ -34,7 +34,6 @@ public class NetworkSceneManager : MonoBehaviour
     public Text edgeConversionProgressText;
     private int edgeConversionPercent;
     private int edgeConversionSteps;
-    public LineRenderer lineRenderer;
     public GameObject top200Object;
 
     private IDictionary<FixedString32, Entity> sceneNodeEntities = new Dictionary<FixedString32, Entity>();
@@ -238,7 +237,8 @@ public class NetworkSceneManager : MonoBehaviour
                     line.AddComponent<LineRenderer>();
                     LineRenderer lr = line.GetComponent<LineRenderer>();
                     Color evaluatedColor = edgeValueGradient.Evaluate((float)nodeEdgePos.weight * 10000);
-                    lr.material = new UnityEngine.Material(Shader.Find("Unlit/Color"));
+                    lr.material = new UnityEngine.Material(Shader.Find("HDRP/Unlit"));
+                    //evaluatedColor.a = 1; // overrides any user inputted alpha value
                     lr.GetComponent<Renderer>().material.color = evaluatedColor;
                     lr.SetWidth(0.25f, 0.25f);
                     lr.SetPosition(0, nodeEdgePos.nodeACoords);
