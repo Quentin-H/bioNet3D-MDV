@@ -2,9 +2,13 @@
 KnowENG Massive Dataset Visualizer Component
 
 Notes:
+
 - Typically I use float3 rather than vector3 because in newer versions of Unity 
 anything that takes vector3 as an argument also accepts float3 and float3 does
 not have many methods and therefore has a smaller overhead.
+
+- A lot of times I use entities and nodes interchangeably. Nodes in the network are
+represented as cubes, these are entities. All nodes are entities but not all entities are nodes.
 
 
 using https://github.com/yasirkula/UnitySimpleFileBrowser

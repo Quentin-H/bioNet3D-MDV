@@ -159,15 +159,11 @@ public class NetworkCamera : MonoBehaviour
         return p_Velocity;
     }
 
-    public void setSelectedNode(Entity toSet) 
-    {
-        selectedEntity = toSet;
-    }
-
     private void selectNode()
     {
-        if (cam == null || !Input.GetMouseButtonDown(0) || EventSystem.current.IsPointerOverGameObject()) return;
+        if (cam == null || !Input.GetMouseButtonDown(0) || EventSystem.current.IsPointerOverGameObject()) return; // Sanity checks and checking if the mouse is over a UI element
 
+        // sends a raycast through the scene
         var position = Input.mousePosition;
         var screenPointToRay = cam.ScreenPointToRay(position);
         var rayInput = new RaycastInput
@@ -177,13 +173,15 @@ public class NetworkCamera : MonoBehaviour
             Filter = CollisionFilter.Default
         };
 
-        if (!physicsWorld.CastRay(rayInput, out RaycastHit hit) && !EventSystem.current.IsPointerOverGameObject()) 
+        // if nothing is hit, nothing is selected, this also effectively deselects a selected entity if one was selected before
+        if (!physicsWorld.CastRay(rayInput, out RaycastHit hit) && !EventSystem.current.IsPointerOverGameObject())
         {
             nodeSelected = false;
             selectedNodeUI.SetActive(false);
             return;
         }
 
+        // below is what happens if a entity/node is hit
         selectedEntity = physicsWorld.Bodies[hit.RigidBodyIndex].Entity;
         nodeSelected = true;
         
@@ -193,7 +191,7 @@ public class NetworkCamera : MonoBehaviour
         nodeBaselineScore.text = "Baseline Value: " + entityManager.GetComponentData<NodeData>(selectedEntity).baselineScore;
         nodeDegreeText.text = "Degree: " + entityManager.GetComponentData<NodeData>(selectedEntity).degree;
 
-        selectedNodeUI.SetActive(true);
+        selectedNodeUI.SetActive(true); // displays the node ui panel
     }
 
     public void focusOnNode()
