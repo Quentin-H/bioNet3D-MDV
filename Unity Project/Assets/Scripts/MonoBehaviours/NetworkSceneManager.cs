@@ -1,15 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
-using UnityEngine.UI;
 using Unity.Transforms;
-using UnityEngine.UI;
 using Unity.Rendering;
 using Unity.Collections;
-using System;
 using NodeViz;
 
 public class NetworkSceneManager : MonoBehaviour
@@ -241,10 +240,12 @@ public class NetworkSceneManager : MonoBehaviour
                     line.transform.position = nodeEdgePos.nodeACoords;
                     line.AddComponent<LineRenderer>();
                     LineRenderer lr = line.GetComponent<LineRenderer>();
-                    Color evaluatedColor = edgeValueGradient.Evaluate((float)nodeEdgePos.weight * 100000); // multiply by 100000, bc the edge weight numbers are too small to make a significant difference on the gradient
+                    Color evaluatedColor = edgeValueGradient.Evaluate((float)nodeEdgePos.weight * 10000); // multiply by 100000, bc the edge weight numbers are too small to make a significant difference on the gradient
                     lr.material = new UnityEngine.Material(Shader.Find("HDRP/Unlit")); // add shader that supports transparency
                     lr.GetComponent<Renderer>().material.color = evaluatedColor;
-                    lr.SetWidth(0.25f, 0.25f);
+                    //lr.SetWidth(0.25f, 0.25f);
+                    lr.startWidth = 0.25f;
+                    lr.endWidth = 0.25f;
                     lr.SetPosition(0, nodeEdgePos.nodeACoords);
                     lr.SetPosition(1, nodeEdgePos.nodeBCoords);
                 }
@@ -285,39 +286,4 @@ public class NetworkSceneManager : MonoBehaviour
     }
 
     private void SetColor(Gradient currentGradient) { }
-
-    public void setViewAxis(int view)
-    {
-        if (view == 0) { return; }
-        if (view == 1) //x 
-        {
-            Camera.main.transform.position = new float3(1650, 290, 535);
-            Camera.main.transform.eulerAngles = new float3(0, -90, 0);
-        }
-        if (view == 2) //y
-        {
-            Camera.main.transform.position = new float3(275, 1700, 100);
-            Camera.main.transform.eulerAngles = new float3(90, 0, 0);
-        }
-        if (view == 3) //z
-        {
-            Camera.main.transform.position = new float3(430, 620, -990);
-            Camera.main.transform.eulerAngles = new float3(0, 0, 0);
-        }
-        if (view == 4) //-x (-830,290,535) r = (0,90,0)
-        {
-            Camera.main.transform.position = new float3(-830, 290, 535);
-            Camera.main.transform.eulerAngles = new float3(0, 90, 0);
-        }
-        if (view == 5) //-y
-        {
-            Camera.main.transform.position = new float3(500, -900, 600);
-            Camera.main.transform.eulerAngles = new float3(-90, 0, 0);
-        }
-        if (view == 6) //-z
-        {
-            Camera.main.transform.position = new float3(645, 175, 1650);
-            Camera.main.transform.eulerAngles = new float3(0, 180, 0);
-        }
-    }
 }

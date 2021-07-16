@@ -1,6 +1,11 @@
 # bioNet3D-MDV
 KnowENG Massive Dataset Visualizer Component
 
+Notes:
+- Typically I use float3 rather than vector3 because in newer versions of Unity 
+anything that takes vector3 as an argument also accepts float3 and float3 does
+not have many methods and therefore has a smaller overhead.
+
 
 using https://github.com/yasirkula/UnitySimpleFileBrowser
 

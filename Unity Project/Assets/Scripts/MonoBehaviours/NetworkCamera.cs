@@ -1,5 +1,7 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using Unity.Physics;
 using Unity.Physics.Systems;
 using Unity.Entities;
@@ -8,20 +10,20 @@ using Unity.Rendering;
 using Unity.Transforms;
 using Unity.Mathematics;
 using Unity.Collections;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using NodeViz; // not necessary
 
 public class NetworkCamera : MonoBehaviour
 {
     public static NetworkSceneManager networkSceneManager;
-    
-    //Node Click Variables
+    //
+    [HideInInspector]
     [SerializeField]
-    Camera Cam = default;
-    const float RAYCAST_DISTANCE = 1000;
+    private Camera cam;
+    //Node Click Variables
+    const float RAYCAST_DISTANCE = 10000;
     PhysicsWorld physicsWorld => World.DefaultGameObjectInjectionWorld.GetExistingSystem<BuildPhysicsWorld>().PhysicsWorld;
     EntityManager entityManager => World.DefaultGameObjectInjectionWorld.EntityManager;
+    [HideInInspector]
     public static Entity selectedEntity;
     public GameObject selectedNodeUI;
     public Text nodeNameText;
@@ -29,7 +31,11 @@ public class NetworkCamera : MonoBehaviour
     public Text nodeNetworkRank;
     public Text nodeBaselineScore;
     public Text nodeDegreeText;
+    [HideInInspector]
     public bool nodeSelected;
+    //
+    public Dropdown viewAxisDropdown;
+    
 
     // Fly Cam Variables
     public float mainSpeed = 10.0f;   // Default speed
@@ -43,6 +49,10 @@ public class NetworkCamera : MonoBehaviour
     private bool cameraLocked = false;
     private bool cursorLocked = false;
 
+    private void Start() 
+    {
+        cam = Camera.main;
+    }
 
     private void Update()
     {
@@ -97,7 +107,6 @@ public class NetworkCamera : MonoBehaviour
         lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);
         transform.eulerAngles = lastMouse;
         lastMouse = Input.mousePosition;
-        //
 
         Vector3 p = GetBaseInput();
         if (Input.GetKey(KeyCode.LeftShift))
@@ -151,10 +160,10 @@ public class NetworkCamera : MonoBehaviour
 
     private void selectNode()
     {
-        if (Cam == null || !Input.GetMouseButtonDown(0) || EventSystem.current.IsPointerOverGameObject()) return;
+        if (cam == null || !Input.GetMouseButtonDown(0) || EventSystem.current.IsPointerOverGameObject()) return;
 
         var position = Input.mousePosition;
-        var screenPointToRay = Cam.ScreenPointToRay(position);
+        var screenPointToRay = cam.ScreenPointToRay(position);
         var rayInput = new RaycastInput
         {
             Start = screenPointToRay.origin,
@@ -187,7 +196,44 @@ public class NetworkCamera : MonoBehaviour
         {
             //When you get a position of an entity it returns a 4 dimensional coordinate, I don't know why
             float4 entityPos = entityManager.GetComponentData<LocalToWorld>(selectedEntity).Value[3];
-            Camera.main.transform.SetPositionAndRotation(new float3(entityPos.x, entityPos.y, entityPos.z - 15), new Quaternion(0, 0, 0, 0));
+            cam.transform.SetPositionAndRotation(new float3(entityPos.x, entityPos.y, entityPos.z - 15), new Quaternion(0, 0, 0, 0));
         }
+    }
+
+    public void setViewAxis(int view)
+    {
+        if (view == 0) { return; }
+        if (view == 1) //x 
+        {
+            cam.transform.position = new float3(1650, 290, 535);
+            cam.transform.eulerAngles = new float3(0, -90, 0);
+        }
+        if (view == 2) //y
+        {
+            cam.transform.position = new float3(275, 1700, 100);
+            cam.transform.eulerAngles = new float3(90, 0, 0);
+        }
+        if (view == 3) //z
+        {
+            cam.transform.position = new float3(430, 620, -990);
+            cam.transform.eulerAngles = new float3(0, 0, 0);
+        }
+        if (view == 4) //-x (-830,290,535) r = (0,90,0)
+        {
+            cam.transform.position = new float3(-830, 290, 535);
+            cam.transform.eulerAngles = new float3(0, 90, 0);
+        }
+        if (view == 5) //-y
+        {
+            cam.transform.position = new float3(500, -900, 600);
+            cam.transform.eulerAngles = new float3(-90, 0, 0);
+        }
+        if (view == 6) //-z
+        {
+            cam.transform.position = new float3(645, 175, 1650);
+            cam.transform.eulerAngles = new float3(0, 180, 0);
+        }
+        // set back to blank
+        viewAxisDropdown.value = 0;
     }
 }
