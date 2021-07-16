@@ -14,7 +14,7 @@ using NodeViz; // not necessary
 
 public class NetworkCamera : MonoBehaviour
 {
-    public static NetworkSceneManager networkSceneManager;
+    //public NetworkSceneManager networkSceneManager;
     //
     [HideInInspector]
     [SerializeField]
@@ -24,7 +24,7 @@ public class NetworkCamera : MonoBehaviour
     PhysicsWorld physicsWorld => World.DefaultGameObjectInjectionWorld.GetExistingSystem<BuildPhysicsWorld>().PhysicsWorld;
     EntityManager entityManager => World.DefaultGameObjectInjectionWorld.EntityManager;
     [HideInInspector]
-    public static Entity selectedEntity;
+    public Entity selectedEntity;
     public GameObject selectedNodeUI;
     public Text nodeNameText;
     public Text nodeDescriptionText;
@@ -49,6 +49,8 @@ public class NetworkCamera : MonoBehaviour
     private bool cameraLocked = false;
     private bool cursorLocked = false;
 
+
+
     private void Start() 
     {
         cam = Camera.main;
@@ -70,7 +72,6 @@ public class NetworkCamera : MonoBehaviour
 
         locking();
     }
-
 
     private void locking()
     {
@@ -156,6 +157,11 @@ public class NetworkCamera : MonoBehaviour
             p_Velocity += new Vector3(0, -1, 0);
 
         return p_Velocity;
+    }
+
+    public void setSelectedNode(Entity toSet) 
+    {
+        selectedEntity = toSet;
     }
 
     private void selectNode()

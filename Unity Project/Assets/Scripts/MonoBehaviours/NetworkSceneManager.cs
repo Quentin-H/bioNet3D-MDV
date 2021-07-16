@@ -13,8 +13,9 @@ using NodeViz;
 
 public class NetworkSceneManager : MonoBehaviour
 {
+    [HideInInspector]
     public static NetworkSceneManager instance;
-    public static NetworkCamera networkCamera;
+    public NetworkCamera networkCamera;
 
     public GameObject nodePrefab;
     public Gradient nodeValueGradient;
@@ -35,7 +36,8 @@ public class NetworkSceneManager : MonoBehaviour
     private int edgeConversionSteps;
     public GameObject top200Object;
 
-    private IDictionary<FixedString32, Entity> sceneNodeEntities = new Dictionary<FixedString32, Entity>();
+    private IDictionary<FixedString32, Entity> sceneNodeEntities = new Dictionary<FixedString32, Entity>(); // This is for use internally liek creating edges, since internally genes are identified by feature IDs
+    private IDictionary<String, Entity> sceneNodeEntitiesMappedToNames = new Dictionary<String, Entity>(); // This is for use with searching for nodes since the user would use names
     //maybe add dictionary with keys as coordinates if we want a feature that finds the connected node
     private Dictionary<Entity, List<NodeEdgePosition>> entitiesToEdges = new Dictionary<Entity, List<NodeEdgePosition>>();
     private List<GameObject> activeLines = new List<GameObject>();
@@ -154,6 +156,8 @@ public class NetworkSceneManager : MonoBehaviour
 
         FixedString32 idAsFixed = fID;
         sceneNodeEntities.Add(idAsFixed, newNodeEntity);
+
+        sceneNodeEntitiesMappedToNames.Add(dName, newNodeEntity);
     }
 
     IEnumerator ConvertRawInputEdges()
@@ -221,7 +225,7 @@ public class NetworkSceneManager : MonoBehaviour
     //   UUUUUU     I
     public void showHideEdges()
     {
-        Entity selectedEntity = NetworkCamera.selectedEntity;
+        Entity selectedEntity =  networkCamera.selectedEntity;
 
         edgesShowing = !edgesShowing;
 
@@ -264,6 +268,17 @@ public class NetworkSceneManager : MonoBehaviour
         } 
     }
 
+    public void searchForNode(string query)
+    {        
+        try 
+        {
+            networkCamera.selectedEntity = sceneNodeEntitiesMappedToNames[query];
+            networkCamera.nodeSelected = true;
+            networkCamera.focusOnNode();
+        } catch { Debug.Log("Node in query not found"); }
+    }
+
+    // Gradient Editing stuff
     public void editNodeGradient() 
     {
         GradientPicker.Create(nodeValueGradient, "Choose Node Baseline Value Gradient...", SetColor, editNodeGradientFinished);
@@ -286,4 +301,6 @@ public class NetworkSceneManager : MonoBehaviour
     }
 
     private void SetColor(Gradient currentGradient) { }
+    //--------------------------------------------------
+
 }
