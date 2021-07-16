@@ -21,8 +21,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: NodeMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: eea2baba929054e4793cea5f8b65210f, type: 3}
-  m_ShaderKeywords: _DISABLE_DECALS _DISABLE_SSR_TRANSPARENT
+  m_Shader: {fileID: -6465566751694194690, guid: ce41a91941878f749a7328e1d302c049, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -123,10 +123,10 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _StencilRef: 0
-    - _StencilRefDepth: 8
+    - _StencilRefDepth: 0
     - _StencilRefDistortionVec: 4
-    - _StencilRefGBuffer: 10
-    - _StencilRefMV: 40
+    - _StencilRefGBuffer: 2
+    - _StencilRefMV: 32
     - _StencilWriteMask: 6
     - _StencilWriteMaskDepth: 8
     - _StencilWriteMaskDistortionVec: 4
@@ -148,7 +148,7 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - Color_0cf5d4baada64b5292bbd96127cae4d8: {r: 0, g: 0, b: 0, a: 0}
+    - Color_0cf5d4baada64b5292bbd96127cae4d8: {r: 1, g: 1, b: 1, a: 0}
     - Color_3806184c5c2e4577a4a3458d162e8599: {r: 0, g: 1.505882, b: 11.16863, a: 0}
     - Color_67f2e26a80c1423dbca729dfdfd65cfa: {r: 0.51432323, g: 0, b: 1, a: 0}
     - _Color: {r: 0.035333157, g: 0, b: 0.5, a: 1}

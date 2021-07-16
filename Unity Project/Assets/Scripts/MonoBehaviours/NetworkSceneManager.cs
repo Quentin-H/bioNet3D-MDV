@@ -131,11 +131,17 @@ public class NetworkSceneManager : MonoBehaviour
 
         Color evaluatedColor = nodeValueGradient.Evaluate( (float) blineScore);
         float4 colorF = new float4(evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a);
-        //MaterialColor mcc = new MaterialColor { Value = colorF };
-        //entityManager.AddComponentData<MaterialColor>(newNodeEntity, mcc);
+        
+        /* This code is for converting the system to use material overrides rather than creating a new material for each node. 
+        This should increase performance by a massive amount (probably increase fps 5-10 fold) and it is the correct "ECS" way of doing things, 
+        however I could not get it working.
+
+        MaterialColor mcc = new MaterialColor { Value = colorF };
+        entityManager.AddComponentData<MaterialColor>(newNodeEntity, mcc); */
+
         var renderMesh = entityManager.GetSharedComponentData<RenderMesh>(newNodeEntity);
         var mat = new UnityEngine.Material(renderMesh.material);
-        mat.SetColor("_Color", evaluatedColor);
+        mat.SetColor("_UnlitColor", evaluatedColor);
         renderMesh.material = mat;
         entityManager.SetSharedComponentData(newNodeEntity, renderMesh);
 
@@ -228,28 +234,26 @@ public class NetworkSceneManager : MonoBehaviour
             {
                 foreach(NodeEdgePosition nodeEdgePos in entitiesToEdges[selectedEntity])
                 {
-                    // test if it is a self connection and if it is , continuie and skip steps if it connects to another
-                    //if ()
+                    // Charles says not to worry about self connections. However, they still add 2 degrees to nodes so this needs to be fixed
 
                     GameObject line = new GameObject();
                     activeLines.Add(line);
                     line.transform.position = nodeEdgePos.nodeACoords;
                     line.AddComponent<LineRenderer>();
                     LineRenderer lr = line.GetComponent<LineRenderer>();
-                    Color evaluatedColor = edgeValueGradient.Evaluate((float)nodeEdgePos.weight * 10000);
-                    lr.material = new UnityEngine.Material(Shader.Find("HDRP/Unlit"));
-                    //evaluatedColor.a = 1; // overrides any user inputted alpha value
+                    Color evaluatedColor = edgeValueGradient.Evaluate((float)nodeEdgePos.weight * 100000); // multiply by 100000, bc the edge weight numbers are too small to make a significant difference on the gradient
+                    lr.material = new UnityEngine.Material(Shader.Find("HDRP/Unlit")); // add shader that supports transparency
                     lr.GetComponent<Renderer>().material.color = evaluatedColor;
                     lr.SetWidth(0.25f, 0.25f);
                     lr.SetPosition(0, nodeEdgePos.nodeACoords);
                     lr.SetPosition(1, nodeEdgePos.nodeBCoords);
                 }
-            } catch { }
+            } catch { } 
             
         }
-        if (!edgesShowing)
+        if (!edgesShowing) 
         {
-            foreach(GameObject cur in activeLines)
+            foreach(GameObject cur in activeLines) 
             {
                 
                 //Destroy(cur.GetComponent<Renderer>().material);   //Prevents a memory leak because we manually created the material when spawning the line (do we need this?)

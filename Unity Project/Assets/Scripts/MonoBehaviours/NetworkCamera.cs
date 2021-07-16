@@ -28,7 +28,7 @@ public class NetworkCamera : MonoBehaviour
     public Text nodeNetworkRank;
     public Text nodeBaselineScore;
     public Text nodeDegreeText;
-    private bool nodeSelected;
+    public bool nodeSelected;
 
     // Fly Cam Variables
     public float mainSpeed = 10.0f;   // Default speed
