@@ -50,18 +50,17 @@ public class NetworkCamera : MonoBehaviour
         {
             moveCamera();
         }
-    }
 
-    private void LateUpdate()
-    {
         selectNode();
 
         if (Input.GetKeyDown(KeyCode.F))
         {
             focusOnNode();
         }
-       locking();
+
+        locking();
     }
+
 
     private void locking()
     {
@@ -182,19 +181,13 @@ public class NetworkCamera : MonoBehaviour
         selectedNodeUI.SetActive(true);
     }
 
-    private void focusOnNode()
+    public void focusOnNode()
     {
-        // move camera to the node with an ofset, angle the camera properly, check if colliding with node, if so keep moving the camera until no longer colliding
-        /*
-        Translation translation = new Translation()
+        if (nodeSelected == true)
         {
-            entityManager.GetComponentData<Translation>(selectedEntity)        
-        };
-        */
-
-        //When you get a position of an entity it returns a 4 dimensional coordinate, I don't know why
-        float4 entityPos = entityManager.GetComponentData<LocalToWorld>(selectedEntity).Value[3];
-
-        Camera.main.transform.SetPositionAndRotation(new float3(entityPos.x, entityPos.y, entityPos.z - 15), new Quaternion(0, 0, 0, 0));
+            //When you get a position of an entity it returns a 4 dimensional coordinate, I don't know why
+            float4 entityPos = entityManager.GetComponentData<LocalToWorld>(selectedEntity).Value[3];
+            Camera.main.transform.SetPositionAndRotation(new float3(entityPos.x, entityPos.y, entityPos.z - 15), new Quaternion(0, 0, 0, 0));
+        }
     }
 }
