@@ -1069,3 +1069,23 @@ C# parse time         : 351ms
 candidates check time : 74ms
 console write time    : 0ms
 
+[api-updater (non-obsolete-error-filter)] 7/16/2021 12:00:17 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 978.4957ms
+moved types parse time: 89ms
+candidates parse time : 2ms
+C# parse time         : 1456ms
+candidates check time : 74ms
+console write time    : 18ms
+
+[api-updater (non-obsolete-error-filter)] 7/16/2021 12:10:09 PM : Starting E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Tools/ScriptUpdater/APIUpdater.NonObsoleteApiUpdaterDetector.exe
+[api-updater (non-obsolete-error-filter)] 
+----------------------------------
+jit/startup time      : 181.1576ms
+moved types parse time: 90ms
+candidates parse time : 2ms
+C# parse time         : 343ms
+candidates check time : 76ms
+console write time    : 0ms
+

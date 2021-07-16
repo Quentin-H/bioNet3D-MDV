@@ -191,5 +191,10 @@ public class NetworkCamera : MonoBehaviour
             entityManager.GetComponentData<Translation>(selectedEntity)        
         };
         */
+
+        //When you get a position of an entity it returns a 4 dimensional coordinate, I don't know why
+        float4 entityPos = entityManager.GetComponentData<LocalToWorld>(selectedEntity).Value[3];
+
+        Camera.main.transform.SetPositionAndRotation(new float3(entityPos.x, entityPos.y, entityPos.z - 15), new Quaternion(0, 0, 0, 0));
     }
 }
