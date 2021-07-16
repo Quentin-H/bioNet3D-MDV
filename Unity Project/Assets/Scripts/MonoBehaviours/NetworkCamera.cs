@@ -10,6 +10,7 @@ using Unity.Mathematics;
 using Unity.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using NodeViz; // not necessary
 
 public class NetworkCamera : MonoBehaviour
 {

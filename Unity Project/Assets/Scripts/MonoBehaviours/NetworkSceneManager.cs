@@ -20,7 +20,7 @@ public class NetworkSceneManager : MonoBehaviour
     public GameObject nodePrefab;
     public Gradient nodeValueGradient;
     public Gradient edgeValueGradient;
-    //If set to low number ex. 10, creates beautiful patterns on layouts besides fr3d
+    // If set to low number ex. 10, creates beautiful patterns on layouts besides fr3d
     // Figure out a way to automatically set this based on the layout so points aren't too close together
     public float positionMultiplier;
     private Entity nodeEntityPrefab;
