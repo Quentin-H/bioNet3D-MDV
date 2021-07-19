@@ -63,8 +63,7 @@ public class NetworkSceneManager : MonoBehaviour
         nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(nodePrefab, settings);
         
         ConvertRawInputNodes(); // this has to complete before convert raw input edges
-        //StartCoroutine(ConvertRawInputEdges());
-        ConvertRawInputEdges();
+        StartCoroutine(ConvertRawInputEdges());
     }
 
     private void OnDestroy() 
@@ -80,7 +79,6 @@ public class NetworkSceneManager : MonoBehaviour
         string[] rawLayoutInputLines = new string[0];
         try { rawLayoutInputLines = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile.Split('\n'); } catch { }
 
-        int i = 1;
         foreach(string line in rawLayoutInputLines) 
         {
             string fID = "";
@@ -91,24 +89,22 @@ public class NetworkSceneManager : MonoBehaviour
             double blineScore = 0;
             int deg = 0;
 
-            try { fID = line.Split('|')[0]; } catch { Debug.Log("Error parsing ID at line " + i); }
-                
-            try 
+            try
             {
+                fID = line.Split('|')[0];
+                
                 coord.x = float.Parse(line.Split('[')[1].Split(',')[0].Trim()) * positionMultiplier;
                 coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim()) * positionMultiplier;
                 coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim()) * positionMultiplier;
-            } catch { Debug.Log("Error parsing coordinates at line " + i ); }
 
-            try { dName = line.Split('|')[2]; } catch { Debug.Log( "Error parsing name at line " + i ); }
-            try { desc = line.Split('|')[3]; } catch { Debug.Log( "Error parsing description at line " + i ); }
-            try { nRank = int.Parse(line.Split('|')[4].Trim()); } catch { Debug.Log( "Error parsing network rank at line " + i ); }
-            try { blineScore = double.Parse(line.Split('|')[5].Trim()); } catch { Debug.Log( "Error parsing baseline score at line " + i ); }
-            try { deg = int.Parse(line.Split('|')[6].Trim()); } catch { Debug.Log( "Error parsing degree at line " + i ); }
+                dName = line.Split('|')[2];
+                desc = line.Split('|')[3];
+                nRank = int.Parse(line.Split('|')[4].Trim());
+                blineScore = double.Parse(line.Split('|')[5].Trim());
+                deg = int.Parse(line.Split('|')[6].Trim());
 
-            SpawnNode(fID, coord, dName, desc, nRank, blineScore, deg);
-
-            i++;
+                SpawnNode(fID, coord, dName, desc, nRank, blineScore, deg);
+            } catch { Debug.Log("Error parsing a node from file."); }
         }
         Debug.Log("Done Spawning");
     }
@@ -164,8 +160,7 @@ public class NetworkSceneManager : MonoBehaviour
         sceneNodeEntitiesMappedToNames.Add(dName, newNodeEntity);
     }
 
-    //IEnumerator ConvertRawInputEdges()
-    private void ConvertRawInputEdges()
+    IEnumerator ConvertRawInputEdges()
     {
         Debug.Log("Started edge conversion");
 
@@ -216,12 +211,9 @@ public class NetworkSceneManager : MonoBehaviour
                 entitiesToEdges.Add(sceneNodeEntities[node2Name], new List<NodeEdgePosition>(){newEdge2});
             }
 
-            //Debug.Log(newEdge1.nodeACoords + "|" + newEdge1.nodeBCoords + "|" + newEdge2.nodeACoords + "|" + newEdge2.nodeBCoords); This prints all zeros
-            //Debug.Log(node1Coords + "|" + node2Coords);
-
             edgeConversionSteps++;
             edgeConversionProgressText.text = "Edge importation in progress. (" + String.Format("{0:0.00}", ((float)edgeConversionSteps / (float)rawEdgeInputLines.Length) * 100.0f) + "%)";
-            //yield return null;
+            yield return null;
         }
         edgeConversionProgressText.gameObject.SetActive(false);
         Debug.Log("Done converting edges");
