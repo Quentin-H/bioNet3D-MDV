@@ -175,11 +175,6 @@ public class NetworkSceneManager : MonoBehaviour
 
         foreach(string line in rawEdgeInputLines)  // convert this to parralel for job
         {
-            if (String.IsNullOrWhiteSpace(line)) // if the line is blank it skips below. Otherwise the code will go to one of the catch statements but a wrong key error will occur in them.
-            {
-                continue;
-            }
-
             string node1Name = "";
             float4 coord1 = new float4(0,0,0,0);
             float3 node1Coords = new float3(0,0,0);;
