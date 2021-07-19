@@ -81,6 +81,11 @@ public class NetworkSceneManager : MonoBehaviour
 
         foreach(string line in rawLayoutInputLines) 
         {
+            if (String.IsNullOrWhiteSpace(line))
+            {
+                continue;
+            }
+
             string fID = "";
             float3 coord = new float3(0,0,0);
             string dName = "";
@@ -104,7 +109,7 @@ public class NetworkSceneManager : MonoBehaviour
                 deg = int.Parse(line.Split('|')[6].Trim());
 
                 SpawnNode(fID, coord, dName, desc, nRank, blineScore, deg);
-            } catch { Debug.Log("Error parsing a node from file."); }
+            } catch (ArgumentException ex) { Debug.Log("Node already spawned"); } // Sometimes somehow the node has already been spawned and is present in the scene, I do not know how this happens because when I search for the nodes in the file they are only there once.
         }
         Debug.Log("Done Spawning");
     }
@@ -170,6 +175,11 @@ public class NetworkSceneManager : MonoBehaviour
 
         foreach(string line in rawEdgeInputLines)  // convert this to parralel for job
         {
+            if (String.IsNullOrWhiteSpace(line))
+            {
+                continue;
+            }
+
             string node1Name = "";
             float4 coord1 = new float4(0,0,0,0);
             float3 node1Coords = new float3(0,0,0);;
