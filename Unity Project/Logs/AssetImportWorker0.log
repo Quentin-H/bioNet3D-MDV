@@ -15,11 +15,11 @@ E:/Quentin/Github Repositories/bioNet3D-MDV/Unity Project
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-63187
+53632
 Successfully changed project path to: E:/Quentin/Github Repositories/bioNet3D-MDV/Unity Project
 E:/Quentin/Github Repositories/bioNet3D-MDV/Unity Project
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 204.48 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 301.82 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.11f1 (99c7afb366b3)
 [Subsystems] Discovering subsystems at path E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Resources/UnitySubsystems
@@ -35,38 +35,38 @@ Initialize mono
 Mono path[0] = 'E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Managed'
 Mono path[1] = 'E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56956
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56484
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.009621 seconds.
+Registered in 0.026904 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 247.38 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 235.24 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  3.908 seconds
+- Completed reload, in  7.165 seconds
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.041279 seconds.
+Registered in 0.027135 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 173.99 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 242.30 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-TypeManager.Initialize took: 378ms
+TypeManager.Initialize took: 473ms
 Mono: successfully reloaded assembly
-- Completed reload, in  4.937 seconds
+- Completed reload, in  6.723 seconds
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
-Refreshing native plugins compatible for Editor in 1.55 ms, found 1 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
+Refreshing native plugins compatible for Editor in 1.96 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 5245 Unused Serialized files (Serialized files now loaded: 0)
 System memory in use before: 241.0 MB.
-System memory in use after: 241.3 MB.
+System memory in use after: 241.4 MB.
 
 Unloading 29 unused Assets to reduce memory usage. Loaded Objects now: 5692.
-Total: 7.274000 ms (FindLiveObjects: 0.996300 ms CreateObjectMapping: 0.358100 ms MarkObjects: 5.783300 ms  DeleteObjects: 0.131200 ms)
+Total: 9.167000 ms (FindLiveObjects: 1.228200 ms CreateObjectMapping: 0.457000 ms MarkObjects: 7.346100 ms  DeleteObjects: 0.133900 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:DOTSType/UnityEngine.EventSystems.EventSystem: 2c81b6c3f3277fcd2c81b6c3f3277fcd -> 
@@ -1772,4 +1772,10 @@ AssetImportParameters requested are different than current active one (requested
   custom:DOTSType/UnityEditor.CircleCollider2DEditor: 2306875b29acbf472306875b29acbf47 -> 
   custom:DOTSType/Unity.Scenes.DisableLiveLink: acfec9bf12a4cae8acfec9bf12a4cae8 -> 
   custom:DOTSType/UnityEditor.NavMeshObstacleInspector: e09ab8310b8a0334e09ab8310b8a0334 -> 
-AssetImportWorkerClient::OnTransportError - code=2 error=End of file
+========================================================================
+Received Import Request.
+  path: Assets/Scripts/MonoBehaviours/NetworkSceneManager.cs
+  artifactKey: Guid(fe0725d31fc1d3746b0e515e0a731217) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Scripts/MonoBehaviours/NetworkSceneManager.cs using Guid(fe0725d31fc1d3746b0e515e0a731217) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f6751524fd4e259df4d62bef40bbd883') in 0.088135 seconds
+  Import took 0.123601 seconds .
+
