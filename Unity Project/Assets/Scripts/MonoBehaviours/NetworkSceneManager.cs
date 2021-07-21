@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,11 +35,19 @@ public class NetworkSceneManager : MonoBehaviour
     public Text edgeConversionProgressText;
     private int edgeConversionPercent;
     private int edgeConversionSteps;
-    public GameObject top200Object;
 
+    public GameObject topNetworkRankObject;
+    private List<GameObject> topNetworkRankObjects = new List<GameObject>();
+    public GameObject topBaselineScoreObject;
+    private List<GameObject> topBaselineScoreObjects = new List<GameObject>();
+    private float4[] topBaselineScoreLocations = new float4[200]; // first 3 values are coordinates, the last one is the value associated with the node here
+    public GameObject topDegreeObject;
+    private List<GameObject> topDegreeObjects = new List<GameObject>();
     private IDictionary<FixedString32, Entity> sceneNodeEntities = new Dictionary<FixedString32, Entity>(); // This is for use internally liek creating edges, since internally genes are identified by feature IDs
     private IDictionary<String, Entity> sceneNodeEntitiesMappedToNames = new Dictionary<String, Entity>(); // This is for use with searching for nodes since the user would use names
     //maybe add dictionary with keys as coordinates if we want a feature that finds the connected node
+    private List<float4> blineList = new List<float4>(); // first 3 values are coordinates, last is value, populated when spawning nodes
+    private List<float4> degreeList = new List<float4>();  // first 3 values are coordinates, last is value, populated when spawning nodes
     private Dictionary<Entity, List<NodeEdgePosition>> entitiesToEdges = new Dictionary<Entity, List<NodeEdgePosition>>();
     private List<GameObject> activeLines = new List<GameObject>();
 
@@ -63,6 +72,28 @@ public class NetworkSceneManager : MonoBehaviour
         nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(nodePrefab, settings);
         
         ConvertRawInputNodes(); // this has to complete before convert raw input edges
+
+        for(int i = 0; i < 200; i++)
+        {
+            //Debug.Log(topBaselineScoreLocations[i]);
+        }
+
+        // sort this by baseline score List<Order> SortedList = objListOrder.OrderBy(o=>o.OrderDate).ToList();
+        blineList = blineList.OrderByDescending(o => o.w).ToList();
+        for (int i = 0; i < 200; i++)
+        {
+            GameObject newObject = Instantiate(topBaselineScoreObject, new float3(blineList[i].x, blineList[i].y, blineList[i].z), Quaternion.identity);
+            topBaselineScoreObjects.Add(newObject);
+        }
+        // get top 200 and spawn objects at locations at each 
+
+        degreeList = degreeList.OrderByDescending(o => o.w).ToList();
+        for (int i = 0; i < 200; i++)
+        {
+            GameObject newObject = Instantiate(topDegreeObject, new float3(degreeList[i].x, degreeList[i].y, degreeList[i].z), Quaternion.identity);
+            topDegreeObjects.Add(newObject);
+        }
+
         StartCoroutine(ConvertRawInputEdges());
     }
 
@@ -109,7 +140,7 @@ public class NetworkSceneManager : MonoBehaviour
                 deg = int.Parse(line.Split('|')[6].Trim());
 
                 SpawnNode(fID, coord, dName, desc, nRank, blineScore, deg);
-            } catch (ArgumentException ex) { Debug.Log("Node already spawned"); } // Sometimes somehow the node has already been spawned and is present in the scene, I do not know how this happens because when I search for the nodes in the file they are only there once.
+            } catch (ArgumentException ex) { /*Debug.Log("Node already spawned");*/ } // Sometimes somehow the node has already been spawned and is present in the scene, I do not know how this happens because when I search for the nodes in the file they are only there once.
         }
         Debug.Log("Done Spawning");
     }
@@ -121,10 +152,14 @@ public class NetworkSceneManager : MonoBehaviour
             return;
         }
 
-        if (nRank <= 200)
+        if (nRank <= 200) // adds a billboard if the network rank is less than or equal to 200
         {
-            Instantiate(top200Object, new Vector3(coord.x, coord.y, coord.z), Quaternion.identity);
+            GameObject newObject = Instantiate(topNetworkRankObject, new float3(coord.x, coord.y, coord.z), Quaternion.identity);
+            topNetworkRankObjects.Add(newObject);
         }
+
+        blineList.Add(new float4(coord.x, coord.y, coord.z, (float)blineScore));
+        degreeList.Add(new float4(coord.x, coord.y, coord.z, (float)deg));
 
         Entity newNodeEntity = entityManager.Instantiate(nodeEntityPrefab);
 
@@ -161,7 +196,6 @@ public class NetworkSceneManager : MonoBehaviour
 
         FixedString32 idAsFixed = fID;
         sceneNodeEntities.Add(idAsFixed, newNodeEntity);
-
         sceneNodeEntitiesMappedToNames.Add(dName, newNodeEntity);
     }
 
@@ -276,6 +310,30 @@ public class NetworkSceneManager : MonoBehaviour
             }
             showHideEdgesButton.GetComponentInChildren<Text>().text = "Show Edges";
         } 
+    }
+
+    public void showTopRankedBillboards(bool showOrHide)
+    {
+        foreach(GameObject cur in topNetworkRankObjects) 
+        {
+            cur.SetActive(showOrHide);
+        }
+    }
+
+    public void showTopBaselineBillboards(bool showOrHide)
+    {
+        foreach(GameObject cur in topBaselineScoreObjects) 
+        {
+            cur.SetActive(showOrHide);
+        }
+    }
+
+    public void showTopDegreeBillboards(bool showOrHide)
+    {
+        foreach(GameObject cur in topDegreeObjects) 
+        { 
+            cur.SetActive(showOrHide);
+        }
     }
 
     public void searchForNode(string query)
