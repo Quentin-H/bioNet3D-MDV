@@ -94,7 +94,8 @@ public class NetworkSceneManager : MonoBehaviour
             topDegreeObjects.Add(newObject);
         }
 
-        StartCoroutine(ConvertRawInputEdges());
+        ConvertRawInputEdges();
+        //StartCoroutine(ConvertRawInputEdges());
     }
 
     private void OnDestroy() 
@@ -199,7 +200,8 @@ public class NetworkSceneManager : MonoBehaviour
         sceneNodeEntitiesMappedToNames.Add(dName, newNodeEntity);
     }
 
-    IEnumerator ConvertRawInputEdges()
+    private void ConvertRawInputEdges()
+    //IEnumerator ConvertRawInputEdges()
     {
         Debug.Log("Started edge conversion");
 
@@ -207,7 +209,7 @@ public class NetworkSceneManager : MonoBehaviour
 
         try { rawEdgeInputLines = inputDataHolder.GetComponent<DataHolder>().rawEdgeFile.Split('\n'); } catch { }
 
-        foreach(string line in rawEdgeInputLines)  // convert this to parralel for job
+        foreach(string line in rawEdgeInputLines)  
         {
             if (String.IsNullOrWhiteSpace(line))
             {
@@ -215,25 +217,21 @@ public class NetworkSceneManager : MonoBehaviour
             }
 
             string node1Name = "";
-            float4 coord1 = new float4(0,0,0,0);
             float3 node1Coords = new float3(0,0,0);;
             string node2Name = "";
-            float4 coord2 = new float4(0,0,0,0);
             float3 node2Coords = new float3(0,0,0);
             double edgeWeight = 0.0;
 
             try 
             {
                 node1Name = line.Split()[0];
-                coord1 =  entityManager.GetComponentData<LocalToWorld>(sceneNodeEntities[node1Name]).Value[3];
-                node1Coords = new float3(coord1.x,coord1.y, coord1.z);
+                node1Coords = entityManager.GetComponentData<Translation>(sceneNodeEntities[node1Name]).Value; // we should be doing this by getting the LocalToWorld component but for some reason if this isnt an enumerator that returns 0
 
                 node2Name = line.Split()[1];
-                coord2 =  entityManager.GetComponentData<LocalToWorld>(sceneNodeEntities[node2Name]).Value[3];
-                node2Coords =  new float3(coord2.x,coord2.y, coord2.z);
+                node2Coords = entityManager.GetComponentData<Translation>(sceneNodeEntities[node2Name]).Value;
 
                 edgeWeight = double.Parse(line.Split()[2]);
-            } catch { }
+            } catch { Debug.Log("Edge line parsing error"); }
 
             NodeEdgePosition newEdge1 = new NodeEdgePosition(new FixedString32(node1Name), node1Coords, new FixedString32(node2Name), node2Coords, edgeWeight);
             try
@@ -257,9 +255,9 @@ public class NetworkSceneManager : MonoBehaviour
 
             edgeConversionSteps++;
             edgeConversionProgressText.text = "Edge importation in progress. (" + String.Format("{0:0.00}", ((float)edgeConversionSteps / (float)rawEdgeInputLines.Length) * 100.0f) + "%)";
-            yield return null;
+            //yield return null;
         }
-        edgeConversionProgressText.gameObject.SetActive(false);
+        //edgeConversionProgressText.gameObject.SetActive(false);
         Debug.Log("Done converting edges");
     }
 
