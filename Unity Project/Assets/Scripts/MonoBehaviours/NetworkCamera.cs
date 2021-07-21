@@ -72,7 +72,7 @@ public class NetworkCamera : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            ScreenCapture.CaptureScreenshot("C:/Users/Quentin/Desktop/MDV_Screencap", 4);
+            ScreenCapture.CaptureScreenshot("C:/Users/Quentin/Desktop/MDV_Screencap", 2);
         }
 
         locking();
