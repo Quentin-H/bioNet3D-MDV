@@ -52,7 +52,6 @@ public class NetworkSceneManager : MonoBehaviour
     private List<GameObject> activeLines = new List<GameObject>();
 
 
-
     private void Start() 
     {
         if (instance != null && instance != this) 
@@ -64,7 +63,7 @@ public class NetworkSceneManager : MonoBehaviour
 
         inputDataHolder = GameObject.Find("InputDataHolder");
 
-        try { positionMultiplier = inputDataHolder.GetComponent<DataHolder>().positionMultiplier; } catch { }
+        try { positionMultiplier = inputDataHolder.GetComponent<DataHolder>().positionMultiplier; } catch { positionMultiplier = 10; }
 
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         blobAssetStore = new BlobAssetStore();
@@ -72,11 +71,6 @@ public class NetworkSceneManager : MonoBehaviour
         nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(nodePrefab, settings);
         
         ConvertRawInputNodes(); // this has to complete before convert raw input edges
-
-        for(int i = 0; i < 200; i++)
-        {
-            //Debug.Log(topBaselineScoreLocations[i]);
-        }
 
         // sort this by baseline score List<Order> SortedList = objListOrder.OrderBy(o=>o.OrderDate).ToList();
         blineList = blineList.OrderByDescending(o => o.w).ToList();
@@ -95,7 +89,6 @@ public class NetworkSceneManager : MonoBehaviour
         }
 
         ConvertRawInputEdges();
-        //StartCoroutine(ConvertRawInputEdges());
     }
 
     private void OnDestroy() 
