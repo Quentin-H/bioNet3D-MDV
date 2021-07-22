@@ -4,8 +4,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Unity.Physics;
 using Unity.Physics.Systems;
-using Unity.Entities;
 using RaycastHit = Unity.Physics.RaycastHit;
+using Unity.Entities;
 using Unity.Rendering;
 using Unity.Transforms;
 using Unity.Mathematics;
@@ -33,10 +33,8 @@ public class NetworkCamera : MonoBehaviour
     public Text nodeDegreeText;
     [HideInInspector]
     public bool nodeSelected;
-    //
     public Dropdown viewAxisDropdown;
     
-
     // Fly Cam Variables
     public float mainSpeed = 10.0f;   // Default speed
     public float shiftAdd  = 25.0f;   // Amount to accelerate when shift is pressed
@@ -48,7 +46,6 @@ public class NetworkCamera : MonoBehaviour
     public Text lockCursorText;
     private bool cameraLocked = false;
     private bool cursorLocked = false;
-
 
 
     private void Start() 
@@ -72,7 +69,7 @@ public class NetworkCamera : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            ScreenCapture.CaptureScreenshot("C:/Users/Quentin/Desktop/MDV_Screencap", 2);
+            ScreenCapture.CaptureScreenshot("C:/Users/Quentin/Desktop/MDV_Screencap.png", 1);
         }
 
         locking();
