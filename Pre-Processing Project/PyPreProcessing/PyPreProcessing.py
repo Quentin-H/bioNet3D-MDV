@@ -47,10 +47,10 @@ for nodeLine in nodeFileLines: # go through every gene in the file and add it as
     nRank = i
     bScore = 0
 
-    #for scoreLine in scoreFileLines: # searches for the baseline score in the score file
-    #    if scoreLine.split()[1] == featureID: 
-    #        bScore = scoreLine.split()[4]
-    #        break
+    for scoreLine in scoreFileLines: # searches for the baseline score in the score file 
+        if scoreLine.split()[1] == featureID: 
+            bScore = scoreLine.split()[4]
+            break
     
     # Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute
     graph.add_vertex(name = featureID, displayName = dName, description = desc, networkRank = nRank, baselineScore = bScore)

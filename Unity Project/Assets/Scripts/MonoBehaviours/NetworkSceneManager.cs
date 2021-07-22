@@ -32,8 +32,7 @@ public class NetworkSceneManager : MonoBehaviour
     private GameObject inputDataHolder;
     private bool edgesShowing = false;
     public Button showHideEdgesButton;
-    public Text edgeConversionProgressText;
-    private int edgeConversionPercent;
+    private string edgeConversionPercent;
     private int edgeConversionSteps;
 
     public GameObject topNetworkRankObject;
@@ -194,7 +193,6 @@ public class NetworkSceneManager : MonoBehaviour
     }
 
     private void ConvertRawInputEdges()
-    //IEnumerator ConvertRawInputEdges()
     {
         Debug.Log("Started edge conversion");
 
@@ -247,10 +245,8 @@ public class NetworkSceneManager : MonoBehaviour
             }
 
             edgeConversionSteps++;
-            edgeConversionProgressText.text = "Edge importation in progress. (" + String.Format("{0:0.00}", ((float)edgeConversionSteps / (float)rawEdgeInputLines.Length) * 100.0f) + "%)";
-            //yield return null;
+            edgeConversionPercent = "Edge importation in progress. (" + String.Format("{0:0.00}", ((float)edgeConversionSteps / (float)rawEdgeInputLines.Length) * 100.0f) + "%)";
         }
-        //edgeConversionProgressText.gameObject.SetActive(false);
         Debug.Log("Done converting edges");
     }
 
