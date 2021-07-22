@@ -10,6 +10,8 @@ not have many methods and therefore has a smaller overhead.
 - A lot of times I use entities and nodes interchangeably. Nodes in the network are
 represented as cubes, these are entities. All nodes are entities but not all entities are nodes.
 
+- Use position multiplier of 9 for yeast network, 125 for human
+
 
 Layout idea: http://www.hiveplot.com/
 
