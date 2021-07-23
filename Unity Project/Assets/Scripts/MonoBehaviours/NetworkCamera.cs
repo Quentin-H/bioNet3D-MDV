@@ -14,11 +14,10 @@ using NodeViz; // not necessary
 
 public class NetworkCamera : MonoBehaviour
 {
-    //public NetworkSceneManager networkSceneManager;
-    //
     [HideInInspector]
     [SerializeField]
     private Camera cam;
+
     //Node Click Variables
     const float RAYCAST_DISTANCE = 10000;
     PhysicsWorld physicsWorld => World.DefaultGameObjectInjectionWorld.GetExistingSystem<BuildPhysicsWorld>().PhysicsWorld;
@@ -75,6 +74,7 @@ public class NetworkCamera : MonoBehaviour
         locking();
     }
 
+    // this takes care of checking key presses for the various locking features the application has
     private void locking()
     {
         if (Input.GetKeyDown(KeyCode.C))
@@ -111,7 +111,7 @@ public class NetworkCamera : MonoBehaviour
         transform.eulerAngles = lastMouse;
         lastMouse = Input.mousePosition;
 
-        Vector3 p = GetBaseInput();
+        Vector3 p = getBaseInput();
         if (Input.GetKey(KeyCode.LeftShift))
         {
             totalRun += Time.deltaTime;
@@ -130,7 +130,7 @@ public class NetworkCamera : MonoBehaviour
         transform.Translate(p);
     }
 
-    private Vector3 GetBaseInput()
+    private Vector3 getBaseInput() // helper for moveCamera
     {
         Vector3 p_Velocity = new Vector3();
 
@@ -163,9 +163,10 @@ public class NetworkCamera : MonoBehaviour
 
     private void selectNode()
     {
-        if (cam == null || !Input.GetMouseButtonDown(0) || EventSystem.current.IsPointerOverGameObject()) return; // Sanity checks and checking if the mouse is over a UI element
+        // Sanity checks, checking if the mouse is over a UI element, checking if left mouse button isn't clicked
+        if (cam == null || !Input.GetMouseButtonDown(0) || EventSystem.current.IsPointerOverGameObject()) return; 
 
-        // sends a raycast through the scene
+        // sends a ray through the scene
         var position = Input.mousePosition;
         var screenPointToRay = cam.ScreenPointToRay(position);
         var rayInput = new RaycastInput
@@ -179,21 +180,21 @@ public class NetworkCamera : MonoBehaviour
         if (!physicsWorld.CastRay(rayInput, out RaycastHit hit) && !EventSystem.current.IsPointerOverGameObject())
         {
             nodeSelected = false;
-            selectedNodeUI.SetActive(false);
+            selectedNodeUI.SetActive(false); // turns off the node ui panel
             return;
         }
 
         // below is what happens if a entity/node is hit
         selectedEntity = physicsWorld.Bodies[hit.RigidBodyIndex].Entity;
         nodeSelected = true;
-        
+        // sets the node ui panel to the attributes the selected node has
         nodeNameText.text = "Node Name: " + entityManager.GetComponentData<NodeData>(selectedEntity).displayName;
         nodeDescriptionText.text = "Description: " + entityManager.GetComponentData<NodeData>(selectedEntity).description;
         nodeNetworkRank.text = "Network Rank: " + entityManager.GetComponentData<NodeData>(selectedEntity).networkRank;
         nodeBaselineScore.text = "Baseline Value: " + entityManager.GetComponentData<NodeData>(selectedEntity).baselineScore;
         nodeDegreeText.text = "Degree: " + entityManager.GetComponentData<NodeData>(selectedEntity).degree;
-
-        selectedNodeUI.SetActive(true); // displays the node ui panel
+        // displays the node ui panel
+        selectedNodeUI.SetActive(true); 
     }
 
     public void focusOnNode()
@@ -202,13 +203,15 @@ public class NetworkCamera : MonoBehaviour
         {
             //When you get a position of an entity it returns a 4 dimensional coordinate, I don't know why
             float4 entityPos = entityManager.GetComponentData<LocalToWorld>(selectedEntity).Value[3];
+            // moves the camera so the desired node is in the center and the camera is 15 units away
             cam.transform.SetPositionAndRotation(new float3(entityPos.x, entityPos.y, entityPos.z - 15), new Quaternion(0, 0, 0, 0));
         }
+        return;
     }
 
-    public void setViewAxis(int view)
+    public void setViewAxis(int view) // if the user clicks a view option from the dropdown menu it will bring them to a zoomed out view from that axis
     {
-        if (view == 0) { return; }
+        if (view == 0) { return; } // if the user chooses the blank option return because we don't want anything to happen
         if (view == 1) //x 
         {
             cam.transform.position = new float3(1650, 290, 535);
@@ -224,7 +227,7 @@ public class NetworkCamera : MonoBehaviour
             cam.transform.position = new float3(430, 620, -990);
             cam.transform.eulerAngles = new float3(0, 0, 0);
         }
-        if (view == 4) //-x (-830,290,535) r = (0,90,0)
+        if (view == 4) //-x
         {
             cam.transform.position = new float3(-830, 290, 535);
             cam.transform.eulerAngles = new float3(0, 90, 0);
@@ -239,7 +242,7 @@ public class NetworkCamera : MonoBehaviour
             cam.transform.position = new float3(645, 175, 1650);
             cam.transform.eulerAngles = new float3(0, 180, 0);
         }
-        // set back to blank
+        // set the value of the dropdown menu back to blank after moving the camera to the user's desired camera angle/axis
         viewAxisDropdown.value = 0;
     }
 }
