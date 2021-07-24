@@ -1779,3 +1779,4 @@ Received Import Request.
 Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b5d4070b16e2f3c9f41ee78dbad27a72') in 0.214448 seconds
   Import took 0.242378 seconds .
 
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
