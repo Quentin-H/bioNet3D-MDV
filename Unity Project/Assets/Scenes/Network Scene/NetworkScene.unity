@@ -3083,7 +3083,7 @@ RectTransform:
   m_Children:
   - {fileID: 1211969733}
   m_Father: {fileID: 2030246622}
-  m_RootOrder: 10
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -4375,7 +4375,7 @@ MonoBehaviour:
       enableBigTilePrepass: 0
       isFptlEnabled: 0
   clearColorMode: 1
-  backgroundColorHDR: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 0}
+  backgroundColorHDR: {r: 0, g: 0, b: 0, a: 0}
   clearDepth: 1
   volumeLayerMask:
     serializedVersion: 2
@@ -4683,9 +4683,9 @@ RectTransform:
   - {fileID: 1157408729}
   - {fileID: 828938460}
   - {fileID: 728852451}
+  - {fileID: 1453313700}
   - {fileID: 2086558939}
   - {fileID: 298473910}
-  - {fileID: 1453313700}
   - {fileID: 884097905}
   - {fileID: 2090804144}
   - {fileID: 1584761077}
