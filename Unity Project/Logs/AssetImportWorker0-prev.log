@@ -15,11 +15,11 @@ E:/Quentin/Github Repositories/bioNet3D-MDV/Unity Project
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-65397
+49388
 Successfully changed project path to: E:/Quentin/Github Repositories/bioNet3D-MDV/Unity Project
 E:/Quentin/Github Repositories/bioNet3D-MDV/Unity Project
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 202.13 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 196.82 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.11f1 (99c7afb366b3)
 [Subsystems] Discovering subsystems at path E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Resources/UnitySubsystems
@@ -35,38 +35,38 @@ Initialize mono
 Mono path[0] = 'E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/Managed'
 Mono path[1] = 'E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56140
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56728
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: E:/Quentin/Game Development/Unity/Editor/2020.3.11f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.009837 seconds.
+Registered in 0.009263 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 258.44 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 190.10 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  3.029 seconds
+- Completed reload, in  2.827 seconds
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.043175 seconds.
+Registered in 0.026807 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 198.95 ms, found 1 plugins.
+Refreshing native plugins compatible for Editor in 179.25 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
-TypeManager.Initialize took: 359ms
+TypeManager.Initialize took: 378ms
 Mono: successfully reloaded assembly
-- Completed reload, in  5.156 seconds
+- Completed reload, in  5.029 seconds
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.15 seconds
-Refreshing native plugins compatible for Editor in 1.52 ms, found 1 plugins.
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.16 seconds
+Refreshing native plugins compatible for Editor in 1.50 ms, found 1 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 5245 Unused Serialized files (Serialized files now loaded: 0)
 System memory in use before: 240.9 MB.
 System memory in use after: 241.3 MB.
 
-Unloading 29 unused Assets to reduce memory usage. Loaded Objects now: 5693.
-Total: 7.502800 ms (FindLiveObjects: 0.982800 ms CreateObjectMapping: 0.320200 ms MarkObjects: 6.045300 ms  DeleteObjects: 0.152900 ms)
+Unloading 29 unused Assets to reduce memory usage. Loaded Objects now: 5694.
+Total: 7.706400 ms (FindLiveObjects: 1.107400 ms CreateObjectMapping: 0.323600 ms MarkObjects: 6.138000 ms  DeleteObjects: 0.135600 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:DOTSType/UnityEngine.EventSystems.EventSystem: 2c81b6c3f3277fcd2c81b6c3f3277fcd -> 
@@ -1774,62 +1774,8 @@ AssetImportParameters requested are different than current active one (requested
   custom:DOTSType/UnityEditor.NavMeshObstacleInspector: e09ab8310b8a0334e09ab8310b8a0334 -> 
 ========================================================================
 Received Import Request.
-  path: Assets/Materials/NodeMaterial.mat
-  artifactKey: Guid(a9aaa359ef8bd124290cae94b6bc9ad5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Materials/NodeMaterial.mat using Guid(a9aaa359ef8bd124290cae94b6bc9ad5) Importer(815301076,1909f56bfc062723c751e8b465ee728b) Launched and connected shader compiler UnityShaderCompiler.exe after 0.09 seconds
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.09 seconds
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.09 seconds
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.14 seconds
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.06 seconds
- -> (artifact id: '29d20c5c76fef1b1e04985e3ac05d331') in 5.004378 seconds
-  Import took 5.058292 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000825 seconds.
   path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
   artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9a2590fcdada1dd865e2a92b7c9f5f98') in 0.089492 seconds
-  Import took 0.128431 seconds .
+Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bc4fe0c4889534c89bbf2b545d59ec23') in 0.143988 seconds
+  Import took 0.179674 seconds .
 
-========================================================================
-Received Import Request.
-  Time since last request: 4922.607774 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0f6cd2d8020f6d2d8dd04059ff0ab2b6') in 0.059184 seconds
-  Import took 0.455394 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 2.743925 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dddba6d0b12114af4585956d685e77fd') in 0.014123 seconds
-  Import took 0.027509 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.048441 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dddba6d0b12114af4585956d685e77fd') in 0.006797 seconds
-  Import took 0.021148 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 7.457035 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9a1901ede76b035604899c9264bb1a7a') in 0.009005 seconds
-  Import took 0.022948 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.165158 seconds.
-  path: Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset
-  artifactKey: Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/HDRPDefaultResources/DefaultSettingsVolumeProfile.asset using Guid(a8134466027992f46af9af703c65760b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9a1901ede76b035604899c9264bb1a7a') in 0.008744 seconds
-  Import took 0.029662 seconds .
-
-AssetImportWorkerClient::OnTransportError - code=2 error=End of file
