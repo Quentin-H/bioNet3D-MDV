@@ -155,19 +155,25 @@ public class NetworkSceneManager : MonoBehaviour
         blineList.Add( new float4(coord.x, coord.y, coord.z, (float)blineScore ));
         degreeList.Add( new float4(coord.x, coord.y, coord.z, (float)deg ));
 
+        
+        
         Color evaluatedColor = nodeValueGradient.Evaluate( (float) blineScore );
-        nodePrefab.GetComponent<CustomMatOverrider>().setOverrideColor(evaluatedColor);
+        float4 colorF = new float4( evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a );
 
         nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy( nodePrefab, gameObjectConversionSettings );
         Entity newNodeEntity = entityManager.Instantiate( nodeEntityPrefab );
+
+        ColorOverride colorOverride = new ColorOverride()
+        {
+            Value = colorF
+        };
+        entityManager.AddComponentData( newNodeEntity, colorOverride );
 
         Translation translation = new Translation()
         {
             Value = coord
         };
         entityManager.AddComponentData( newNodeEntity, translation );
-
-        //float4 colorF = new float4( evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a );
 
         entityManager.SetComponentData(newNodeEntity, new NodeData { 
             featureID = fID, 

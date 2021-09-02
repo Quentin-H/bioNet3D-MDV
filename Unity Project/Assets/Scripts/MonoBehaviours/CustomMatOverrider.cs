@@ -14,7 +14,7 @@ public class CustomMatOverrider : MonoBehaviour
         var renderer = GetComponent<Renderer>();
         renderer.SetPropertyBlock(null);
         var propertyBlock = new MaterialPropertyBlock();
-        propertyBlock.SetColor("_Color", Color.black);
+        propertyBlock.SetColor("_Color", Color.yellow);
         renderer.SetPropertyBlock(propertyBlock);
     }*/
 
@@ -23,7 +23,9 @@ public class CustomMatOverrider : MonoBehaviour
         var renderer = GetComponent<Renderer>();
         renderer.SetPropertyBlock(null);
         var propertyBlock = new MaterialPropertyBlock();
-        propertyBlock.SetColor("_Color", color);
+        //propertyBlock.SetColor("_Color", color);
+        propertyBlock.SetColor( "_Color", color );
         renderer.SetPropertyBlock(propertyBlock);
+        Debug.Log("color set");
     }
 }
