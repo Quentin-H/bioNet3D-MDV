@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a9aaa359ef8bd124290cae94b6bc9ad5, type: 2}
+  - {fileID: 2100000, guid: 6d695e98faf693547abd35de1553957a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -938,5 +938,5 @@ MonoBehaviour:
     shaderName: Assets/Materials/NodeShaderGraph.shadergraph
     materialName: NodeMaterial
     type: 0
-    value: {x: 1, y: 0, z: 0.8873906, w: 1}
+    value: {x: 0.8490566, y: 0.65567315, z: 0.17221431, w: 1}
     instanceOverride: 1

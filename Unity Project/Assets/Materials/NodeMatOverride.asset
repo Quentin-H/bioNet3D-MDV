@@ -15,9 +15,9 @@ MonoBehaviour:
   overrideList:
   - name: _Color
     displayName: _Color
-    shaderName: Assets/Materials/NodeShaderGraph.shadergraph
-    materialName: NodeMaterial
+    shaderName: Assets/Materials/NodeShaderGraphMat.shadergraph
+    materialName: NodeShaderGraphMaterial
     type: 0
-    value: {x: 0.035333157, y: 0, z: 0.5, w: 1}
+    value: {x: 0.6320754, y: 0.5893992, z: 0.41442683, w: 1}
     instanceOverride: 0
-  material: {fileID: 2100000, guid: a9aaa359ef8bd124290cae94b6bc9ad5, type: 2}
+  material: {fileID: 2100000, guid: 6d695e98faf693547abd35de1553957a, type: 2}
