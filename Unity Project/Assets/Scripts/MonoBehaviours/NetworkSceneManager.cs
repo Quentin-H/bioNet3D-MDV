@@ -28,6 +28,7 @@ public class NetworkSceneManager : MonoBehaviour
 
     private EntityManager entityManager;
     private BlobAssetStore blobAssetStore;
+    private GameObjectConversionSettings gameObjectConversionSettings;
 
     private GameObject inputDataHolder;
     private bool edgesShowing = false;
@@ -66,8 +67,8 @@ public class NetworkSceneManager : MonoBehaviour
 
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         blobAssetStore = new BlobAssetStore();
-        GameObjectConversionSettings settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
-        nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(nodePrefab, settings);
+        gameObjectConversionSettings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
+        //nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(nodePrefab, settings);
         
         ConvertRawInputNodes(); // this has to complete before convert raw input edges
 
@@ -151,33 +152,22 @@ public class NetworkSceneManager : MonoBehaviour
             topNetworkRankObjects.Add(newObject);
         }
 
-        blineList.Add(new float4(coord.x, coord.y, coord.z, (float)blineScore));
-        degreeList.Add(new float4(coord.x, coord.y, coord.z, (float)deg));
+        blineList.Add( new float4(coord.x, coord.y, coord.z, (float)blineScore ));
+        degreeList.Add( new float4(coord.x, coord.y, coord.z, (float)deg ));
 
-        Entity newNodeEntity = entityManager.Instantiate(nodeEntityPrefab);
+        Color evaluatedColor = nodeValueGradient.Evaluate( (float) blineScore );
+        nodePrefab.GetComponent<CustomMatOverrider>().setOverrideColor(evaluatedColor);
+
+        nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy( nodePrefab, gameObjectConversionSettings );
+        Entity newNodeEntity = entityManager.Instantiate( nodeEntityPrefab );
 
         Translation translation = new Translation()
         {
             Value = coord
         };
+        entityManager.AddComponentData( newNodeEntity, translation );
 
-        entityManager.AddComponentData(newNodeEntity, translation);
-
-        Color evaluatedColor = nodeValueGradient.Evaluate( (float) blineScore);
-        float4 colorF = new float4(evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a);
-        
-        /* This code is for converting the system to use material overrides rather than creating a new material for each node. 
-        This should increase performance by a massive amount (probably increase fps 5-10 fold) and it is the correct "ECS" way of doing things, 
-        however I could not get it working.
-
-        MaterialColor mcc = new MaterialColor { Value = colorF };
-        entityManager.AddComponentData<MaterialColor>(newNodeEntity, mcc); */
-
-        var renderMesh = entityManager.GetSharedComponentData<RenderMesh>(newNodeEntity);
-        var mat = new UnityEngine.Material(renderMesh.material);
-        mat.SetColor("_UnlitColor", evaluatedColor);
-        renderMesh.material = mat;
-        entityManager.SetSharedComponentData(newNodeEntity, renderMesh);
+        //float4 colorF = new float4( evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a );
 
         entityManager.SetComponentData(newNodeEntity, new NodeData { 
             featureID = fID, 

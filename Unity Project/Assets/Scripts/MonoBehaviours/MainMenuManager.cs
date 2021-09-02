@@ -13,8 +13,16 @@ public class MainMenuManager : MonoBehaviour
 
 	private void Start() 
 	{
-		FileBrowser.AddQuickLink( "Sample Files", "E:\\Quentin\\Github Repositories\\bioNet3D-MDV\\Sample Files", null );
-
+		//This only works in edit mode! Another way to set a quicklink for standalone needs to be found
+		if (Application.isEditor)
+		{
+			string projectPath = Application.dataPath;
+			//Removes the "Assets" section and makes it go to sample files
+			projectPath = projectPath.Replace("/Unity Project/Assets", "/Sample Files");
+			Debug.Log(projectPath);
+			FileBrowser.AddQuickLink( "Sample Files", projectPath, null );
+		}
+		
 		//add a random layout of points to rotate around in the background
 	}
 
