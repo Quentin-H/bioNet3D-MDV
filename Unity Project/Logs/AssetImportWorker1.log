@@ -1851,3 +1851,4 @@ Received Import Request.
 Start importing Assets/Scenes/Network Scene/NetworkScene.unity using Guid(eeaf4cd020fef1d4a88156f53e17b7c1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '382fae6d990459f8714e50e08344f5bf') in 0.014231 seconds 
   Import took 0.021541 seconds .
 
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
