@@ -4,27 +4,19 @@ import igraph
 print('Python version ', sys.version)
 print('MDV PreProcessor Version 0.9')
 print(' ')
-print(' ')  # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\9606.reactome_PPI_reaction.edge
+print(' ')  
 
 
-nodePath = input("Enter node file path... ")         # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\4932.node_map.txt
-scorePath = input("Enter node score file path... ")  # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\features_ranked_per_phenotype.txt
-edgePath = input("Enter edge file path... ")         # E:\Quentin\Github Repositories\bioNet3D-MDV\Sample Files\4932.blastp_homology.edge
+nodePath = input("Enter node file path... ")         # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\4932.node_map.txt
+scorePath = input("Enter node score file path... ")  # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\features_ranked_per_phenotype.txt
+edgePath = input("Enter edge file path... ")         # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\4932.blastp_homology.edge
 
 outputPath = input("Enter output destination, leave blank for default... ")
 if not outputPath:
-    outputPath = 'E:/Quentin/Github Repositories/bioNet3D-MDV/Sample Files/'
+    outputPath = 'C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample'
 nodeFileLines = open(nodePath, 'r').readlines() # add error handling for invalid paths
 scoreFileLines = open(scorePath, 'r').readlines() 
 edgeFileLines = open(edgePath, 'r').readlines()
-
-print("-------------------------------")
-print("layout_fruchterman_reingold_3d, fr3d (force directed)")
-print("layout_kamada_kawai_3d, kk3d")
-print("layout_random_3d, random_3d") 
-print("layout_sphere, sphere")
-print("-------------------------------")
-graphOption = input("Enter desired graphing algorithm... ")
 
 # create an igraph containing just the nodes from the inputfile 
 graph = igraph.Graph(
@@ -63,8 +55,8 @@ for edgeLine in edgeFileLines:
     weight = edgeLine.split()[2]
     graph.add_edge(node1, node2, Edge_Weight = weight)
 
-# Runs the layout algorythm the user chose earlier
-graphLayout = graph.layout(graphOption)
+# Runs the community detection
+graphLayout = graph.community_multilevel()
 
 # Converts the layout object to a string 
 # The string only has node data, but they are layed out according to the inputted edges,
