@@ -2,20 +2,27 @@ import sys
 import igraph
 import time
 from datetime import date
+from decimal import Decimal
 
 print('Python version ', sys.version)
 print('MDV PreProcessor Version 0.9')
 print(' ')
 print(' ')  
 
+# for final release
+# nodePath = input("Enter node file path... ")         # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\4932.node_map.txt
+# scorePath = input("Enter node score file path... ")  # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\features_ranked_per_phenotype.txt
+# edgePath = input("Enter edge file path... ")         # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\4932.blastp_homology.edge
 
-nodePath = input("Enter node file path... ")         # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\4932.node_map.txt
-scorePath = input("Enter node score file path... ")  # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\features_ranked_per_phenotype.txt
-edgePath = input("Enter edge file path... ")         # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\4932.blastp_homology.edge
+# for debugging
+nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.node_map.txt"
+scorePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/features_ranked_per_phenotype.txt"
+edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.blastp_homology.edge"
 
 outputPath = input("Enter output destination, leave blank for default... ")
 if not outputPath:
-    outputPath = 'C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files'
+    outputPath = 'C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/'
+start_time = time.time()
 nodeFileLines = open(nodePath, 'r').readlines() # add error handling for invalid paths
 scoreFileLines = open(scorePath, 'r').readlines() 
 edgeFileLines = open(edgePath, 'r').readlines()
@@ -43,7 +50,7 @@ for nodeLine in nodeFileLines: # go through every gene in the file and add it as
 
     for scoreLine in scoreFileLines: # searches for the baseline score in the score file 
         if scoreLine.split()[1] == featureID: 
-            bScore = scoreLine.split()[4]
+            bScore = Decimal(scoreLine.split()[4])
             break
     
     # Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute
@@ -54,28 +61,27 @@ for nodeLine in nodeFileLines: # go through every gene in the file and add it as
 for edgeLine in edgeFileLines:
     node1 = edgeLine.split()[0]
     node2 = edgeLine.split()[1]
-    weight = edgeLine.split()[2]
+    weight = Decimal(edgeLine.split()[2])
     graph.add_edge(node1, node2, Edge_Weight = weight)
 
-print("Import and graph generation succesful, community detection starting...")
+print("Took " +  "%s seconds to import data" % (time.time() - start_time))
+
 start_time = time.time()
-
 # Runs the community detection
-graphLayout = graph.community_multilevel("Edge_Weight")
-modScore = graph.modularity(graphLayout)
-print(modScore)
-print(len(graph.community_multilevel()))
+clusteredGraph = graph.community_multilevel(weights = "Edge_Weight") # clusteredGraph is a vertext clustering object
+print("Number of clusters: " + str(clusteredGraph.__len__()))
+# print("Largest cluster:" + str(clusteredGraph.size(clusteredGraph.giant()))) not working idk why
+print("Modularity: " + str(graph.modularity(clusteredGraph, weights = "Edge_Weight")))
+print("Took " + "%s seconds to cluster" % (time.time() - start_time))
 
-print("Took " + "--- %s seconds ---" % (time.time() - start_time))
-
-# Converts the layout object to a string 
+# Converts the graph to a string 
 # The string only has node data, but they are layed out according to the inputted edges,
 # so we can get the edges from the original edge file in Unity and everything will be fine and dandy
-layoutString = ''
-i = 0
-for coordinate in graphLayout:
+graphString = ''
+#i = 0
+for i in range(graph.vcount()):
     currentLine = (graph.vs[i]["name"] # feature ID
-    + "|" + str(coordinate) 
+    # + "|" + str(coordinate) 
     + "|" + str(graph.vs[i]["displayName"]) 
     + "|" + str(graph.vs[i]["description"]) 
     + "|" + str(graph.vs[i]["networkRank"]) 
@@ -83,10 +89,10 @@ for coordinate in graphLayout:
     + "|" + str(graph.vs[i].degree())
     + "\n")
 
-    layoutString = layoutString + currentLine
+    graphString = graphString + currentLine
     i += 1
 
 # Saves the string we created as a "massive dataset visualizer layout file"
 outputFile = open(outputPath + ("output - " + str(date.today()) + ".mdvl"), "w")
-outputFile.write(layoutString)
+outputFile.write(graphString)
 outputFile.close
