@@ -1,5 +1,7 @@
 import sys
 import igraph
+import time
+from datetime import date
 
 print('Python version ', sys.version)
 print('MDV PreProcessor Version 0.9')
@@ -13,7 +15,7 @@ edgePath = input("Enter edge file path... ")         # C:\Users\Quentin Herzig\G
 
 outputPath = input("Enter output destination, leave blank for default... ")
 if not outputPath:
-    outputPath = 'C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample'
+    outputPath = 'C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files'
 nodeFileLines = open(nodePath, 'r').readlines() # add error handling for invalid paths
 scoreFileLines = open(scorePath, 'r').readlines() 
 edgeFileLines = open(edgePath, 'r').readlines()
@@ -55,8 +57,16 @@ for edgeLine in edgeFileLines:
     weight = edgeLine.split()[2]
     graph.add_edge(node1, node2, Edge_Weight = weight)
 
+print("Import and graph generation succesful, community detection starting...")
+start_time = time.time()
+
 # Runs the community detection
-graphLayout = graph.community_multilevel()
+graphLayout = graph.community_multilevel("Edge_Weight")
+modScore = graph.modularity(graphLayout)
+print(modScore)
+print(len(graph.community_multilevel()))
+
+print("Took " + "--- %s seconds ---" % (time.time() - start_time))
 
 # Converts the layout object to a string 
 # The string only has node data, but they are layed out according to the inputted edges,
@@ -77,6 +87,6 @@ for coordinate in graphLayout:
     i += 1
 
 # Saves the string we created as a "massive dataset visualizer layout file"
-outputFile = open(outputPath + ("output - " + graphOption + ".mdvl"), "w")
+outputFile = open(outputPath + ("output - " + str(date.today()) + ".mdvl"), "w")
 outputFile.write(layoutString)
 outputFile.close
