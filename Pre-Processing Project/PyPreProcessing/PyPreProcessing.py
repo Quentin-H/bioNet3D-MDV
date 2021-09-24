@@ -74,6 +74,14 @@ print("Number of clusters: " + str(clusteredGraph.__len__()))
 print("Modularity: " + str(graph.modularity(clusteredGraph, weights = "Edge_Weight")))
 print("Took " + "%s seconds to cluster" % (time.time() - start_time))
 
+
+#
+# Find each cluster 
+
+
+
+
+
 # Converts the graph to a string 
 # The string only has node data, but they are layed out according to the inputted edges,
 # so we can get the edges from the original edge file in Unity and everything will be fine and dandy
@@ -95,4 +103,18 @@ for i in range(graph.vcount()):
 # Saves the string we created as a "massive dataset visualizer layout file"
 outputFile = open(outputPath + ("output - " + str(date.today()) + ".mdvl"), "w")
 outputFile.write(graphString)
-outputFile.close
+outputFile.close()
+
+# go through each subgraph
+# add a line that has i comma then number of items then third for modularity
+statsString = '';
+i = 1
+for subGraph in clusteredGraph.subgraphs():
+    statsString += str(i) + "," + str(subGraph.vcount()) + "\n"
+    i += 1
+
+statsOutput = open(outputPath + ("stats - " + str(date.today()) + ".csv"), "w")
+statsOutput.write(statsString)
+statsOutput.close()
+
+print(statsString)
