@@ -22,6 +22,12 @@ edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample File
 outputPath = input("Enter output destination, leave blank for default... ")
 if not outputPath:
     outputPath = 'C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/'
+
+analysisRawInput = input("Do clustering analysis? (y/n)")
+doClusteringAnalysis = False;
+if analysisRawInput.strip() == "y":
+    doClusteringAnalysis = True
+
 start_time = time.time()
 nodeFileLines = open(nodePath, 'r').readlines() # add error handling for invalid paths
 scoreFileLines = open(scorePath, 'r').readlines() 
@@ -61,8 +67,10 @@ for nodeLine in nodeFileLines: # go through every gene in the file and add it as
 for edgeLine in edgeFileLines:
     node1 = edgeLine.split()[0]
     node2 = edgeLine.split()[1]
-    weight = Decimal(edgeLine.split()[2])
-    graph.add_edge(node1, node2, Edge_Weight = weight)
+    if node1 != node2: # we don't need self connections
+        weight = Decimal(edgeLine.split()[2])
+        graph.add_edge(node1, node2, Edge_Weight = weight)
+
 
 print("Took " +  "%s seconds to import data" % (time.time() - start_time))
 
@@ -105,16 +113,15 @@ outputFile = open(outputPath + ("output - " + str(date.today()) + ".mdvl"), "w")
 outputFile.write(graphString)
 outputFile.close()
 
+
 # go through each subgraph
-# add a line that has i comma then number of items then third for modularity
-statsString = '';
-i = 1
-for subGraph in clusteredGraph.subgraphs():
-    statsString += str(i) + "," + str(subGraph.vcount()) + "\n"
-    i += 1
+if doClusteringAnalysis == True:
+    statsString = "cluster number,vertices,edges\n";
+    i = 1
+    for subGraph in clusteredGraph.subgraphs():
+        statsString += str(i) + "," + str(subGraph.vcount()) + "," + str(subGraph.ecount()) + "\n"
+        i += 1
 
-statsOutput = open(outputPath + ("stats - " + str(date.today()) + ".csv"), "w")
-statsOutput.write(statsString)
-statsOutput.close()
-
-print(statsString)
+    statsOutput = open(outputPath + ("stats - " + str(date.today()) + ".csv"), "w")
+    statsOutput.write(statsString)
+    statsOutput.close()
