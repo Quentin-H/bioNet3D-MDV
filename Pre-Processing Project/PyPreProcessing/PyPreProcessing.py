@@ -15,25 +15,53 @@ print(' ')
 # edgePath = input("Enter edge file path... ")         # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\4932.blastp_homology.edge
 
 # for debugging
+
+# for yeast
 nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.node_map.txt"
 scorePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/features_ranked_per_phenotype.txt"
 edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.blastp_homology.edge"
 
+# for small human
+#nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Small Human Sample/9606.node_map.txt"
+#scorePath = ""
+#edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Small Human Sample/9606.reactome_PPI_reaction.edge"
+
 outputPath = input("Enter output destination, leave blank for default... ")
-if not outputPath:
+if not outputPath.strip():
     outputPath = 'C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/'
 
-analysisRawInput = input("Do clustering analysis? (y/n)")
+analysisRawInput = input("Do clustering analysis? (y/n) ")
 doClusteringAnalysis = False;
 if analysisRawInput.strip() == "y":
     doClusteringAnalysis = True
 
 start_time = time.time()
-nodeFileLines = open(nodePath, 'r').readlines() # add error handling for invalid paths
-scoreFileLines = open(scorePath, 'r').readlines() 
-edgeFileLines = open(edgePath, 'r').readlines()
 
-# create an igraph containing just the nodes from the inputfile 
+nodeFileLines = []
+try:
+    nodeFileLines = open(nodePath, 'r').readlines()
+except:
+    print("Opening node file failed, quitting...")
+    sys.exit()
+
+scoreFileLines = []
+try:
+    scoreFileLines = open(scorePath, 'r').readlines() 
+except:
+    print("Opening score file failed, continuing without...")
+
+edgeFileLines = []
+try:
+    edgeFileLines = open(edgePath, 'r').readlines()
+except:
+    print("Opening edge file failed, quitting...")
+    sys.exit()
+
+print("Took " +  "%s seconds to import data" % (time.time() - start_time))
+
+start_time = time.time()
+
+# create an empty igraph
 graph = igraph.Graph(
     vertex_attrs={
         "displayName": "",
@@ -54,10 +82,11 @@ for nodeLine in nodeFileLines: # go through every gene in the file and add it as
     nRank = i
     bScore = 0
 
-    for scoreLine in scoreFileLines: # searches for the baseline score in the score file 
-        if scoreLine.split()[1] == featureID: 
-            bScore = Decimal(scoreLine.split()[4])
-            break
+    if not(len(scoreFileLines) < 2):
+        for scoreLine in scoreFileLines: # searches for the baseline score in the score file 
+            if scoreLine.split()[1] == featureID: 
+                bScore = Decimal(scoreLine.split()[4])
+                break
     
     # Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute
     graph.add_vertex(name = featureID, displayName = dName, description = desc, networkRank = nRank, baselineScore = bScore)
@@ -71,19 +100,16 @@ for edgeLine in edgeFileLines:
         weight = Decimal(edgeLine.split()[2])
         graph.add_edge(node1, node2, Edge_Weight = weight)
 
-
-print("Took " +  "%s seconds to import data" % (time.time() - start_time))
+print("Took " +  "%s seconds to generate iGraph" % (time.time() - start_time))
+ 
+print("Connected components: " + str(len(graph.clusters()))) 
 
 start_time = time.time()
-# Runs the community detection
-clusteredGraph = graph.community_multilevel(weights = "Edge_Weight") # clusteredGraph is a vertext clustering object
-print("Number of clusters: " + str(clusteredGraph.__len__()))
-# print("Largest cluster:" + str(clusteredGraph.size(clusteredGraph.giant()))) not working idk why
-print("Modularity: " + str(graph.modularity(clusteredGraph, weights = "Edge_Weight")))
+clusteredGraph = graph.community_multilevel(weights = "Edge_Weight") # clusteredGraph is a vertex clustering object
 print("Took " + "%s seconds to cluster" % (time.time() - start_time))
+print("Clusters after Louvain: " + str(clusteredGraph.__len__()))
+print("Modularity: " + str(graph.modularity(clusteredGraph, weights = "Edge_Weight")))
 
-
-#
 # Find each cluster 
 
 
@@ -93,8 +119,7 @@ print("Took " + "%s seconds to cluster" % (time.time() - start_time))
 # Converts the graph to a string 
 # The string only has node data, but they are layed out according to the inputted edges,
 # so we can get the edges from the original edge file in Unity and everything will be fine and dandy
-graphString = ''
-#i = 0
+graphString = ""
 for i in range(graph.vcount()):
     currentLine = (graph.vs[i]["name"] # feature ID
     # + "|" + str(coordinate) 
@@ -116,12 +141,25 @@ outputFile.close()
 
 # go through each subgraph
 if doClusteringAnalysis == True:
-    statsString = "cluster number,vertices,edges\n";
-    i = 1
+    histogramDict = { 1 : 0 } # create histogram of cluster sizes
+    
     for subGraph in clusteredGraph.subgraphs():
-        statsString += str(i) + "," + str(subGraph.vcount()) + "," + str(subGraph.ecount()) + "\n"
-        i += 1
+        try: 
+            histogramDict[subGraph.vcount()] = histogramDict[subGraph.vcount()] + 1
+        except:
+            histogramDict[subGraph.vcount()] = 1
 
-    statsOutput = open(outputPath + ("stats - " + str(date.today()) + ".csv"), "w")
-    statsOutput.write(statsString)
-    statsOutput.close()
+    clusterSizeHistString = "cluster size,number of clusters\n";
+    for clusterSize, numClusters in histogramDict.items():
+        clusterSizeHistString  += str(clusterSize) + "," + str(numClusters) + "\n"
+ 
+    clusterSizeHistOutputFile = open(outputPath + ("cluster size histogram - " + str(date.today()) + ".csv"), "w")
+    clusterSizeHistOutputFile.write(clusterSizeHistString)
+    clusterSizeHistOutputFile.close()
+
+
+    #statsString = "cluster number,vertices,edges\n";
+    #i = 1
+    #for subGraph in clusteredGraph.subgraphs():
+    #    statsString += str(i) + "," + str(subGraph.vcount()) + "," + str(subGraph.ecount()) + "\n"
+    #    i += 1
