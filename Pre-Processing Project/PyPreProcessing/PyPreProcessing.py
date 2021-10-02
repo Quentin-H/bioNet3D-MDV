@@ -14,7 +14,7 @@ print(' ')
 # scorePath = input("Enter node score file path... ")  # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\features_ranked_per_phenotype.txt
 # edgePath = input("Enter edge file path... ")         # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\4932.blastp_homology.edge
 
-# for debugging
+# for debugging add error handling for incorrect paths because it causes a bunch of impoosible to understand errors if they are wrong
 
 # for yeast
 nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.node_map.txt"
@@ -25,6 +25,11 @@ edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample File
 #nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Small Human Sample/9606.node_map.txt"
 #scorePath = ""
 #edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Small Human Sample/9606.reactome_PPI_reaction.edge"
+
+# for large human
+#nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/9606.node_map.txt"
+#scorePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/BDI_PPI.edge"
+#edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/Doxorubicin_bootstrap_net_correlation_pearson (Score file).txt"
 
 outputPath = input("Enter output destination, leave blank for default... ")
 if not outputPath.strip():
@@ -44,7 +49,7 @@ except:
     print("Opening node file failed, quitting...")
     sys.exit()
 
-scoreFileLines = []
+scoreFileLines = [];
 try:
     scoreFileLines = open(scorePath, 'r').readlines() 
 except:
@@ -57,6 +62,7 @@ except:
     print("Opening edge file failed, quitting...")
     sys.exit()
 
+timeToImport = "%s seconds to import data" % (time.time() - start_time)
 print("Took " +  "%s seconds to import data" % (time.time() - start_time))
 
 start_time = time.time()
@@ -74,39 +80,51 @@ graph = igraph.Graph(
         "Edge_Weight": 0
     })
 
+scoreParseFails = 0
+nodeParseFails = 0
+edgeParseFails = 0
 i = 1 # first line has headers
 for nodeLine in nodeFileLines: # go through every gene in the file and add it as a node to the graph
-    featureID = nodeLine.split()[0]
-    dName = nodeLine.split()[3]
-    desc = nodeLine.split("\t")[4]
-    nRank = i
-    bScore = 0
+    try:
+        featureID = nodeLine.split()[0]
+        dName = nodeLine.split()[3]
+        desc = nodeLine.split("\t")[4]
+        nRank = i
+        bScore = 0
 
-    if not(len(scoreFileLines) < 2):
-        for scoreLine in scoreFileLines: # searches for the baseline score in the score file 
-            if scoreLine.split()[1] == featureID: 
-                bScore = Decimal(scoreLine.split()[4])
-                break
-    
-    # Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute
-    graph.add_vertex(name = featureID, displayName = dName, description = desc, networkRank = nRank, baselineScore = bScore)
-    i += 1
+        if not(len(scoreFileLines) < 2):
+            try:
+                for scoreLine in scoreFileLines: # searches for the baseline score in the score file 
+                    if scoreLine.split()[1] == featureID: 
+                        bScore = Decimal(scoreLine.split()[4])
+                        break
+            except:
+                scoreParseFails += 1
+# Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute
+        graph.add_vertex(name = featureID, displayName = dName, description = desc, networkRank = nRank, baselineScore = bScore)
+        i += 1
+    except:
+        nodeParseFails += 1
 
 # go through the edge input file for each edge and create an edge between both genes (which are nodes in the network due to the previous step)
 for edgeLine in edgeFileLines:
-    node1 = edgeLine.split()[0]
-    node2 = edgeLine.split()[1]
-    if node1 != node2: # we don't need self connections
-        weight = Decimal(edgeLine.split()[2])
-        graph.add_edge(node1, node2, Edge_Weight = weight)
-
+    try:
+        node1 = edgeLine.split()[0]
+        node2 = edgeLine.split()[1]
+        if node1 != node2: # we don't need self connections
+            weight = Decimal(edgeLine.split()[2])
+            graph.add_edge(node1, node2, Edge_Weight = weight)
+    except:
+        edgeParseFails += 1
+timeToGenerateiGraph = "%s seconds to generate iGraph" % (time.time() - start_time)
 print("Took " +  "%s seconds to generate iGraph" % (time.time() - start_time))
  
 print("Connected components: " + str(len(graph.clusters()))) 
 
 start_time = time.time()
 clusteredGraph = graph.community_multilevel(weights = "Edge_Weight") # clusteredGraph is a vertex clustering object
-print("Took " + "%s seconds to cluster" % (time.time() - start_time))
+timeToLouvainCluster = "%s seconds to cluster with Louvain" % (time.time() - start_time)
+print("Took " + "%s seconds to cluster with Louvain" % (time.time() - start_time))
 print("Clusters after Louvain: " + str(clusteredGraph.__len__()))
 print("Modularity: " + str(graph.modularity(clusteredGraph, weights = "Edge_Weight")))
 
@@ -148,18 +166,22 @@ if doClusteringAnalysis == True:
             histogramDict[subGraph.vcount()] = histogramDict[subGraph.vcount()] + 1
         except:
             histogramDict[subGraph.vcount()] = 1
-
-    clusterSizeHistString = "cluster size,number of clusters\n";
+    
+    clusterSizeHistString = "Times: ," + timeToImport + "," + timeToGenerateiGraph + "," + timeToLouvainCluster + "\n"
+    clusterSizeHistString += "\n"
+    clusterSizeHistString += "node parse fails,score parse fails,edge parse fails\n"
+    clusterSizeHistString += str(nodeParseFails) + "," + str(scoreParseFails) + "," + str(edgeParseFails) + "\n"
+    clusterSizeHistString += "\n"
+    clusterSizeHistString += "connected components,clusters after louvain,modularity after louvain\n"
+    clusterSizeHistString += str(len(graph.clusters())) + "," + str(clusteredGraph.__len__()) + "," + str(graph.modularity(clusteredGraph, weights = "Edge_Weight")) + "\n"
+    clusterSizeHistString += "\n"
+    clusterSizeHistString += "cluster size,number of clusters\n"
     for clusterSize, numClusters in histogramDict.items():
         clusterSizeHistString  += str(clusterSize) + "," + str(numClusters) + "\n"
+
+    # find if there is a function that gets the total amount of vertices in all the subgraphs of a vertex clustering object
+    #clusterSizeHistString += "\n" + "Nodes after Louvain clustering (should not be different than nodes in node file - node parse fails: " + str(clusteredGraph.subgraphs()) + "\n"
  
     clusterSizeHistOutputFile = open(outputPath + ("cluster size histogram - " + str(date.today()) + ".csv"), "w")
     clusterSizeHistOutputFile.write(clusterSizeHistString)
     clusterSizeHistOutputFile.close()
-
-
-    #statsString = "cluster number,vertices,edges\n";
-    #i = 1
-    #for subGraph in clusteredGraph.subgraphs():
-    #    statsString += str(i) + "," + str(subGraph.vcount()) + "," + str(subGraph.ecount()) + "\n"
-    #    i += 1
