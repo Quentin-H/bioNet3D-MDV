@@ -1,0 +1,10 @@
+Times (s): ,0.27398228645324707,52.39914870262146,0.05712580680847168
+
+node parse fails,score parse fails,edge parse fails
+0,0,488132
+
+connected components,clusters after louvain,modularity after louvain
+64592,64592,nan
+
+cluster size,number of clusters
+1,64592

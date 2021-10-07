@@ -1,6 +1,7 @@
 import sys
 import igraph
 import time
+from datetime import datetime
 from datetime import date
 from decimal import Decimal
 
@@ -27,9 +28,10 @@ print(' ')
 #edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Small Human Sample/9606.reactome_PPI_reaction.edge"
 
 # for large human
+scorePath = ""
 nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/9606.node_map.txt"
-scorePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/BDI_PPI.edge"
-edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/Doxorubicin_bootstrap_net_correlation_pearson (Score file).txt"
+#scorePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/Doxorubicin_bootstrap_net_correlation_pearson (Score file).txt"
+edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/BDI_PPI.edge"
 
 outputPath = input("Enter output destination, leave blank for default... ")
 if not outputPath.strip():
@@ -40,7 +42,7 @@ doClusteringAnalysis = False;
 if analysisRawInput.strip() == "y":
     doClusteringAnalysis = True
 
-start_time = time.time()
+import_time = time.time()
 
 nodeFileLines = []
 try:
@@ -49,7 +51,7 @@ except:
     print("Opening node file failed, quitting...")
     sys.exit()
 
-scoreFileLines = [];
+scoreFileLines = []
 try:
     scoreFileLines = open(scorePath, 'r').readlines() 
 except:
@@ -58,14 +60,15 @@ except:
 edgeFileLines = []
 try:
     edgeFileLines = open(edgePath, 'r').readlines()
+    print(len(edgeFileLines))
 except:
     print("Opening edge file failed, quitting...")
     sys.exit()
 
-timeToImport = "%s seconds to import data" % (time.time() - start_time)
-print("Took " +  "%s seconds to import data" % (time.time() - start_time))
+timeToImport = "%s" % (time.time() - import_time)
+print("\nTook " +  "%s seconds to import data" % (time.time() - import_time))
 
-start_time = time.time()
+graph_start_time = time.time()
 
 # create an empty igraph
 graph = igraph.Graph(
@@ -83,12 +86,19 @@ graph = igraph.Graph(
 scoreParseFails = 0
 nodeParseFails = 0
 edgeParseFails = 0
+
+node_time = time.time()
+nodeParsePercent = 0
 i = 1 # first line has headers
 for nodeLine in nodeFileLines: # go through every gene in the file and add it as a node to the graph
+    nodeParsePercent = round(100 * (i / len(nodeFileLines)), 3)
+    sys.stdout.write("\r{0}".format("Node parsing: "+ str(nodeParsePercent) + "% done"))
+    sys.stdout.flush()
+
     try:
-        featureID = nodeLine.split()[0]
-        dName = nodeLine.split()[3]
-        desc = nodeLine.split("\t")[4]
+        featureID = nodeLine.split()[0].strip()
+        dName = nodeLine.split()[3].strip()
+        desc = nodeLine.split("\t")[4].strip()
         nRank = i
         bScore = 0
 
@@ -96,40 +106,56 @@ for nodeLine in nodeFileLines: # go through every gene in the file and add it as
             try:
                 for scoreLine in scoreFileLines: # searches for the baseline score in the score file 
                     if scoreLine.split()[1] == featureID: 
-                        bScore = Decimal(scoreLine.split()[4])
+                        bScore = Decimal(scoreLine.split()[4].strip())
                         break
             except:
                 scoreParseFails += 1
-# Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute
+        # Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute
         graph.add_vertex(name = featureID, displayName = dName, description = desc, networkRank = nRank, baselineScore = bScore)
         i += 1
     except:
         nodeParseFails += 1
+print("\nNode parsing took " +  "%s seconds" % (time.time() - node_time))
 
+edge_time = time.time()
+edgeParsePercent = 0;
+i = 0;
 # go through the edge input file for each edge and create an edge between both genes (which are nodes in the network due to the previous step)
 for edgeLine in edgeFileLines:
+    edgeParsePercent = round(100 * (i / len(edgeFileLines)), 3)
+    sys.stdout.write("\r{0}".format("Edge parsing: "+ str(edgeParsePercent) + "% done"))
+    sys.stdout.flush()
+
     try:
-        node1 = edgeLine.split()[0]
-        node2 = edgeLine.split()[1]
+        node1 = edgeLine.split()[0].strip()
+        node2 = edgeLine.split()[1].strip()
+
         if node1 != node2: # we don't need self connections
-            weight = Decimal(edgeLine.split()[2])
-            graph.add_edge(node1, node2, Edge_Weight = weight)
+            #weight = Decimal(edgeLine.split()[2])
+            #graph.add_edge(node1, node2, Edge_Weight = weight)
+            graph.add_edge(node1, node2, Edge_Weight = 0)
     except:
         edgeParseFails += 1
-timeToGenerateiGraph = "%s seconds to generate iGraph" % (time.time() - start_time)
-print("Took " +  "%s seconds to generate iGraph" % (time.time() - start_time))
+
+    i += 1
+print("\n" + str(i))
+
+print("\nEdge parsing took " +  "%s seconds" % (time.time() - edge_time))
+timeToGenerateiGraph = "%s" % (time.time() - graph_start_time)
+print("Took " +  "%s seconds to generate iGraph" % (time.time() - graph_start_time))
  
 print("Connected components: " + str(len(graph.clusters()))) 
 
-start_time = time.time()
+louvain_start_time = time.time()
 clusteredGraph = graph.community_multilevel(weights = "Edge_Weight") # clusteredGraph is a vertex clustering object
-timeToLouvainCluster = "%s seconds to cluster with Louvain" % (time.time() - start_time)
-print("Took " + "%s seconds to cluster with Louvain" % (time.time() - start_time))
+timeToLouvainCluster = "%s" % (time.time() - louvain_start_time)
+print("Took " + "%s seconds to cluster with Louvain" % (time.time() - louvain_start_time))
 print("Clusters after Louvain: " + str(clusteredGraph.__len__()))
 print("Modularity: " + str(graph.modularity(clusteredGraph, weights = "Edge_Weight")))
 
 # Find each cluster 
 
+# generate coord points
 
 
 
@@ -167,7 +193,7 @@ if doClusteringAnalysis == True:
         except:
             histogramDict[subGraph.vcount()] = 1
     
-    clusterSizeHistString = "Times: ," + timeToImport + "," + timeToGenerateiGraph + "," + timeToLouvainCluster + "\n"
+    clusterSizeHistString = "Times (s): ," + timeToImport + "," + timeToGenerateiGraph + "," + timeToLouvainCluster + "\n"
     clusterSizeHistString += "\n"
     clusterSizeHistString += "node parse fails,score parse fails,edge parse fails\n"
     clusterSizeHistString += str(nodeParseFails) + "," + str(scoreParseFails) + "," + str(edgeParseFails) + "\n"
