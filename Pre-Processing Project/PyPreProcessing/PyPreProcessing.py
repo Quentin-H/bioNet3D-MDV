@@ -130,9 +130,9 @@ for edgeLine in edgeFileLines:
         node1 = edgeLine.split()[0].strip()
         node2 = edgeLine.split()[1].strip()
 
-        if node1 != node2: # we don't need self connections
+        if node1 != node2: # we don't need self connections 
             #weight = Decimal(edgeLine.split()[2])
-            #graph.add_edge(node1, node2, Edge_Weight = weight)
+            #graph.add_edge(node1, node2, Edge_Weight = weight) we don't care about weights for now
             graph.add_edge(node1, node2, Edge_Weight = 0)
     except:
         edgeParseFails += 1
