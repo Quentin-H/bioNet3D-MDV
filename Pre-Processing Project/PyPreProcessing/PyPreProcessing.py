@@ -18,9 +18,9 @@ print(' ')
 # for debugging add error handling for incorrect paths because it causes a bunch of impoosible to understand errors if they are wrong
 
 # for yeast
-#nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.node_map.txt"
-#scorePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/features_ranked_per_phenotype.txt"
-#edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.blastp_homology.edge"
+nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.node_map.txt"
+scorePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/features_ranked_per_phenotype.txt"
+edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.blastp_homology.edge"
 
 # for small human
 #nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Small Human Sample/9606.node_map.txt"
@@ -28,10 +28,10 @@ print(' ')
 #edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Small Human Sample/9606.reactome_PPI_reaction.edge"
 
 # for large human
-scorePath = ""
-nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/9606.node_map.txt"
+#scorePath = ""
+#nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/9606.node_map.txt"
 #scorePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/Doxorubicin_bootstrap_net_correlation_pearson (Score file).txt"
-edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/BDI_PPI.edge"
+#edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/BDI_PPI.edge"
 
 outputPath = input("Enter output destination, leave blank for default... ")
 if not outputPath.strip():
@@ -134,20 +134,27 @@ for edgeLine in edgeFileLines:
             #weight = Decimal(edgeLine.split()[2])
             #graph.add_edge(node1, node2, Edge_Weight = weight) we don't care about weights for now
             graph.add_edge(node1, node2, Edge_Weight = 0)
+            print("added")
     except:
+        #print(node1)
+        #print(node2)
         edgeParseFails += 1
 
     i += 1
 print("\n" + str(i))
 
 print("\nEdge parsing took " +  "%s seconds" % (time.time() - edge_time))
+
+to_delete_ids = [v.index for v in graph.vs if  v.degree() < 2]
+graph.delete_vertices(to_delete_ids)
+
 timeToGenerateiGraph = "%s" % (time.time() - graph_start_time)
 print("Took " +  "%s seconds to generate iGraph" % (time.time() - graph_start_time))
  
 print("Connected components: " + str(len(graph.clusters()))) 
 
 louvain_start_time = time.time()
-clusteredGraph = graph.community_multilevel(weights = "Edge_Weight") # clusteredGraph is a vertex clustering object
+clusteredGraph = graph.community_multilevel() # clusteredGraph is a vertex clustering object
 timeToLouvainCluster = "%s" % (time.time() - louvain_start_time)
 print("Took " + "%s seconds to cluster with Louvain" % (time.time() - louvain_start_time))
 print("Clusters after Louvain: " + str(clusteredGraph.__len__()))
@@ -156,26 +163,46 @@ print("Modularity: " + str(graph.modularity(clusteredGraph, weights = "Edge_Weig
 # Find each cluster 
 
 # generate coord points
+j = 0
+graphString = ""
+for vClusterAsGraph in clusteredGraph.subgraphs():
+    vClusterLayout = vClusterAsGraph.layout("fr3d")
 
+    for coordinate in vClusterLayout:
+        for c in coordinate :
+            c = c + (10 * j)
 
+        modCoordinate = coordinate
+        currentLine = (graph.vs[j]["name"] # feature ID
+        + "|" + str(modCoordinate) 
+        + "|" + str(graph.vs[j]["displayName"]) 
+        + "|" + str(graph.vs[j]["description"]) 
+        + "|" + str(graph.vs[j]["networkRank"]) 
+        + "|" + str(graph.vs[j]["baselineScore"]) 
+        + "|" + str(graph.vs[j].degree())
+        + "\n")
+        # add extra line for cluster membership to see if the clustering shows up in Unity
+        graphString = graphString + currentLine
+        j += 1
 
+    
 
 # Converts the graph to a string 
 # The string only has node data, but they are layed out according to the inputted edges,
 # so we can get the edges from the original edge file in Unity and everything will be fine and dandy
-graphString = ""
-for i in range(graph.vcount()):
-    currentLine = (graph.vs[i]["name"] # feature ID
-    # + "|" + str(coordinate) 
-    + "|" + str(graph.vs[i]["displayName"]) 
-    + "|" + str(graph.vs[i]["description"]) 
-    + "|" + str(graph.vs[i]["networkRank"]) 
-    + "|" + str(graph.vs[i]["baselineScore"]) 
-    + "|" + str(graph.vs[i].degree())
-    + "\n")
+#graphString = ""
+#for i in range(graph.vcount()):
+#    currentLine = (graph.vs[i]["name"] # feature ID
+#    # + "|" + str(coordinate) 
+#    + "|" + str(graph.vs[i]["displayName"]) 
+#    + "|" + str(graph.vs[i]["description"]) 
+#    + "|" + str(graph.vs[i]["networkRank"]) 
+#    + "|" + str(graph.vs[i]["baselineScore"]) 
+#    + "|" + str(graph.vs[i].degree())
+#    + "\n")
 
-    graphString = graphString + currentLine
-    i += 1
+#    graphString = graphString + currentLine
+#    i += 1
 
 # Saves the string we created as a "massive dataset visualizer layout file"
 outputFile = open(outputPath + ("output - " + str(date.today()) + ".mdvl"), "w")
