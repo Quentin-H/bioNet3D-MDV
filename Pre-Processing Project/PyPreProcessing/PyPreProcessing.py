@@ -134,7 +134,6 @@ for edgeLine in edgeFileLines:
             #weight = Decimal(edgeLine.split()[2])
             #graph.add_edge(node1, node2, Edge_Weight = weight) we don't care about weights for now
             graph.add_edge(node1, node2, Edge_Weight = 0)
-            print("added")
     except:
         #print(node1)
         #print(node2)
@@ -160,49 +159,51 @@ print("Took " + "%s seconds to cluster with Louvain" % (time.time() - louvain_st
 print("Clusters after Louvain: " + str(clusteredGraph.__len__()))
 print("Modularity: " + str(graph.modularity(clusteredGraph, weights = "Edge_Weight")))
 
-# Find each cluster 
+miscBucketGraph = igraph.Graph(
+        vertex_attrs={
+            "displayName": "",
+            "description": "",
+            "networkRank": 0,
+            "baselineScore": 0,
+        }, edge_attrs={"Edge_Weight": 0})
 
-# generate coord points
-j = 0
 graphString = ""
+
+clusterNum = 0 # 0 will be the <5 bucket graph
 for vClusterAsGraph in clusteredGraph.subgraphs():
-    vClusterLayout = vClusterAsGraph.layout("fr3d")
 
-    for coordinate in vClusterLayout:
-        for c in coordinate :
-            c = c + (10 * j)
+    if vClusterAsGraph.vcount() > 5:
+        vClusterLayout = vClusterAsGraph.layout("fr3d")
 
-        modCoordinate = coordinate
-        currentLine = (graph.vs[j]["name"] # feature ID
-        + "|" + str(modCoordinate) 
-        + "|" + str(graph.vs[j]["displayName"]) 
-        + "|" + str(graph.vs[j]["description"]) 
-        + "|" + str(graph.vs[j]["networkRank"]) 
-        + "|" + str(graph.vs[j]["baselineScore"]) 
-        + "|" + str(graph.vs[j].degree())
-        + "\n")
-        # add extra line for cluster membership to see if the clustering shows up in Unity
-        graphString = graphString + currentLine
-        j += 1
+        j = 0
+        for coordinate in vClusterLayout:
+            connectionListStr = ""
+            for neighbor in vClusterAsGraph.vs[j].neighbors():
+                connectionListStr += neighbor["name"] + "," 
+                                      
+            k = 0
+            for c in coordinate :
+                coordinate[k] = c + (25 * j)
+                k += 1
 
-    
+            modCoordinate = coordinate
+            currentLine = (vClusterAsGraph.vs[j]["name"] # feature ID
+            + "|" + str(modCoordinate) 
+            + "|" + str(vClusterAsGraph.vs[j]["displayName"]) 
+            + "|" + str(vClusterAsGraph.vs[j]["description"])
+            #+ "|" + str(clusterNum)
+            + "|" + str(vClusterAsGraph.vs[j]["networkRank"]) 
+            + "|" + str(vClusterAsGraph.vs[j]["baselineScore"]) 
+            + "|" + str(vClusterAsGraph.vs[j].degree())
+            + "|" + str(clusterNum)
+            + "|" + connectionListStr
+            + "\n")
+            graphString = graphString + currentLine
+            j += 1
+        clusterNum += 1
+    else:
+         __or__(miscBucketGraph, vClusterAsGraph)
 
-# Converts the graph to a string 
-# The string only has node data, but they are layed out according to the inputted edges,
-# so we can get the edges from the original edge file in Unity and everything will be fine and dandy
-#graphString = ""
-#for i in range(graph.vcount()):
-#    currentLine = (graph.vs[i]["name"] # feature ID
-#    # + "|" + str(coordinate) 
-#    + "|" + str(graph.vs[i]["displayName"]) 
-#    + "|" + str(graph.vs[i]["description"]) 
-#    + "|" + str(graph.vs[i]["networkRank"]) 
-#    + "|" + str(graph.vs[i]["baselineScore"]) 
-#    + "|" + str(graph.vs[i].degree())
-#    + "\n")
-
-#    graphString = graphString + currentLine
-#    i += 1
 
 # Saves the string we created as a "massive dataset visualizer layout file"
 outputFile = open(outputPath + ("output - " + str(date.today()) + ".mdvl"), "w")
