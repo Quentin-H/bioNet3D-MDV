@@ -78,10 +78,7 @@ graph = igraph.Graph(
         "networkRank": 0,
         "baselineScore": 0,
         # degrees is fetched with a function and the feature ID is the name of the vertex
-    }, 
-    edge_attrs={
-        "Edge_Weight": 0
-    })
+    }, edge_attrs={"Edge_Weight": 0})
 
 scoreParseFails = 0
 nodeParseFails = 0
@@ -174,7 +171,8 @@ for vClusterAsGraph in clusteredGraph.subgraphs():
 
     if vClusterAsGraph.vcount() > 5:
         vClusterLayout = vClusterAsGraph.layout("fr3d")
-
+        #print(vClusterLayout.boundaries())
+        #vClusterLayout.center()
         j = 0
         for coordinate in vClusterLayout:
             connectionListStr = ""
@@ -183,12 +181,13 @@ for vClusterAsGraph in clusteredGraph.subgraphs():
                                       
             k = 0
             for c in coordinate :
-                coordinate[k] = c + (25 * j)
+                coordinate[k] = c + (25 * clusterNum)
                 k += 1
-
             modCoordinate = coordinate
+
             currentLine = (vClusterAsGraph.vs[j]["name"] # feature ID
             + "|" + str(modCoordinate) 
+            #+ "|" + str(coordinate)
             + "|" + str(vClusterAsGraph.vs[j]["displayName"]) 
             + "|" + str(vClusterAsGraph.vs[j]["description"])
             #+ "|" + str(clusterNum)
@@ -202,7 +201,34 @@ for vClusterAsGraph in clusteredGraph.subgraphs():
             j += 1
         clusterNum += 1
     else:
-         __or__(miscBucketGraph, vClusterAsGraph)
+         miscBucketGraph.__or__(vClusterAsGraph)
+
+miscBucketLayout = miscBucketGraph.layout("fr3d")
+j = 0
+for coordinate in miscBucketLayout:
+    connectionListStr = ""
+    for neighbor in vClusterAsGraph.vs[j].neighbors():
+        connectionListStr += neighbor["name"] + "," 
+                                      
+        k = 0
+        for c in coordinate :
+            coordinate[k] = c + (25 * j)
+            k += 1
+
+        modCoordinate = coordinate
+        currentLine = (vClusterAsGraph.vs[j]["name"] # feature ID
+        + "|" + str(modCoordinate) 
+        + "|" + str(vClusterAsGraph.vs[j]["displayName"]) 
+        + "|" + str(vClusterAsGraph.vs[j]["description"])
+        #+ "|" + str(clusterNum)
+        + "|" + str(vClusterAsGraph.vs[j]["networkRank"]) 
+        + "|" + str(vClusterAsGraph.vs[j]["baselineScore"]) 
+        + "|" + str(vClusterAsGraph.vs[j].degree())
+        + "|" + str(clusterNum)
+        + "|" + connectionListStr
+        + "\n")
+        graphString = graphString + currentLine
+        j += 1
 
 
 # Saves the string we created as a "massive dataset visualizer layout file"
