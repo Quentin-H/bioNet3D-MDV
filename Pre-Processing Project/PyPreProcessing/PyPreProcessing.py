@@ -1,6 +1,7 @@
 import sys
 import igraph
 import time
+from Functions import *
 from datetime import datetime
 from datetime import date
 from decimal import Decimal
@@ -9,18 +10,16 @@ print('Python version ', sys.version)
 print('MDV PreProcessor Version 0.9')
 print(' ')
 print(' ')  
-
+testPrint()
 # for final release
 # nodePath = input("Enter node file path... ")         # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\4932.node_map.txt
 # scorePath = input("Enter node score file path... ")  # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\features_ranked_per_phenotype.txt
 # edgePath = input("Enter edge file path... ")         # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\4932.blastp_homology.edge
 
-# for debugging add error handling for incorrect paths because it causes a bunch of impoosible to understand errors if they are wrong
-
 # for yeast
-nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.node_map.txt"
-scorePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/features_ranked_per_phenotype.txt"
-edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.blastp_homology.edge"
+nodePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.node_map.txt"
+scorePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/features_ranked_per_phenotype.txt"
+edgePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.blastp_homology.edge"
 
 # for small human
 #nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Small Human Sample/9606.node_map.txt"
@@ -35,7 +34,7 @@ edgePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample File
 
 outputPath = input("Enter output destination, leave blank for default... ")
 if not outputPath.strip():
-    outputPath = 'C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/'
+    outputPath = 'C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/'
 
 analysisRawInput = input("Do clustering analysis? (y/n) ")
 doClusteringAnalysis = False;
