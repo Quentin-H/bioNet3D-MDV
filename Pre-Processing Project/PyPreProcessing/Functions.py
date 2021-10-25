@@ -6,7 +6,7 @@ from datetime import date
 from decimal import Decimal
 
 
-def fileToGraph(nodePath, scorePath, edgePath):
+def FileToGraph(nodePath, scorePath, edgePath):
     import_time = time.time()
 
     nodeFileLines = []
@@ -116,6 +116,33 @@ def fileToGraph(nodePath, scorePath, edgePath):
     graph.delete_vertices(to_delete_ids)
 
     return graph
+
+def generateCoords():
+    print()
+
+def graphToStr(graph):
+    outputStr = ""
+
+    for node in graph.vs:
+        connectionListStr = ""
+
+        for neighbor in node.neighbors():
+            connectionListStr += neighbor["name"] + "," 
+
+        currentLine = (node["name"] # feature ID
+            + "|" + str(node["coordinates"]) 
+            + "|" + str(node["displayName"]) 
+            + "|" + str(node["description"])
+            + "|" + str(node["networkRank"]) 
+            + "|" + str(node["baselineScore"]) 
+            + "|" + str(node.degree())
+            + "|" + connectionListStr
+            + "\n")
+
+        outputStr += currentLine
+
+    return outputStr
+
 
 def stackoverflow(self, i=None):
         if i is None:
