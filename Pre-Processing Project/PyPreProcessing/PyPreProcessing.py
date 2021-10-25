@@ -10,7 +10,6 @@ print('Python version ', sys.version)
 print('MDV PreProcessor Version 0.9')
 print(' ')
 print(' ')  
-testPrint()
 # for final release
 # nodePath = input("Enter node file path... ")         # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\4932.node_map.txt
 # scorePath = input("Enter node score file path... ")  # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\features_ranked_per_phenotype.txt
@@ -58,17 +57,19 @@ miscBucketGraph = igraph.Graph(
             "description": "",
             "networkRank": 0,
             "baselineScore": 0,
+            "coordinates": 0
         }, edge_attrs={"Edge_Weight": 0})
-
 graphString = ""
+
+#change this so that exporting to layout file is in a different block, and this block
+#just assigns coordinates
 
 clusterNum = 0 # 0 will be the <5 bucket graph
 for vClusterAsGraph in lvnClusteredGraph.subgraphs():
 
     if vClusterAsGraph.vcount() > 5:
         vClusterLayout = vClusterAsGraph.layout("fr3d")
-        #print(vClusterLayout.boundaries())
-        #vClusterLayout.center()
+        
         j = 0
         for coordinate in vClusterLayout:
             connectionListStr = ""
@@ -80,10 +81,9 @@ for vClusterAsGraph in lvnClusteredGraph.subgraphs():
                 coordinate[k] = c + (25 * clusterNum)
                 k += 1
             modCoordinate = coordinate
-
+            vClusterAsGraph.vs[j]["coordinates"] = modCoordinate
             currentLine = (vClusterAsGraph.vs[j]["name"] # feature ID
-            + "|" + str(modCoordinate) 
-            #+ "|" + str(coordinate)
+            + "|" + str(vClusterAsGraph.vs[j]["coordinates"]) 
             + "|" + str(vClusterAsGraph.vs[j]["displayName"]) 
             + "|" + str(vClusterAsGraph.vs[j]["description"])
             #+ "|" + str(clusterNum)
@@ -112,8 +112,9 @@ for coordinate in miscBucketLayout:
             k += 1
 
         modCoordinate = coordinate
+        vClusterAsGraph.vs[j]["coordinates"] = modCoordinate
         currentLine = (vClusterAsGraph.vs[j]["name"] # feature ID
-        + "|" + str(modCoordinate) 
+        + "|" + str(vClusterAsGraph.vs[j]["coordinates"]) 
         + "|" + str(vClusterAsGraph.vs[j]["displayName"]) 
         + "|" + str(vClusterAsGraph.vs[j]["description"])
         #+ "|" + str(clusterNum)

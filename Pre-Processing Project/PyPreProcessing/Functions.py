@@ -5,10 +5,7 @@ from datetime import datetime
 from datetime import date
 from decimal import Decimal
 
-def testPrint():
-    print( "Worked!")
 
-#@staticmethod
 def fileToGraph(nodePath, scorePath, edgePath):
     import_time = time.time()
 
