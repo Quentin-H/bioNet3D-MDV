@@ -47,7 +47,8 @@ def FileToGraph(nodePath, scorePath, edgePath):
             "networkRank": 0,
             "baselineScore": 0,
             # degrees is fetched with a function and the feature ID is the name of the vertex
-            "coordinates": ""
+            "coordinates": "",
+			"cluster": -1
         }, edge_attrs={"Edge_Weight": 0})
 
     scoreParseFails = 0
@@ -179,11 +180,14 @@ def lvnProcessing(graph):
 	for subgraph in lvnClusteredGraph.subgraphs():
 		if subgraph.vcount() > 5:
 			graphList.append(subgraph)
-			clusterNum += 1
+			
 		else:
+			for v in subgraph.vs():
+				v["cluster"] = clusterNum
 			lessThan5List.append(subgraph.copy())
+			clusterNum += 1
 
-	miscBucketGraph = igraph.Graph(vertex_attrs={"displayName": "","description": "","networkRank": 0,"baselineScore": 0,"coordinates": 0}, edge_attrs={"Edge_Weight": 0})
+	miscBucketGraph = igraph.Graph(vertex_attrs={"displayName": "","description": "","networkRank": 0,"baselineScore": 0,"coordinates": 0,"cluster": 0}, edge_attrs={"Edge_Weight": 0})
 	miscBucketGraph = miscBucketGraph.disjoint_union(lessThan5List)
 	graphList.insert(0, miscBucketGraph)
 	return graphList
@@ -221,7 +225,8 @@ def genNodePos(inputGraphList):
 
 
 def genHullPos(inputGraphList):
-	pyhull.convex_hull.ConvexHull(generateOnSpherePos(320, 75), joggle=True )
+	hull = pyhull.convex_hull.ConvexHull(generateOnSpherePos(320, 75), joggle=True )
+
 
 	return ""
 
@@ -237,12 +242,13 @@ def GraphToStr(graph):
 
         currentLine = (node["name"] # feature ID
             + "|" + str(node["coordinates"]) 
-            + "|" + str(node["displayName"]) 
-            + "|" + str(node["description"])
+            + "|" + node["displayName"] 
+            + "|" + node["description"]
             + "|" + str(node["networkRank"]) 
             + "|" + str(node["baselineScore"]) 
             + "|" + str(node.degree())
-            + "|" + connectionListStr #leaving out for now because lines longer than 1024 cause problems
+			+ "|" + str(node["cluster"])
+            + "|" + connectionListStr
             + "\n")
         outputStr += currentLine
     return outputStr
