@@ -118,6 +118,7 @@ public class NetworkSceneManager : MonoBehaviour
             int nRank = 0;
             double blineScore = 0;
             int deg = 0;
+            int cluster = -1;
 
             try
             {
@@ -132,6 +133,7 @@ public class NetworkSceneManager : MonoBehaviour
                 nRank = int.Parse(line.Split('|')[4].Trim());
                 blineScore = double.Parse(line.Split('|')[5].Trim());
                 deg = int.Parse(line.Split('|')[6].Trim());
+                //cluster = int.Parse(line.Split('|')[7].Trim());
 
                 SpawnNode(fID, coord, dName, desc, nRank, blineScore, deg);
             } catch (ArgumentException ex) { /*Debug.Log("Node already spawned");*/ } // Sometimes somehow the node has already been spawned and is present in the scene, I do not know how this happens because when I search for the nodes in the file they are only there once.
@@ -154,8 +156,6 @@ public class NetworkSceneManager : MonoBehaviour
 
         blineList.Add( new float4(coord.x, coord.y, coord.z, (float)blineScore ));
         degreeList.Add( new float4(coord.x, coord.y, coord.z, (float)deg ));
-
-        
         
         Color evaluatedColor = nodeValueGradient.Evaluate( (float) blineScore );
         float4 colorF = new float4( evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a );
@@ -194,7 +194,11 @@ public class NetworkSceneManager : MonoBehaviour
 
         string[] rawEdgeInputLines = new string[0];
 
-        try { rawEdgeInputLines = inputDataHolder.GetComponent<DataHolder>().rawEdgeFile.Split('\n'); } catch { }
+        try { 
+            rawEdgeInputLines = inputDataHolder.GetComponent<DataHolder>().rawEdgeFile.Split('\n'); 
+        } catch {
+            Debug.Log("No Edge File");
+        }
 
         foreach(string line in rawEdgeInputLines)  
         {
