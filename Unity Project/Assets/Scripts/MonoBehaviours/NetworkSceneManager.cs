@@ -122,7 +122,7 @@ public class NetworkSceneManager : MonoBehaviour
 
             try
             {
-                fID = line.Split('|')[0];
+                fID = line.Split('|')[0].Trim();
                 
                 coord.x = float.Parse(line.Split('[')[1].Split(',')[0].Trim()) * positionMultiplier;
                 coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim()) * positionMultiplier;
@@ -181,10 +181,12 @@ public class NetworkSceneManager : MonoBehaviour
             description = desc, 
             networkRank = nRank,
             baselineScore = blineScore,
-            degree = deg });
+            degree = deg 
+        });
 
         FixedString32 idAsFixed = fID;
         sceneNodeEntities.Add(idAsFixed, newNodeEntity);
+        Entity t = sceneNodeEntities[idAsFixed];
         sceneNodeEntitiesMappedToNames.Add(dName, newNodeEntity);
     }
 
@@ -192,60 +194,53 @@ public class NetworkSceneManager : MonoBehaviour
     {
         Debug.Log("Started edge conversion");
 
-        string[] rawEdgeInputLines = new string[0];
+        string[] rawNodeInputLines = new string[0];
 
         try { 
-            rawEdgeInputLines = inputDataHolder.GetComponent<DataHolder>().rawEdgeFile.Split('\n'); 
+            rawNodeInputLines = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile.Split('\n'); 
         } catch {
             Debug.Log("No Edge File");
         }
 
-        foreach(string line in rawEdgeInputLines)  
+        foreach(string line in rawNodeInputLines)  
         {
-            if (String.IsNullOrWhiteSpace(line))
-            {
-                continue;
-            }
+            try {
+                foreach(string connectedNode in line.Split('|')[7].Split(',')) 
+                {
+                    string node1Name = "";
+                    float3 node1Coords = new float3(0,0,0);
+                    string node2Name = connectedNode.Trim();
+                    float3 node2Coords = new float3(0,0,0);
+                    double edgeWeight = 0.0;
 
-            string node1Name = "";
-            float3 node1Coords = new float3(0,0,0);;
-            string node2Name = "";
-            float3 node2Coords = new float3(0,0,0);
-            double edgeWeight = 0.0;
+                    try 
+                    {
+                        node1Name = line.Split('|')[0].Trim();
+                        node1Coords = entityManager.GetComponentData<Translation>(FindNode(node1Name)).Value; // we should be doing this by getting the LocalToWorld component but for some reason if this isnt an enumerator that returns 0
+                        node2Coords = entityManager.GetComponentData<Translation>(FindNode(node2Name)).Value;
+                        //edgeWeight = double.Parse(line.Split()[2]); not using weights rn
+                    } catch { Debug.Log("Edge line parsing error"); }
 
-            try 
-            {
-                node1Name = line.Split()[0];
-                node1Coords = entityManager.GetComponentData<Translation>(sceneNodeEntities[node1Name]).Value; // we should be doing this by getting the LocalToWorld component but for some reason if this isnt an enumerator that returns 0
+                    NodeEdgePosition newEdge1 = new NodeEdgePosition(new FixedString32(node1Name), node1Coords, new FixedString32(node2Name), node2Coords, edgeWeight);
+                    try
+                    {
+                        entitiesToEdges[FindNode(node1Name)].Add(newEdge1);
+                    } catch {
+                        entitiesToEdges.Add(FindNode(node1Name), new List<NodeEdgePosition>(){newEdge1});
+                    }
 
-                node2Name = line.Split()[1];
-                node2Coords = entityManager.GetComponentData<Translation>(sceneNodeEntities[node2Name]).Value;
+                    NodeEdgePosition newEdge2 = new NodeEdgePosition(new FixedString32(node2Name), node2Coords, new FixedString32(node1Name), node1Coords, edgeWeight);
+                    try 
+                    {
+                        entitiesToEdges[FindNode(node2Name)].Add(newEdge2);
+                    } catch {
+                        entitiesToEdges.Add(FindNode(node2Name), new List<NodeEdgePosition>(){newEdge2});
+                    }
 
-                edgeWeight = double.Parse(line.Split()[2]);
-            } catch { Debug.Log("Edge line parsing error"); }
-
-            NodeEdgePosition newEdge1 = new NodeEdgePosition(new FixedString32(node1Name), node1Coords, new FixedString32(node2Name), node2Coords, edgeWeight);
-            try
-            {
-                entitiesToEdges[sceneNodeEntities[node1Name]].Add(newEdge1);
-            }
-            catch
-            {
-                entitiesToEdges.Add(sceneNodeEntities[node1Name], new List<NodeEdgePosition>(){newEdge1});
-            }
-
-            NodeEdgePosition newEdge2 = new NodeEdgePosition(new FixedString32(node2Name), node2Coords, new FixedString32(node1Name), node1Coords, edgeWeight);
-            try 
-            {
-                entitiesToEdges[sceneNodeEntities[node2Name]].Add(newEdge2);
-            }
-            catch
-            {
-                entitiesToEdges.Add(sceneNodeEntities[node2Name], new List<NodeEdgePosition>(){newEdge2});
-            }
-
-            edgeConversionSteps++;
-            edgeConversionPercent = "Edge importation in progress. (" + String.Format("{0:0.00}", ((float)edgeConversionSteps / (float)rawEdgeInputLines.Length) * 100.0f) + "%)";
+                    edgeConversionSteps++;
+                    edgeConversionPercent = "Edge importation in progress. (" + String.Format("{0:0.00}", ((float)edgeConversionSteps / (float)rawNodeInputLines.Length) * 100.0f) + "%)";
+                }
+            } catch { Debug.Log("Edge addition error"); }
         }
         Debug.Log("Done converting edges");
     }
@@ -321,6 +316,11 @@ public class NetworkSceneManager : MonoBehaviour
         { 
             cur.SetActive(showOrHide);
         }
+    }
+
+    public Entity FindNode(string query)
+    {        
+        return sceneNodeEntitiesMappedToNames[query]; 
     }
 
     public void searchForNode(string query)
