@@ -1,10 +1,8 @@
 import sys
-import igraph
 import time
 from Functions import *
 from datetime import datetime
 from datetime import date
-from decimal import Decimal
 
 print('Python version ', sys.version)
 print('MDV PreProcessor Version 0.9')
@@ -35,112 +33,17 @@ outputPath = input("Enter output destination, leave blank for default... ")
 if not outputPath.strip():
 	outputPath = 'C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/'
 
-analysisRawInput = input("Do clustering analysis? (y/n) ")
+analysisRawInput = input("Do clustering analysis? (y/n)")
 doClusteringAnalysis = False;
 if analysisRawInput.strip() == "y":
 	doClusteringAnalysis = True
 
+genHullPos("")
+
 graph = FileToGraph(nodePath = nodePath, scorePath = scorePath, edgePath = edgePath)
- 
-print("Connected components: " + str(len(graph.clusters()))) 
+graphList = lvnProcessing(graph)
+graphList = genNodePos(graphList)
+outputData(graphList, outputPath)
 
-louvain_start_time = time.time()
-lvnClusteredGraph = graph.community_multilevel() # clusteredGraph is a vertex clustering object
-timeToLouvainCluster = "%s" % (time.time() - louvain_start_time)
-print("Took " + "%s seconds to cluster with Louvain" % (time.time() - louvain_start_time))
-print("Clusters after Louvain: " + str(lvnClusteredGraph.__len__()))
-print("Modularity: " + str(graph.modularity(lvnClusteredGraph, weights = "Edge_Weight")))
-
-miscBucketGraph = igraph.Graph(
-		vertex_attrs={
-			"displayName": "",
-			"description": "",
-			"networkRank": 0,
-			"baselineScore": 0,
-			"coordinates": 0
-		}, edge_attrs={"Edge_Weight": 0})
-
-#change this so that exporting to layout file is in a different block, and this block
-#just assigns coordinates
-
-graphString = ""
-
-clusterNum = 0 # 0 will be the <5 bucket graph
-for vClusterAsGraph in lvnClusteredGraph.subgraphs():
-
-	if vClusterAsGraph.vcount() > 5:
-		vClusterLayout = vClusterAsGraph.layout("fr3d")
-
-		j = 0
-		for coordinate in vClusterLayout:
-			connectionListStr = ""
-			for neighbor in vClusterAsGraph.vs[j].neighbors():
-				connectionListStr += neighbor["name"] + "," 
-
-			k = 0
-			for c in coordinate :
-				coordinate[k] = c + (25 * clusterNum)
-				k += 1
-
-			modCoordinate = coordinate
-			vClusterAsGraph.vs[j]["coordinates"] = modCoordinate
-
-			j += 1
-		clusterNum += 1
-		graphString += graphToStr(vClusterAsGraph)
-	else:
-		miscBucketGraph.__or__(vClusterAsGraph) #find way to delete the subgraphs dumped here
-                                                # or maybe because it's else they dont get outputted?
-
-miscBucketLayout = miscBucketGraph.layout("fr3d")
-j = 0
-for coordinate in miscBucketLayout:
-	connectionListStr = ""
-	for neighbor in vClusterAsGraph.vs[j].neighbors():
-		connectionListStr += neighbor["name"] + "," 
-
-	k = 0
-	for c in coordinate :
-		coordinate[k] = c + (25 * j)
-		k += 1
-
-	modCoordinate = coordinate
-	vClusterAsGraph.vs[j]["coordinates"] = modCoordinate
-	j += 1
-
-graphString += graphToStr(miscBucketGraph)
-
-# Saves the string we created as a "massive dataset visualizer layout file"
-outputFile = open(outputPath + ("output - " + str(date.today()) + ".mdvl"), "w")
-outputFile.write(graphString)
-outputFile.close()
-
-
-# go through each subgraph
 if doClusteringAnalysis == True:
-	histogramDict = { 1 : 0 } # create histogram of cluster sizes
-
-	for subGraph in lvnClusteredGraph.subgraphs():
-		try: 
-			histogramDict[subGraph.vcount()] = histogramDict[subGraph.vcount()] + 1
-		except:
-			histogramDict[subGraph.vcount()] = 1
-
-	clusterSizeHistString = "Times (s): ," + timeToImport + "," + timeToGenerateiGraph + "," + timeToLouvainCluster + "\n"
-	clusterSizeHistString += "\n"
-	clusterSizeHistString += "node parse fails,score parse fails,edge parse fails\n"
-	clusterSizeHistString += str(nodeParseFails) + "," + str(scoreParseFails) + "," + str(edgeParseFails) + "\n"
-	clusterSizeHistString += "\n"
-	clusterSizeHistString += "connected components,clusters after louvain,modularity after louvain\n"
-	clusterSizeHistString += str(len(graph.clusters())) + "," + str(lvnClusteredGraph.__len__()) + "," + str(graph.modularity(lvnClusteredGraph, weights = "Edge_Weight")) + "\n"
-	clusterSizeHistString += "\n"
-	clusterSizeHistString += "cluster size,number of clusters\n"
-	for clusterSize, numClusters in histogramDict.items():
-		clusterSizeHistString  += str(clusterSize) + "," + str(numClusters) + "\n"
-
-    # find if there is a function that gets the total amount of vertices in all the subgraphs of a vertex clustering object
-    #clusterSizeHistString += "\n" + "Nodes after Louvain clustering (should not be different than nodes in node file - node parse fails: " + str(clusteredGraph.subgraphs()) + "\n"
-
-	clusterSizeHistOutputFile = open(outputPath + ("cluster size histogram - " + str(date.today()) + ".csv"), "w")
-	clusterSizeHistOutputFile.write(clusterSizeHistString)
-	clusterSizeHistOutputFile.close()
+	outputHist(graphList, outputPath)

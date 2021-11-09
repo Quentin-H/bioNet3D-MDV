@@ -1,6 +1,9 @@
 import sys
+from igraph import *
 import igraph
 import time
+import pyhull
+import pyhull.convex_hull
 from datetime import datetime
 from datetime import date
 from decimal import Decimal
@@ -26,7 +29,6 @@ def FileToGraph(nodePath, scorePath, edgePath):
     edgeFileLines = []
     try:
         edgeFileLines = open(edgePath, 'r').readlines()
-        print(len(edgeFileLines))
     except:
         print("Opening edge file failed, quitting...")
         print(edgePath)
@@ -117,10 +119,114 @@ def FileToGraph(nodePath, scorePath, edgePath):
 
     return graph
 
-def generateCoords():
-    print()
 
-def graphToStr(graph):
+def outputData(graphList, outputPath):
+	graphString = ""
+	i = 0
+	for subgraph in graphList:
+		graphString += GraphToStr(subgraph)
+		i +=1
+
+	# "massive dataset visualizer layout file"
+	outputFile = open(outputPath + ("output - " + str(date.today()) + ".mdvl"), "w")
+	outputFile.write(graphString)
+	outputFile.close()
+
+
+def outputHist(graphList, outputPath):
+	histogramDict = { 1 : 0 }
+
+	for subGraph in graphList:
+		try: 
+			histogramDict[subGraph.vcount()] = histogramDict[subGraph.vcount()] + 1
+		except:
+			histogramDict[subGraph.vcount()] = 1
+
+	clusterSizeHistString = "cluster size,number of clusters\n"
+	for clusterSize, numClusters in histogramDict.items():
+		clusterSizeHistString  += str(clusterSize) + "," + str(numClusters) + "\n"
+
+	clusterSizeHistOutputFile = open(outputPath + ("cluster size histogram - " + str(date.today()) + ".csv"), "w")
+	clusterSizeHistOutputFile.write(clusterSizeHistString)
+	clusterSizeHistOutputFile.close()
+
+
+# maybe automate scale arg by basing it on number of nodes in each subgraph somehow
+def generateOnSpherePos(numOfPos, scale):
+	graph = igraph.Graph(numOfPos)
+	posList = []
+	layout = graph.layout("sphere")
+	layout.center(0,0,0)
+	layout.scale(scale)
+
+	for coordinate in layout:
+		posList.append(coordinate)
+
+	return posList
+
+#runs louvain and puts small clusters into a seperate graph
+def lvnProcessing(graph):
+	lvnClusteredGraph = graph.community_multilevel() # clusteredGraph is a vertex clustering object
+	amountOfBiggerThan5 = 0
+	for subgraph in lvnClusteredGraph.subgraphs():
+		if subgraph.vcount() > 5:
+			amountOfBiggerThan5 += 1
+	amountOfClusters = amountOfBiggerThan5 + 1
+	lessThan5List = []
+	graphList = []
+	clusterPosList = generateOnSpherePos(amountOfClusters, 75)
+	clusterNum = 1 # 0 will be the <5 bucket graph
+	for subgraph in lvnClusteredGraph.subgraphs():
+		if subgraph.vcount() > 5:
+			graphList.append(subgraph)
+			clusterNum += 1
+		else:
+			lessThan5List.append(subgraph.copy())
+
+	miscBucketGraph = igraph.Graph(vertex_attrs={"displayName": "","description": "","networkRank": 0,"baselineScore": 0,"coordinates": 0}, edge_attrs={"Edge_Weight": 0})
+	miscBucketGraph = miscBucketGraph.disjoint_union(lessThan5List)
+	graphList.insert(0, miscBucketGraph)
+	return graphList
+
+def genNodePos(inputGraphList):
+	graphListWithPos = []
+	graphList = inputGraphList
+	miscBucketLayout = graphList[0].layout("fr3d") # maybe try drl_3d too
+	miscBucketLayout.center(-160,0,0)
+	newMiscGraph = graphList[0]
+
+	i = 0
+	for coordinate in miscBucketLayout:
+		graphList[0].vs[i]["coordinates"] = coordinate
+		i += 1 
+	graphListWithPos.append(newMiscGraph)
+
+	posList = generateOnSpherePos(len(graphList), 75)
+
+	i = 0
+	for graph in graphList:
+		newGraph = graph
+		if i != 0:
+			layout = graph.layout("fr3d")
+			layout.center(posList[i])
+			j = 0
+			for coordinate in layout:
+				newGraph.vs[j]["coordinates"] = coordinate
+				j += 1
+			graphListWithPos.append(newGraph)
+		i += 1
+	
+	#get pos on sphere for length - 1 and do fr3d on each cluster and set center to a pos on sphere
+	return graphListWithPos
+
+
+def genHullPos(inputGraphList):
+	pyhull.convex_hull.ConvexHull(generateOnSpherePos(320, 75), joggle=True )
+
+	return ""
+
+
+def GraphToStr(graph):
     outputStr = ""
 
     for node in graph.vs:
@@ -136,18 +242,7 @@ def graphToStr(graph):
             + "|" + str(node["networkRank"]) 
             + "|" + str(node["baselineScore"]) 
             + "|" + str(node.degree())
-            + "|" + connectionListStr
+            + "|" + connectionListStr #leaving out for now because lines longer than 1024 cause problems
             + "\n")
-
         outputStr += currentLine
-
     return outputStr
-
-
-def stackoverflow(self, i=None):
-        if i is None:
-            print ('g')
-        else:
-            print ('h')
-
-
