@@ -211,12 +211,20 @@ def genNodePos(inputGraphList):
 	for graph in graphList:
 		newGraph = graph
 		if i != 0:
-			layout = graph.layout("fr3d")
-			layout.center(posList[i])
+			layout = graph.layout_fruchterman_reingold()
+			# first number is diameter of circle
+			sideL = (10 * math.sqrt(2)) # side length of largest square that fits in a r = 1 circle
+			layout.fit_into(bbox = ( sideL, sideL) )
+
 			j = 0
-			for coordinate in layout:
-				newGraph.vs[j]["coordinates"] = coordinate
+			for coordinate in layout: # for each node in the mini graph
+				coord = [0, i * 5, 0]
+				coord[0] = coordinate[0]
+				coord[2] = coordinate[1]
+				#do transformation here
+				newGraph.vs[j]["coordinates"] = coord
 				j += 1
+
 			graphListWithPos.append(newGraph)
 		i += 1
 	
