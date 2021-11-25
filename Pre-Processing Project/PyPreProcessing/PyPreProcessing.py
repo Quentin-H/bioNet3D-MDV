@@ -14,9 +14,9 @@ print(' ')
 # edgePath = input("Enter edge file path... ")         # C:\Users\Quentin Herzig\GitHub Repositories\bioNet3D-MDV\Sample Files\Yeast Sample\4932.blastp_homology.edge
 
 # for yeast
-nodePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.node_map.txt"
-scorePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/features_ranked_per_phenotype.txt"
-edgePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.blastp_homology.edge"
+nPath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.node_map.txt"
+sPath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/features_ranked_per_phenotype.txt"
+ePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.blastp_homology.edge"
 
 # for small human
 #nodePath = "C:/Users/Quentin Herzig/GitHub Repositories/bioNet3D-MDV/Sample Files/Small Human Sample/9606.node_map.txt"
@@ -38,12 +38,10 @@ doClusteringAnalysis = False;
 if analysisRawInput.strip() == "y":
 	doClusteringAnalysis = True
 
-genHullPos("")
-
-graph = FileToGraph(nodePath = nodePath, scorePath = scorePath, edgePath = edgePath)
-graphList = lvnProcessing(graph)
-graphList = genNodePos(graphList)
-outputData(graphList, outputPath)
+graph = Functions.FileToGraph(nodePath = nPath, scorePath = sPath, edgePath = ePath)
+graphList = Functions.lvnProcessing(graph)
+graphList = Functions.genNodePos(graphList)
+Functions.outputData(graphList, outputPath)
 
 if doClusteringAnalysis == True:
 	outputHist(graphList, outputPath)

@@ -33,8 +33,6 @@ public class NetworkSceneManager : MonoBehaviour
     private GameObject inputDataHolder;
     private bool edgesShowing = false;
     public Button showHideEdgesButton;
-    private string edgeConversionPercent;
-    private int edgeConversionSteps;
 
     public GameObject topNetworkRankObject;
     private List<GameObject> topNetworkRankObjects = new List<GameObject>();
@@ -43,13 +41,14 @@ public class NetworkSceneManager : MonoBehaviour
     private float4[] topBaselineScoreLocations = new float4[200]; // first 3 values are coordinates, the last one is the value associated with the node here
     public GameObject topDegreeObject;
     private List<GameObject> topDegreeObjects = new List<GameObject>();
-    private IDictionary<FixedString32, Entity> sceneNodeEntities = new Dictionary<FixedString32, Entity>(); // This is for use internally liek creating edges, since internally genes are identified by feature IDs
-    private IDictionary<String, Entity> sceneNodeEntitiesMappedToNames = new Dictionary<String, Entity>(); // This is for use with searching for nodes since the user would use names
+    public GameObject facetCircleObject;
+    private IDictionary<FixedString32, Entity> fixedIDsToSceneNodeEntities = new Dictionary<FixedString32, Entity>(); // This is for use internally liek creating edges, since internally genes are identified by feature IDs
+    private IDictionary<String, Entity> namesToSceneNodeEntities = new Dictionary<String, Entity>(); // This is for use with searching for nodes since the user would use names
     //maybe add dictionary with keys as coordinates if we want a feature that finds the connected node
     private List<float4> blineList = new List<float4>(); // first 3 values are coordinates, last is value, populated when spawning nodes
     private List<float4> degreeList = new List<float4>();  // first 3 values are coordinates, last is value, populated when spawning nodes
-    private Dictionary<Entity, List<NodeEdgePosition>> entitiesToEdges = new Dictionary<Entity, List<NodeEdgePosition>>();
     private List<GameObject> activeLines = new List<GameObject>();
+    private Dictionary<Entity, List<Entity>> entitiesToConnectedEntities = new Dictionary<Entity, List<Entity>>();
 
 
     private void Start() 
@@ -72,14 +71,12 @@ public class NetworkSceneManager : MonoBehaviour
         
         ConvertRawInputNodes(); // this has to complete before convert raw input edges
 
-        // sort this by baseline score List<Order> SortedList = objListOrder.OrderBy(o=>o.OrderDate).ToList();
         blineList = blineList.OrderByDescending(o => o.w).ToList();
         for (int i = 0; i < 200; i++)
         {
             GameObject newObject = Instantiate(topBaselineScoreObject, new float3(blineList[i].x, blineList[i].y, blineList[i].z), Quaternion.identity);
             topBaselineScoreObjects.Add(newObject);
         }
-        // get top 200 and spawn objects at locations at each 
 
         degreeList = degreeList.OrderByDescending(o => o.w).ToList();
         for (int i = 0; i < 200; i++)
@@ -88,7 +85,10 @@ public class NetworkSceneManager : MonoBehaviour
             topDegreeObjects.Add(newObject);
         }
 
-        ConvertRawInputEdges();
+
+        string rawLayoutInput = "";
+        try { rawLayoutInput = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile; } catch { }
+        try { SpawnFacetCircles(rawLayoutInput); } catch {}
     }
 
     private void OnDestroy() 
@@ -104,6 +104,8 @@ public class NetworkSceneManager : MonoBehaviour
         string[] rawLayoutInputLines = new string[0];
         try { rawLayoutInputLines = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile.Split('\n'); } catch { }
 
+        Dictionary<Entity, List<String>> entitiesToConnectedIDs = new Dictionary<Entity, List<String>>();
+
         foreach(string line in rawLayoutInputLines) 
         {
             if (String.IsNullOrWhiteSpace(line))
@@ -118,7 +120,8 @@ public class NetworkSceneManager : MonoBehaviour
             int nRank = 0;
             double blineScore = 0;
             int deg = 0;
-            int cluster = -1;
+            int clusterNum = -1;
+            string[] connectionIDsFromFile = new string[0];
 
             try
             {
@@ -133,20 +136,44 @@ public class NetworkSceneManager : MonoBehaviour
                 nRank = int.Parse(line.Split('|')[4].Trim());
                 blineScore = double.Parse(line.Split('|')[5].Trim());
                 deg = int.Parse(line.Split('|')[6].Trim());
-                //cluster = int.Parse(line.Split('|')[7].Trim());
+                clusterNum = int.Parse(line.Split('|')[7].Trim());
+                connectionIDsFromFile = line.Split('|')[8].Trim().Split(',');
 
-                SpawnNode(fID, coord, dName, desc, nRank, blineScore, deg);
-            } catch (ArgumentException ex) { /*Debug.Log("Node already spawned");*/ } // Sometimes somehow the node has already been spawned and is present in the scene, I do not know how this happens because when I search for the nodes in the file they are only there once.
+                Entity e = SpawnNode(fID, coord, dName, desc, nRank, blineScore, deg, clusterNum);
+
+                List<string> connectedIDs = new List<string>(); 
+
+                foreach(string connectedNode in connectionIDsFromFile) 
+                {
+                    connectedIDs.Add(connectedNode.Trim());
+                }
+                entitiesToConnectedIDs.Add(e, connectedIDs);
+                // then in another thing create edge positions, must do this after when all nodes are spawned
+            } catch { Debug.Log(line); } // Sometimes somehow the node has already been spawned and is present in the scene
         }
+
+        foreach(KeyValuePair<Entity, List<string>> entry in entitiesToConnectedIDs) 
+        {
+            List<Entity> connectedEntities = new List<Entity>();
+            foreach(string connectedID in entry.Value) 
+            {
+                try
+                {
+                    connectedEntities.Add(FindNode(connectedID)); 
+                } catch {}
+            }
+            entitiesToConnectedEntities.Add(entry.Key, connectedEntities);
+        }
+
         Debug.Log("Done Spawning");
     }
 
-    private void SpawnNode(string fID, float3 coord, string dName, string desc, int nRank, double blineScore, int deg)
+    private Entity SpawnNode(string fID, float3 coord, string dName, string desc, int nRank, double blineScore, int deg, int clusterNum)
     {
-        if (fID == "" || fID == null)
+        /*if (fID == "" || fID == null)
         {
             return;
-        }
+        }*/
 
         if (nRank <= 200) // adds a billboard if the network rank is less than or equal to 200
         {
@@ -181,68 +208,49 @@ public class NetworkSceneManager : MonoBehaviour
             description = desc, 
             networkRank = nRank,
             baselineScore = blineScore,
-            degree = deg 
+            degree = deg,
+            cluster = clusterNum
         });
 
         FixedString32 idAsFixed = fID;
-        sceneNodeEntities.Add(idAsFixed, newNodeEntity);
-        Entity t = sceneNodeEntities[idAsFixed];
-        sceneNodeEntitiesMappedToNames.Add(dName, newNodeEntity);
+        fixedIDsToSceneNodeEntities.Add(idAsFixed, newNodeEntity);
+        namesToSceneNodeEntities.Add(dName, newNodeEntity);
+        return newNodeEntity;
     }
 
-    private void ConvertRawInputEdges()
+    private void SpawnFacetCircles(string rawInput) 
     {
-        Debug.Log("Started edge conversion");
+        //string[] facetCoordLines = rawInput.Split('#')[1].Split('$')[1].Split('\n');
+        string[] facetCoordLines = rawInput.Split('$')[1].Split('\n');
 
-        string[] rawNodeInputLines = new string[0];
-
-        try { 
-            rawNodeInputLines = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile.Split('\n'); 
-        } catch {
-            Debug.Log("No Edge File");
-        }
-
-        foreach(string line in rawNodeInputLines)  
+        foreach(string line in facetCoordLines) 
         {
-            try {
-                foreach(string connectedNode in line.Split('|')[7].Split(',')) 
-                {
-                    string node1Name = "";
-                    float3 node1Coords = new float3(0,0,0);
-                    string node2Name = connectedNode.Trim();
-                    float3 node2Coords = new float3(0,0,0);
-                    double edgeWeight = 0.0;
-
-                    try 
-                    {
-                        node1Name = line.Split('|')[0].Trim();
-                        node1Coords = entityManager.GetComponentData<Translation>(FindNode(node1Name)).Value; // we should be doing this by getting the LocalToWorld component but for some reason if this isnt an enumerator that returns 0
-                        node2Coords = entityManager.GetComponentData<Translation>(FindNode(node2Name)).Value;
-                        //edgeWeight = double.Parse(line.Split()[2]); not using weights rn
-                    } catch { Debug.Log("Edge line parsing error"); }
-
-                    NodeEdgePosition newEdge1 = new NodeEdgePosition(new FixedString32(node1Name), node1Coords, new FixedString32(node2Name), node2Coords, edgeWeight);
-                    try
-                    {
-                        entitiesToEdges[FindNode(node1Name)].Add(newEdge1);
-                    } catch {
-                        entitiesToEdges.Add(FindNode(node1Name), new List<NodeEdgePosition>(){newEdge1});
-                    }
-
-                    NodeEdgePosition newEdge2 = new NodeEdgePosition(new FixedString32(node2Name), node2Coords, new FixedString32(node1Name), node1Coords, edgeWeight);
-                    try 
-                    {
-                        entitiesToEdges[FindNode(node2Name)].Add(newEdge2);
-                    } catch {
-                        entitiesToEdges.Add(FindNode(node2Name), new List<NodeEdgePosition>(){newEdge2});
-                    }
-
-                    edgeConversionSteps++;
-                    edgeConversionPercent = "Edge importation in progress. (" + String.Format("{0:0.00}", ((float)edgeConversionSteps / (float)rawNodeInputLines.Length) * 100.0f) + "%)";
-                }
-            } catch { Debug.Log("Edge addition error"); }
+            try 
+            {
+                string[] coordStrings = line.Split('[')[1].Split(']')[0].Split(',');
+                float x = float.Parse(coordStrings[0]) * 5f;
+                float y = float.Parse(coordStrings[1]) * 5f;
+                float z = float.Parse(coordStrings[2]) * 5f;
+                Vector3 coords = new Vector3(x, y, z);
+                GameObject newFacetCircle = Instantiate(facetCircleObject, coords, Quaternion.identity);
+                // if second param set to Vector3.up it looks  cool
+                newFacetCircle.transform.LookAt(Vector3.zero);
+            } catch { 
+                Debug.Log(line); 
+            }
         }
-        Debug.Log("Done converting edges");
+    }
+
+    public Entity FindNode(string query)
+    {
+        try
+        {
+            return fixedIDsToSceneNodeEntities[query];
+        } 
+        catch 
+        {
+            return namesToSceneNodeEntities[query]; //add error handling if nothing found
+        }
     }
 
     //  U      U    I
@@ -253,31 +261,35 @@ public class NetworkSceneManager : MonoBehaviour
     {
         Entity selectedEntity =  networkCamera.selectedEntity;
 
+        float4 selectedEntityPosAs4 = entityManager.GetComponentData<LocalToWorld>(selectedEntity).Value[3];
+        float3 selectedEntityPos = new float3(selectedEntityPosAs4.x, selectedEntityPosAs4.y, selectedEntityPosAs4.z);
+        
         edgesShowing = !edgesShowing;
 
         if (edgesShowing) //show the edges
         {
             showHideEdgesButton.GetComponentInChildren<Text>().text = "Hide Edges";
 
-            try //if the degree is 0 then there will not be a key in the dictionary so it will throw an error, but that's fine, we don't need to do anything in that case
+            try 
             {
-                foreach(NodeEdgePosition nodeEdgePos in entitiesToEdges[selectedEntity])
+                foreach(Entity connectedEntity in entitiesToConnectedEntities[selectedEntity])
                 {
-                    // Charles says not to worry about self connections. However, they still add 2 degrees to nodes so this needs to be fixed
+                    float4 connectedEntityPosAs4 = entityManager.GetComponentData<LocalToWorld>(connectedEntity).Value[3];
+                    float3 connectedEntityPos = new float3(connectedEntityPosAs4.x, connectedEntityPosAs4.y, connectedEntityPosAs4.z);
 
                     GameObject line = new GameObject();
                     activeLines.Add(line);
-                    line.transform.position = nodeEdgePos.nodeACoords;
+                    line.transform.position = connectedEntityPos;
                     line.AddComponent<LineRenderer>();
                     LineRenderer lr = line.GetComponent<LineRenderer>();
-                    Color evaluatedColor = edgeValueGradient.Evaluate((float)nodeEdgePos.weight * 10000); // multiply by 100000, bc the edge weight numbers are too small to make a significant difference on the gradient
+                    //Color evaluatedColor = edgeValueGradient.Evaluate((float)nodeEdgePos.weight * 10000); // multiply by 100000, bc the edge weight numbers are too small to make a significant difference on the gradient
                     lr.material = new UnityEngine.Material(Shader.Find("HDRP/Unlit")); // add shader that supports transparency
-                    lr.GetComponent<Renderer>().material.color = evaluatedColor;
-                    //lr.SetWidth(0.25f, 0.25f);
-                    lr.startWidth = 0.25f;
-                    lr.endWidth = 0.25f;
-                    lr.SetPosition(0, nodeEdgePos.nodeACoords);
-                    lr.SetPosition(1, nodeEdgePos.nodeBCoords);
+                    //lr.GetComponent<Renderer>().material.color = evaluatedColor;
+                    lr.GetComponent<Renderer>().material.color = Color.yellow;
+                    lr.startWidth = 0.1f;
+                    lr.endWidth = 0.1f;
+                    lr.SetPosition(0, selectedEntityPos);
+                    lr.SetPosition(1, connectedEntityPos);
                 }
             } catch { } 
             
@@ -286,9 +298,8 @@ public class NetworkSceneManager : MonoBehaviour
         {
             foreach(GameObject cur in activeLines) 
             {
-                
                 //Destroy(cur.GetComponent<Renderer>().material);   //Prevents a memory leak because we manually created the material when spawning the line (do we need this?)
-                Destroy(cur);
+                Destroy(cur); // i think material needs to be destroyed seperately, there is probably a memory leak right now
             }
             showHideEdgesButton.GetComponentInChildren<Text>().text = "Show Edges";
         } 
@@ -318,16 +329,11 @@ public class NetworkSceneManager : MonoBehaviour
         }
     }
 
-    public Entity FindNode(string query)
-    {        
-        return sceneNodeEntitiesMappedToNames[query]; 
-    }
-
-    public void searchForNode(string query)
+    public void searchForNode(string query) // move this into network camera
     {        
         try 
         {
-            networkCamera.selectedEntity = sceneNodeEntitiesMappedToNames[query];
+            networkCamera.selectedEntity = FindNode(query);
             networkCamera.nodeSelected = true;
             networkCamera.focusOnNode();
         } catch { Debug.Log("Node in query not found"); }
@@ -357,5 +363,4 @@ public class NetworkSceneManager : MonoBehaviour
 
     private void SetColor(Gradient currentGradient) { }
     //--------------------------------------------------
-
 }
