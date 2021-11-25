@@ -10,9 +10,9 @@ from decimal import Decimal
 import numpy
 import sphvoronoi
 
+SCALE_VALUE = 75
 
 class Functions:
-	SCALE_VALUE = 75
 
 	def FileToGraph(nodePath, scorePath, edgePath):
 		import_time = time.time()
@@ -170,7 +170,7 @@ class Functions:
 		amountOfClusters = amountOfBiggerThan5 + 1
 		lessThan5List = []
 		graphList = []
-		clusterPosList = Functions.generateOnSpherePos(amountOfClusters, self.SCALE_VALUE)
+		clusterPosList = Functions.generateOnSpherePos(amountOfClusters, SCALE_VALUE)
 		clusterNum = 1 # 0 will be the <5 bucket graph
 		for subgraph in lvnClusteredGraph.subgraphs():
 			if subgraph.vcount() > 5:
@@ -201,7 +201,7 @@ class Functions:
 			i += 1 
 		graphListWithPos.append(newMiscGraph)
 
-		posList = Functions.generateOnSpherePos(len(graphList), self.SCALE_VALUE) #maybe subtract 1 since misc isnt included
+		posList = Functions.generateOnSpherePos(len(graphList), SCALE_VALUE) #maybe subtract 1 since misc isnt included
 
 		hullnet = sphvoronoi.HullNet( posList )
 
@@ -268,7 +268,7 @@ class Functions:
 
 		graphString += "#$" + "\n"
 		posListStr = ""
-		for pos in Functions.generateOnSpherePos(len(graphList), self.SCALE_VALUE):
+		for pos in Functions.generateOnSpherePos(len(graphList), SCALE_VALUE):
 			posListStr += str(pos) + "\n"
 		graphString += posListStr
 
