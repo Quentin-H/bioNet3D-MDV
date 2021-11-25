@@ -712,6 +712,7 @@ MonoBehaviour:
   networkRank: 0
   baselineScore: 0
   degree: 0
+  cluster: 0
 --- !u!114 &1831211081269285723
 MonoBehaviour:
   m_ObjectHideFlags: 0
