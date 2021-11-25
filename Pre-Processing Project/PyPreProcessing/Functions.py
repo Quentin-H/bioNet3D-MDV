@@ -10,12 +10,6 @@ from decimal import Decimal
 import numpy
 import sphvoronoi
 
-###note for dictionary/bline file (do this for edges too)
-
-#use voronoiverts to get vertixes for 3d model
-#there is a object for each cluster and each of these is a set of vertices (3d list)
-
-#for i, graph in enumerate( graphList ):
 
 class Functions:
 
@@ -175,7 +169,7 @@ class Functions:
 		amountOfClusters = amountOfBiggerThan5 + 1
 		lessThan5List = []
 		graphList = []
-		clusterPosList = Functions.generateOnSpherePos(amountOfClusters, 75)
+		clusterPosList = Functions.generateOnSpherePos(amountOfClusters, 1)
 		clusterNum = 1 # 0 will be the <5 bucket graph
 		for subgraph in lvnClusteredGraph.subgraphs():
 			if subgraph.vcount() > 5:
@@ -206,7 +200,7 @@ class Functions:
 			i += 1 
 		graphListWithPos.append(newMiscGraph)
 
-		posList = Functions.generateOnSpherePos(len(graphList), 75) #maybe subtract 1 since misc isnt included
+		posList = Functions.generateOnSpherePos(len(graphList), 1) #maybe subtract 1 since misc isnt included
 
 		hullnet = sphvoronoi.HullNet( posList )
 
@@ -225,7 +219,7 @@ class Functions:
 				j = 0
 				for coordinate in layout: # for each node in the mini graph
 					newGraph.vs[j]["cluster"] = i
-					coord = [coordinate[0], coordinate[1], newGraph.vs[j].degree() / 50] # i * 5
+					coord = [coordinate[0], coordinate[1], newGraph.vs[j].degree() / 75] # i * 5
 					#do transformation here
 					coord = numpy.dot( coord, tfmrot ) + tfmtranslate
 				
@@ -273,7 +267,7 @@ class Functions:
 
 		graphString += "#$" + "\n"
 		posListStr = ""
-		for pos in Functions.generateOnSpherePos(len(graphList), 75):
+		for pos in Functions.generateOnSpherePos(len(graphList), 1):
 			posListStr += str(pos) + "\n"
 		graphString += posListStr
 
