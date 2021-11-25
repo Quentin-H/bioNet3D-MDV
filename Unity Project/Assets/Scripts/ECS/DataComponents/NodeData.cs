@@ -10,4 +10,5 @@ public struct NodeData : IComponentData
     public int networkRank; // i + 1
     public double baselineScore;
     public int degree;
+    public int cluster;
 }
