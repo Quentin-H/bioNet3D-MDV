@@ -11,6 +11,7 @@ import numpy
 import sphvoronoi
 
 SCALE_VALUE = 75
+OnSpherePositions = []
 
 class Functions:
 
@@ -150,11 +151,10 @@ class Functions:
 	# maybe automate scale arg by basing it on number of nodes in each subgraph somehow
 	def generateOnSpherePos(numOfPos, scale):
 		graph = igraph.Graph(numOfPos)
-		posList = []
 		layout = graph.layout("sphere")
 		layout.center(0,0,0)
 		layout.scale(scale)
-
+		posList = []
 		for coordinate in layout:
 			posList.append(coordinate)
 
@@ -200,10 +200,9 @@ class Functions:
 			graphList[0].vs[i]["cluster"] = 0
 			i += 1 
 		graphListWithPos.append(newMiscGraph)
-
-		posList = Functions.generateOnSpherePos(len(graphList), SCALE_VALUE) #maybe subtract 1 since misc isnt included
-
-		hullnet = sphvoronoi.HullNet( posList )
+		OnSpherePositions = []
+		OnSpherePositions = Functions.generateOnSpherePos(len(graphList), SCALE_VALUE) #maybe subtract 1 since misc isnt included
+		hullnet = sphvoronoi.HullNet( OnSpherePositions )
 
 		i = 0
 		for graph in graphList:
@@ -220,7 +219,8 @@ class Functions:
 				j = 0
 				for coordinate in layout: # for each node in the mini graph
 					newGraph.vs[j]["cluster"] = i
-					coord = [coordinate[0], coordinate[1], newGraph.vs[j].degree() / 100] # i * 5
+					coord = [coordinate[0], coordinate[1], newGraph.vs[j].degree() / 100]
+					#coord = [coordinate[0], coordinate[1], 0]
 					#do transformation here
 					coord = numpy.dot( coord, tfmrot ) + tfmtranslate
 				
@@ -268,7 +268,7 @@ class Functions:
 
 		graphString += "#$" + "\n"
 		posListStr = ""
-		for pos in Functions.generateOnSpherePos(len(graphList), SCALE_VALUE):
+		for pos in OnSpherePositions:
 			posListStr += str(pos) + "\n"
 		graphString += posListStr
 
