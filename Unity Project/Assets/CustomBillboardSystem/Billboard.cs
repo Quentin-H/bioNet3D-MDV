@@ -11,10 +11,17 @@ public class Billboard : MonoBehaviour
     private Camera camera;
     private Vector3 initialScale; 
 
+    public bool screenspace;
+
     private void Awake() 
     {
         camera = Camera.main;
-        initialScale = transform.localScale * scale; 
+        initialScale = transform.localScale * scale;
+
+        if (!screenspace) 
+        {
+            transform.localScale = new Vector3(scale, scale, scale);
+        } 
     }
 
     private void Update()
@@ -22,9 +29,12 @@ public class Billboard : MonoBehaviour
         transform.LookAt(camera.transform);
         transform.Rotate(0f, 0f, yawAngleOffset);
 
-        Plane plane = new Plane(camera.transform.forward, camera.transform.position); 
-		float dist = plane.GetDistanceToPoint(transform.position);
-        //if ( (dist * scale) > maxScale) { transform.localScale = initialScale * maxScale; } 
-		transform.localScale = initialScale * dist; 
+        if (screenspace) 
+        {
+            Plane plane = new Plane(camera.transform.forward, camera.transform.position); 
+		    float dist = plane.GetDistanceToPoint(transform.position);
+            //if ( (dist * scale) > maxScale) { transform.localScale = initialScale * maxScale; } 
+		    transform.localScale = initialScale * dist; 
+        } 
     }
 }
