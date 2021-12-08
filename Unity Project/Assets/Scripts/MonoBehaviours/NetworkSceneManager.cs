@@ -16,11 +16,11 @@ public class NetworkSceneManager : MonoBehaviour
 {
     [HideInInspector]
     public static NetworkSceneManager instance;
-    public NetworkCamera networkCamera;
+    [SerializeField] private NetworkCamera networkCamera;
 
-    public GameObject nodePrefab;
-    public Gradient nodeValueGradient;
-    public Gradient edgeValueGradient;
+    [SerializeField] private GameObject nodePrefab;
+    [SerializeField] private Gradient nodeValueGradient;
+    [SerializeField] private Gradient edgeValueGradient;
     // If set to low number ex. 10, creates beautiful patterns on layouts besides fr3d
     // Figure out a way to automatically set this based on the layout so points aren't too close together
     public float positionMultiplier;
@@ -32,16 +32,17 @@ public class NetworkSceneManager : MonoBehaviour
 
     private GameObject inputDataHolder;
     private bool edgesShowing = false;
-    public Button showHideEdgesButton;
+    [SerializeField] private Button showHideNodeEdgesButton;
+    [SerializeField] private Button showHideClusterEdgesButton; // will have to add cluster->entity dictionary
 
-    public GameObject topNetworkRankObject;
+    [SerializeField] private GameObject topNetworkRankObject;
     private List<GameObject> topNetworkRankObjects = new List<GameObject>();
-    public GameObject topBaselineScoreObject;
+    [SerializeField] private GameObject topBaselineScoreObject;
     private List<GameObject> topBaselineScoreObjects = new List<GameObject>();
     private float4[] topBaselineScoreLocations = new float4[200]; // first 3 values are coordinates, the last one is the value associated with the node here
-    public GameObject topDegreeObject;
+    [SerializeField] private GameObject topDegreeObject;
     private List<GameObject> topDegreeObjects = new List<GameObject>();
-    public GameObject facetCircleObject;
+    [SerializeField] private GameObject facetCircleObject;
     private IDictionary<FixedString32, Entity> fixedIDsToSceneNodeEntities = new Dictionary<FixedString32, Entity>(); // This is for use internally liek creating edges, since internally genes are identified by feature IDs
     private IDictionary<String, Entity> namesToSceneNodeEntities = new Dictionary<String, Entity>(); // This is for use with searching for nodes since the user would use names
     //maybe add dictionary with keys as coordinates if we want a feature that finds the connected node
@@ -222,7 +223,7 @@ public class NetworkSceneManager : MonoBehaviour
     {
         //string[] facetCoordLines = rawInput.Split('#')[1].Split('$')[1].Split('\n');
         string[] facetCoordLines = rawInput.Split('$')[1].Split('\n');
-
+        Debug.Log(facetCoordLines.Length);
         foreach(string line in facetCoordLines) 
         {
             try 
@@ -235,6 +236,7 @@ public class NetworkSceneManager : MonoBehaviour
                 GameObject newFacetCircle = Instantiate(facetCircleObject, coords, Quaternion.identity);
                 // if second param set to Vector3.up it looks  cool
                 newFacetCircle.transform.LookAt(Vector3.zero);
+                Debug.Log(coords);
             } catch { 
                 Debug.Log(line); 
             }
@@ -245,11 +247,18 @@ public class NetworkSceneManager : MonoBehaviour
     {
         try
         {
-            return fixedIDsToSceneNodeEntities[query];
+            return fixedIDsToSceneNodeEntities[query.Trim()];
         } 
         catch 
         {
-            return namesToSceneNodeEntities[query]; //add error handling if nothing found
+            try 
+            {
+                return namesToSceneNodeEntities[query.Trim()];
+            }
+            catch
+            {
+                throw new ArgumentException("Invalid Node Query");
+            }
         }
     }
 
@@ -257,9 +266,9 @@ public class NetworkSceneManager : MonoBehaviour
     //  U      U    I
     //  U      U    I
     //   UUUUUU     I
-    public void showHideEdges()
+    public void showHideNodeEdges() // THIS SHOULD BE MOVED TO CAMERA SCRIPT PRIOR TO INTEGRATING WITH YANKUN/KE
     {
-        Entity selectedEntity =  networkCamera.selectedEntity;
+        Entity selectedEntity =  networkCamera.getSelectedEntity();
 
         float4 selectedEntityPosAs4 = entityManager.GetComponentData<LocalToWorld>(selectedEntity).Value[3];
         float3 selectedEntityPos = new float3(selectedEntityPosAs4.x, selectedEntityPosAs4.y, selectedEntityPosAs4.z);
@@ -268,7 +277,7 @@ public class NetworkSceneManager : MonoBehaviour
 
         if (edgesShowing) //show the edges
         {
-            showHideEdgesButton.GetComponentInChildren<Text>().text = "Hide Edges";
+            showHideNodeEdgesButton.GetComponentInChildren<Text>().text = "Hide Node Edges";
 
             try 
             {
@@ -292,8 +301,8 @@ public class NetworkSceneManager : MonoBehaviour
                     lr.SetPosition(1, connectedEntityPos);
                 }
             } catch { } 
-            
         }
+
         if (!edgesShowing) 
         {
             foreach(GameObject cur in activeLines) 
@@ -301,7 +310,7 @@ public class NetworkSceneManager : MonoBehaviour
                 //Destroy(cur.GetComponent<Renderer>().material);   //Prevents a memory leak because we manually created the material when spawning the line (do we need this?)
                 Destroy(cur); // i think material needs to be destroyed seperately, there is probably a memory leak right now
             }
-            showHideEdgesButton.GetComponentInChildren<Text>().text = "Show Edges";
+            showHideNodeEdgesButton.GetComponentInChildren<Text>().text = "Show Node Edges";
         } 
     }
 
@@ -327,16 +336,6 @@ public class NetworkSceneManager : MonoBehaviour
         { 
             cur.SetActive(showOrHide);
         }
-    }
-
-    public void searchForNode(string query) // move this into network camera
-    {        
-        try 
-        {
-            networkCamera.selectedEntity = FindNode(query);
-            networkCamera.nodeSelected = true;
-            networkCamera.focusOnNode();
-        } catch { Debug.Log("Node in query not found"); }
     }
 
     // Gradient Editing stuff

@@ -11,7 +11,7 @@ import numpy
 import sphvoronoi
 
 SCALE_VALUE = 75
-OnSpherePositions = []
+OnSphereFacetPositions = []
 
 class Functions:
 
@@ -170,7 +170,6 @@ class Functions:
 		amountOfClusters = amountOfBiggerThan5 + 1
 		lessThan5List = []
 		graphList = []
-		clusterPosList = Functions.generateOnSpherePos(amountOfClusters, SCALE_VALUE)
 		clusterNum = 1 # 0 will be the <5 bucket graph
 		for subgraph in lvnClusteredGraph.subgraphs():
 			if subgraph.vcount() > 5:
@@ -202,6 +201,9 @@ class Functions:
 		graphListWithPos.append(newMiscGraph)
 		OnSpherePositions = []
 		OnSpherePositions = Functions.generateOnSpherePos(len(graphList), SCALE_VALUE) #maybe subtract 1 since misc isnt included
+		
+		OnSphereFacetPositions = OnSpherePositions
+		
 		hullnet = sphvoronoi.HullNet( OnSpherePositions )
 
 		i = 0
@@ -268,7 +270,8 @@ class Functions:
 
 		graphString += "#$" + "\n"
 		posListStr = ""
-		for pos in OnSpherePositions:
+		print(len(OnSphereFacetPositions))
+		for pos in OnSphereFacetPositions:
 			posListStr += str(pos) + "\n"
 		graphString += posListStr
 

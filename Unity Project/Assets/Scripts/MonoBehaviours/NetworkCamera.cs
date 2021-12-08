@@ -14,25 +14,23 @@ using NodeViz; // not necessary
 
 public class NetworkCamera : MonoBehaviour
 {
-    [HideInInspector]
-    [SerializeField]
-    private Camera cam;
+    [HideInInspector] [SerializeField] private Camera cam;
 
     //Node Click Variables
     const float RAYCAST_DISTANCE = 10000;
     PhysicsWorld physicsWorld => World.DefaultGameObjectInjectionWorld.GetExistingSystem<BuildPhysicsWorld>().PhysicsWorld;
     EntityManager entityManager => World.DefaultGameObjectInjectionWorld.EntityManager;
-    [HideInInspector]
-    public Entity selectedEntity;
-    public GameObject selectedNodeUI;
-    public Text nodeNameText;
-    public Text nodeDescriptionText;
-    public Text nodeNetworkRank;
-    public Text nodeBaselineScore;
-    public Text nodeDegreeText;
-    [HideInInspector]
-    public bool nodeSelected;
-    public Dropdown viewAxisDropdown;
+    private Entity selectedEntity;
+    [SerializeField] private GameObject selectedNodeUI;
+    [SerializeField] private Text nodeNameText;
+    [SerializeField] private Text nodeDescriptionText;
+    [SerializeField] private Text nodeNetworkRank;
+    [SerializeField] private Text nodeBaselineScore;
+    [SerializeField] private Text nodeDegreeText;
+    [SerializeField] private Text nodeClusterText;
+    private bool nodeSelected;
+    [SerializeField] private Dropdown viewAxisDropdown;
+    [SerializeField] private NetworkSceneManager sceneManager;
     
     // Fly Cam Variables
     public float mainSpeed = 10.0f;   // Default speed
@@ -59,11 +57,13 @@ public class NetworkCamera : MonoBehaviour
             moveCamera();
         }
 
-        selectNode();
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+            sendRay();
+        }
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            focusOnNode();
+            focusOnSelectedNode();
         }
 
         if (Input.GetKeyDown(KeyCode.P))
@@ -161,10 +161,11 @@ public class NetworkCamera : MonoBehaviour
         return p_Velocity;
     }
 
-    private void selectNode()
+    private void sendRay()
     {
         // Sanity checks, checking if the mouse is over a UI element, checking if left mouse button isn't clicked
-        if (cam == null || !Input.GetMouseButtonDown(0) || EventSystem.current.IsPointerOverGameObject()) return; 
+        //if (cam == null || !Input.GetMouseButtonDown(0) || EventSystem.current.IsPointerOverGameObject()) return; 
+        //if (EventSystem.current.IsPointerOverGameObject()) return;
 
         // sends a ray through the scene
         var position = Input.mousePosition;
@@ -180,35 +181,56 @@ public class NetworkCamera : MonoBehaviour
         if (!physicsWorld.CastRay(rayInput, out RaycastHit hit) && !EventSystem.current.IsPointerOverGameObject())
         {
             nodeSelected = false;
-            selectedNodeUI.SetActive(false); // turns off the node ui panel
-            return;
+            selectedNodeUI.SetActive(false);
+        } else {
+            Entity entity = physicsWorld.Bodies[hit.RigidBodyIndex].Entity;
+            selectNode(entity);
         }
-
-        // below is what happens if a entity/node is hit
-        selectedEntity = physicsWorld.Bodies[hit.RigidBodyIndex].Entity;
-        nodeSelected = true;
-        // sets the node ui panel to the attributes the selected node has
-        nodeNameText.text = "Node Name: " + entityManager.GetComponentData<NodeData>(selectedEntity).displayName;
-        nodeDescriptionText.text = "Description: " + entityManager.GetComponentData<NodeData>(selectedEntity).description;
-        nodeNetworkRank.text = "Network Rank: " + entityManager.GetComponentData<NodeData>(selectedEntity).networkRank;
-        nodeBaselineScore.text = "Baseline Value: " + entityManager.GetComponentData<NodeData>(selectedEntity).baselineScore;
-        nodeDegreeText.text = "Degree: " + entityManager.GetComponentData<NodeData>(selectedEntity).degree;
-        // displays the node ui panel
-        selectedNodeUI.SetActive(true); 
     }
 
-    public void focusOnNode()
+    public void selectNode(Entity entity) 
+    {
+        nodeSelected = true;
+        selectedEntity = entity;
+        NodeData selectedNodeData = entityManager.GetComponentData<NodeData>(entity);
+        
+        // sets the node ui panel to the attributes the selected node has
+        nodeNameText.text = "Node Name: " + selectedNodeData.displayName;
+        nodeDescriptionText.text = "Description: " + selectedNodeData.description;
+        nodeNetworkRank.text = "Network Rank: " + selectedNodeData.networkRank;
+        nodeBaselineScore.text = "Baseline Value: " + selectedNodeData.baselineScore;
+        nodeDegreeText.text = "Degree: " + selectedNodeData.degree;
+        nodeClusterText.text = "Cluster: " + selectedNodeData.cluster;
+
+        selectedNodeUI.SetActive(true); 
+    }   
+
+    public void searchForNode(string query) // move this into network camera
+    {        
+        try 
+        {
+            selectNode(sceneManager.FindNode(query));
+            focusOnSelectedNode();
+        } catch { Debug.Log("Node not found (" + query.Trim() + ")"); }
+    }
+
+    // called by search bar
+    public void focusOnSelectedNode()
     {
         if (nodeSelected == true)
         {
             //When you get a position of an entity it returns a 4 dimensional coordinate, I don't know why
             float4 entityPos = entityManager.GetComponentData<LocalToWorld>(selectedEntity).Value[3];
-            // moves the camera so the desired node is in the center and the camera is 15 units away
             cam.transform.SetPositionAndRotation(new float3(entityPos.x, entityPos.y, entityPos.z - 15), new Quaternion(0, 0, 0, 0));
         }
-        return;
     }
 
+    public Entity getSelectedEntity() 
+    {
+        return selectedEntity;
+    }
+
+    // called by UI
     public void setViewAxis(int view) // if the user clicks a view option from the dropdown menu it will bring them to a zoomed out view from that axis
     {
         if (view == 0) { return; } // if the user chooses the blank option return because we don't want anything to happen
