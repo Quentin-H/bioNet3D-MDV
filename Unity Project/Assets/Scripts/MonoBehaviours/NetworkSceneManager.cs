@@ -43,13 +43,18 @@ public class NetworkSceneManager : MonoBehaviour
     [SerializeField] private GameObject topDegreeObject;
     private List<GameObject> topDegreeObjects = new List<GameObject>();
     [SerializeField] private GameObject facetCircleObject;
+
     private IDictionary<FixedString32, Entity> fixedIDsToSceneNodeEntities = new Dictionary<FixedString32, Entity>(); // This is for use internally liek creating edges, since internally genes are identified by feature IDs
     private IDictionary<String, Entity> namesToSceneNodeEntities = new Dictionary<String, Entity>(); // This is for use with searching for nodes since the user would use names
-    //maybe add dictionary with keys as coordinates if we want a feature that finds the connected node
+    private Dictionary<Entity, List<Entity>> entitiesToConnectedEntities = new Dictionary<Entity, List<Entity>>();
+
+    private double maxBlineScore = -99.0;
+    private double minBlineScore = 99.0;
+
     private List<float4> blineList = new List<float4>(); // first 3 values are coordinates, last is value, populated when spawning nodes
     private List<float4> degreeList = new List<float4>();  // first 3 values are coordinates, last is value, populated when spawning nodes
+ 
     private List<GameObject> activeLines = new List<GameObject>();
-    private Dictionary<Entity, List<Entity>> entitiesToConnectedEntities = new Dictionary<Entity, List<Entity>>();
 
 
     private void Start() 
@@ -86,6 +91,7 @@ public class NetworkSceneManager : MonoBehaviour
             topDegreeObjects.Add(newObject);
         }
 
+        ChangeNodeColors(nodeValueGradient);
 
         string rawLayoutInput = "";
         try { rawLayoutInput = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile; } catch { }
@@ -140,6 +146,9 @@ public class NetworkSceneManager : MonoBehaviour
                 clusterNum = int.Parse(line.Split('|')[7].Trim());
                 connectionIDsFromFile = line.Split('|')[8].Trim().Split(',');
 
+                if (blineScore > maxBlineScore) { maxBlineScore = blineScore; }
+                if (blineScore < minBlineScore) { minBlineScore = blineScore; }
+
                 Entity e = SpawnNode(fID, coord, dName, desc, nRank, blineScore, deg, clusterNum);
 
                 List<string> connectedIDs = new List<string>(); 
@@ -165,7 +174,6 @@ public class NetworkSceneManager : MonoBehaviour
             }
             entitiesToConnectedEntities.Add(entry.Key, connectedEntities);
         }
-
         Debug.Log("Done Spawning");
     }
 
@@ -185,8 +193,11 @@ public class NetworkSceneManager : MonoBehaviour
         blineList.Add( new float4(coord.x, coord.y, coord.z, (float)blineScore ));
         degreeList.Add( new float4(coord.x, coord.y, coord.z, (float)deg ));
         
-        Color evaluatedColor = nodeValueGradient.Evaluate( (float) blineScore );
-        float4 colorF = new float4( evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a );
+        // do this separetely (this doesnt work properly here)
+        //double normalizedblineScore = (blineScore - minBlineScore) / (maxBlineScore - minBlineScore);
+        //Color evaluatedColor = nodeValueGradient.Evaluate((float)normalizedblineScore);
+        //float4 colorF = new float4( evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a );
+        float4 colorF = new float4( 0, 0, 0, 0 );
 
         nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy( nodePrefab, gameObjectConversionSettings );
         Entity newNodeEntity = entityManager.Instantiate( nodeEntityPrefab );
@@ -240,6 +251,26 @@ public class NetworkSceneManager : MonoBehaviour
             } catch { 
                 Debug.Log(line); 
             }
+        }
+    }
+
+    public void ChangeNodeColors(Gradient gradient) 
+    {
+        Debug.Log("min: " + minBlineScore);
+        Debug.Log("max: " + maxBlineScore);
+
+        foreach (KeyValuePair<FixedString32, Entity> entry in fixedIDsToSceneNodeEntities) 
+        {            
+            double blineScore = entityManager.GetComponentData<NodeData>(entry.Value).baselineScore;
+            double normalizedblineScore = (blineScore - minBlineScore) / (maxBlineScore - minBlineScore);
+            Color evaluatedColor = gradient.Evaluate((float)normalizedblineScore);
+            float4 colorF = new float4( evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a );
+            
+            ColorOverride colorOverride = new ColorOverride()
+            {
+                Value = colorF
+            };
+            entityManager.AddComponentData(entry.Value, colorOverride);
         }
     }
 
@@ -347,7 +378,7 @@ public class NetworkSceneManager : MonoBehaviour
     private void editNodeGradientFinished(Gradient finalGradient)
     {
         nodeValueGradient = finalGradient;
-        // add something that respawns the nodes, or figure out a way to use material overrides and have it reference the gradient and send all nodes a message to update their color to the gradient reference
+        ChangeNodeColors(nodeValueGradient);
     }
 
     public void editEdgeGradient()

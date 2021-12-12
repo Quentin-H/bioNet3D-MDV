@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 public class DataHolder : MonoBehaviour
 {
     public string rawNodeLayoutFile = "";
-    public string rawEdgeFile = "";
-    public float positionMultiplier = 8;
-    private void Awake() { DontDestroyOnLoad(this.gameObject); }
+    public float positionMultiplier = 1;
+    private void Start() { DontDestroyOnLoad(this.gameObject); }
 }
