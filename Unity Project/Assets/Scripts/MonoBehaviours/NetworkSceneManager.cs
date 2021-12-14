@@ -33,7 +33,7 @@ public class NetworkSceneManager : MonoBehaviour
     private GameObject inputDataHolder;
     private bool edgesShowing = false;
     [SerializeField] private Button showHideNodeEdgesButton;
-    [SerializeField] private Button showHideClusterEdgesButton; // will have to add cluster->entity dictionary
+    [SerializeField] private Button showHideClusterEdgesButton;
 
     [SerializeField] private GameObject topNetworkRankObject;
     private List<GameObject> topNetworkRankObjects = new List<GameObject>();
@@ -47,6 +47,8 @@ public class NetworkSceneManager : MonoBehaviour
     private IDictionary<FixedString32, Entity> fixedIDsToSceneNodeEntities = new Dictionary<FixedString32, Entity>(); // This is for use internally liek creating edges, since internally genes are identified by feature IDs
     private IDictionary<String, Entity> namesToSceneNodeEntities = new Dictionary<String, Entity>(); // This is for use with searching for nodes since the user would use names
     private Dictionary<Entity, List<Entity>> entitiesToConnectedEntities = new Dictionary<Entity, List<Entity>>();
+    private List<Entity> allEntities = new List<Entity>();
+    private Dictionary<int, List<Entity>> clusterNumbersToEntities = new Dictionary<int, List<Entity>>();
 
     private double maxBlineScore = -99.0;
     private double minBlineScore = 99.0;
@@ -174,16 +176,30 @@ public class NetworkSceneManager : MonoBehaviour
             }
             entitiesToConnectedEntities.Add(entry.Key, connectedEntities);
         }
+
+        foreach(Entity curEntity in allEntities) // this can be any dictionary that has all entities as the keys
+        {
+            int clusterNumber = entityManager.GetComponentData<NodeData>(curEntity).cluster;
+            // if key already exists, add to this entity to the list at this key
+            try 
+            {
+                List<Entity> entitiesInCluster = clusterNumbersToEntities[clusterNumber];
+                entitiesInCluster.Add(curEntity);
+                clusterNumbersToEntities[clusterNumber] = entitiesInCluster;
+            }
+            catch   // if key doesn't exist, create new list with only this entity in it and add it at this key
+            {
+                List<Entity> entitiesInCluster = new List<Entity>();
+                entitiesInCluster.Add(curEntity);
+                clusterNumbersToEntities.Add(clusterNumber, entitiesInCluster);
+            }
+        }
+
         Debug.Log("Done Spawning");
     }
 
     private Entity SpawnNode(string fID, float3 coord, string dName, string desc, int nRank, double blineScore, int deg, int clusterNum)
     {
-        /*if (fID == "" || fID == null)
-        {
-            return;
-        }*/
-
         if (nRank <= 200) // adds a billboard if the network rank is less than or equal to 200
         {
             GameObject newObject = Instantiate(topNetworkRankObject, new float3(coord.x, coord.y, coord.z), Quaternion.identity);
@@ -227,6 +243,7 @@ public class NetworkSceneManager : MonoBehaviour
         FixedString32 idAsFixed = fID;
         fixedIDsToSceneNodeEntities.Add(idAsFixed, newNodeEntity);
         namesToSceneNodeEntities.Add(dName, newNodeEntity);
+        allEntities.Add(newNodeEntity);
         return newNodeEntity;
     }
 
@@ -342,6 +359,58 @@ public class NetworkSceneManager : MonoBehaviour
                 Destroy(cur); // i think material needs to be destroyed seperately, there is probably a memory leak right now
             }
             showHideNodeEdgesButton.GetComponentInChildren<Text>().text = "Show Node Edges";
+        } 
+    }
+
+    public void showHideClusterEdges() // THIS SHOULD BE MOVED TO CAMERA SCRIPT PRIOR TO INTEGRATING WITH YANKUN/KE
+    {
+        Entity selectedEntity =  networkCamera.getSelectedEntity();
+        int clusterNumber = entityManager.GetComponentData<NodeData>(selectedEntity).cluster;
+        
+        edgesShowing = !edgesShowing;
+
+        if (edgesShowing) //show the edges
+        {
+            showHideClusterEdgesButton.GetComponentInChildren<Text>().text = "Hide Cluster Edges";
+
+            foreach(Entity curEntity in clusterNumbersToEntities[clusterNumber])
+            {
+                try 
+                {
+                    float4 curEntityEntityPosAs4 = entityManager.GetComponentData<LocalToWorld>(curEntity).Value[3];
+                    float3 curEntityEntityPos = new float3(curEntityEntityPosAs4.x, curEntityEntityPosAs4.y, curEntityEntityPosAs4.z);
+
+                    foreach(Entity connectedEntity in entitiesToConnectedEntities[curEntity])
+                    {
+                        float4 connectedEntityPosAs4 = entityManager.GetComponentData<LocalToWorld>(connectedEntity).Value[3];
+                        float3 connectedEntityPos = new float3(connectedEntityPosAs4.x, connectedEntityPosAs4.y, connectedEntityPosAs4.z);
+
+                        GameObject line = new GameObject();
+                        activeLines.Add(line);
+                        line.transform.position = connectedEntityPos;
+                        line.AddComponent<LineRenderer>();
+                        LineRenderer lr = line.GetComponent<LineRenderer>();
+                        //Color evaluatedColor = edgeValueGradient.Evaluate((float)nodeEdgePos.weight * 10000); // multiply by 100000, bc the edge weight numbers are too small to make a significant difference on the gradient
+                        lr.material = new UnityEngine.Material(Shader.Find("HDRP/Unlit")); // add shader that supports transparency
+                        //lr.GetComponent<Renderer>().material.color = evaluatedColor;
+                        lr.GetComponent<Renderer>().material.color = Color.yellow;
+                        lr.startWidth = 0.1f;
+                        lr.endWidth = 0.1f;
+                        lr.SetPosition(0, curEntityEntityPos);
+                        lr.SetPosition(1, connectedEntityPos);
+                    }
+                } catch { } 
+            }
+        }
+
+        if (!edgesShowing) 
+        {
+            foreach(GameObject cur in activeLines) 
+            {
+                //Destroy(cur.GetComponent<Renderer>().material);   //Prevents a memory leak because we manually created the material when spawning the line (do we need this?)
+                Destroy(cur); // i think material needs to be destroyed seperately, there is probably a memory leak right now
+            }
+            showHideClusterEdgesButton.GetComponentInChildren<Text>().text = "Show Cluster Edges";
         } 
     }
 
