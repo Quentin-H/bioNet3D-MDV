@@ -347,9 +347,10 @@ public class NetworkSceneManager : MonoBehaviour
         {
             foreach(GameObject cur in activeLines) 
             {
-                //Destroy(cur.GetComponent<Renderer>().material);   //Prevents a memory leak because we manually created the material when spawning the line (do we need this?)
-                Destroy(cur); // i think material needs to be destroyed seperately, there is probably a memory leak right now
+                Destroy(cur);
+                //Destroy(cur.GetComponent<Renderer>().material);
             }
+            Resources.UnloadUnusedAssets(); // i think this gets rid of materials, prevents memory leak
             showHideNodeEdgesButton.GetComponentInChildren<Text>().text = "Show Node Edges";
         } 
     }
@@ -399,9 +400,10 @@ public class NetworkSceneManager : MonoBehaviour
         {
             foreach(GameObject cur in activeLines) 
             {
-                //Destroy(cur.GetComponent<Renderer>().material);   //Prevents a memory leak because we manually created the material when spawning the line (do we need this?)
-                Destroy(cur); // i think material needs to be destroyed seperately, there is probably a memory leak right now
+                Destroy(cur);
+                //Destroy(cur.GetComponent<Renderer>().material);  
             }
+            Resources.UnloadUnusedAssets(); // i think this gets rid of materials, prevents memory leak
             showHideClusterEdgesButton.GetComponentInChildren<Text>().text = "Show Cluster Edges";
         } 
     }
