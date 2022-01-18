@@ -50,9 +50,7 @@ public class NetworkSceneManager : MonoBehaviour
     private List<Entity> allEntities = new List<Entity>();
     private Dictionary<int, List<Entity>> clusterNumbersToEntities = new Dictionary<int, List<Entity>>();
 
-    private double maxBlineScore = -99.0;
-    private double minBlineScore = 99.0;
-
+    private double maxAbsBlineScore = -1.0;
     private List<float4> blineList = new List<float4>(); // first 3 values are coordinates, last is value, populated when spawning nodes
     private List<float4> degreeList = new List<float4>();  // first 3 values are coordinates, last is value, populated when spawning nodes
  
@@ -98,6 +96,8 @@ public class NetworkSceneManager : MonoBehaviour
         string rawLayoutInput = "";
         try { rawLayoutInput = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile; } catch { }
         try { SpawnFacetCircles(rawLayoutInput); } catch {}
+        Debug.Log(maxAbsBlineScore);
+        Debug.Log((-maxAbsBlineScore));
     }
 
     private void OnDestroy() 
@@ -148,8 +148,7 @@ public class NetworkSceneManager : MonoBehaviour
                 clusterNum = int.Parse(line.Split('|')[7].Trim());
                 connectionIDsFromFile = line.Split('|')[8].Trim().Split(',');
 
-                if (blineScore > maxBlineScore) { maxBlineScore = blineScore; }
-                if (blineScore < minBlineScore) { minBlineScore = blineScore; }
+                if (System.Math.Abs(blineScore) > maxAbsBlineScore) { maxAbsBlineScore = blineScore; }
 
                 Entity e = SpawnNode(fID, coord, dName, desc, nRank, blineScore, deg, clusterNum);
 
@@ -208,11 +207,7 @@ public class NetworkSceneManager : MonoBehaviour
 
         blineList.Add( new float4(coord.x, coord.y, coord.z, (float)blineScore ));
         degreeList.Add( new float4(coord.x, coord.y, coord.z, (float)deg ));
-        
-        // do this separetely (this doesnt work properly here)
-        //double normalizedblineScore = (blineScore - minBlineScore) / (maxBlineScore - minBlineScore);
-        //Color evaluatedColor = nodeValueGradient.Evaluate((float)normalizedblineScore);
-        //float4 colorF = new float4( evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a );
+
         float4 colorF = new float4( 0, 0, 0, 0 );
 
         nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy( nodePrefab, gameObjectConversionSettings );
@@ -273,13 +268,10 @@ public class NetworkSceneManager : MonoBehaviour
 
     public void ChangeNodeColors(Gradient gradient) 
     {
-        Debug.Log("min: " + minBlineScore);
-        Debug.Log("max: " + maxBlineScore);
-
         foreach (KeyValuePair<FixedString32, Entity> entry in fixedIDsToSceneNodeEntities) 
         {            
             double blineScore = entityManager.GetComponentData<NodeData>(entry.Value).baselineScore;
-            double normalizedblineScore = (blineScore - minBlineScore) / (maxBlineScore - minBlineScore);
+            double normalizedblineScore = (blineScore - (-maxAbsBlineScore)) / (maxAbsBlineScore - (-maxAbsBlineScore));
             Color evaluatedColor = gradient.Evaluate((float)normalizedblineScore);
             float4 colorF = new float4( evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a );
             
