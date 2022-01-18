@@ -51,7 +51,7 @@ public class NetworkSceneManager : MonoBehaviour
     private Dictionary<int, List<Entity>> clusterNumbersToEntities = new Dictionary<int, List<Entity>>();
 
     private double maxAbsBlineScore = -1.0;
-    private List<float4> blineList = new List<float4>(); // first 3 values are coordinates, last is value, populated when spawning nodes
+    private List<float4> blineList = new List<float4>(); // first 3 values are coordinates, last is value, populated when spawning nodes, uses absolute values
     private List<float4> degreeList = new List<float4>();  // first 3 values are coordinates, last is value, populated when spawning nodes
  
     private List<GameObject> activeLines = new List<GameObject>();
@@ -75,7 +75,7 @@ public class NetworkSceneManager : MonoBehaviour
         gameObjectConversionSettings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
         //nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(nodePrefab, settings);
         
-        ConvertRawInputNodes(); // this has to complete before convert raw input edges
+        ConvertRawInputNodes(); 
 
         blineList = blineList.OrderByDescending(o => o.w).ToList();
         for (int i = 0; i < 200; i++)
@@ -205,7 +205,7 @@ public class NetworkSceneManager : MonoBehaviour
             topNetworkRankObjects.Add(newObject);
         }
 
-        blineList.Add( new float4(coord.x, coord.y, coord.z, (float)blineScore ));
+        blineList.Add( new float4(coord.x, coord.y, coord.z, System.Math.Abs((float)blineScore) ));
         degreeList.Add( new float4(coord.x, coord.y, coord.z, (float)deg ));
 
         float4 colorF = new float4( 0, 0, 0, 0 );
