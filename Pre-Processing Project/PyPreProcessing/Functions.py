@@ -10,8 +10,9 @@ from decimal import Decimal
 import numpy
 import sphvoronoi
 
-SCALE_VALUE = 75
-OnSphereFacetPositions = []
+FINAL_SCALE = 8
+FACET_SPHERE_SCALE = 75
+#OnSphereFacetPositions = []
 
 class Functions:
 
@@ -160,6 +161,7 @@ class Functions:
 
 		return posList
 
+
 	#runs louvain and puts small clusters into a seperate graph
 	def lvnProcessing(graph):
 		lvnClusteredGraph = graph.community_multilevel() # clusteredGraph is a vertex clustering object
@@ -186,6 +188,7 @@ class Functions:
 		graphList.insert(0, miscBucketGraph)
 		return graphList
 
+
 	def genNodePos(inputGraphList):
 		graphListWithPos = []
 		graphList = inputGraphList
@@ -194,13 +197,14 @@ class Functions:
 		miscBucketLayout.center(-160,0,0)
 		newMiscGraph = graphList[0]
 		i = 0
-		for coordinate in miscBucketLayout:
+		for coordinate in miscBucketLayout: 
 			graphList[0].vs[i]["coordinates"] = coordinate
 			graphList[0].vs[i]["cluster"] = 0
 			i += 1 
 		graphListWithPos.append(newMiscGraph)
+
 		OnSpherePositions = []
-		OnSpherePositions = Functions.generateOnSpherePos(len(graphList), SCALE_VALUE) #maybe subtract 1 since misc isnt included
+		OnSpherePositions = Functions.generateOnSpherePos(len(graphList), FACET_SPHERE_SCALE) #maybe subtract 1 since misc isnt included
 		
 		OnSphereFacetPositions = OnSpherePositions
 		
@@ -247,8 +251,9 @@ class Functions:
 			for neighbor in node.neighbors():
 				connectionListStr += neighbor["name"] + "," 
 
+			multipliedCoord = [element * FINAL_SCALE for element in node["coordinates"]]
 			currentLine = (node["name"] # feature ID
-				+ "|" + str(node["coordinates"]) 
+				+ "|" + str(multipliedCoord) 
 				+ "|" + node["displayName"] 
 				+ "|" + node["description"]
 				+ "|" + str(node["networkRank"]) 
@@ -270,10 +275,16 @@ class Functions:
 
 		graphString += "#$" + "\n"
 		posListStr = ""
-		print(len(OnSphereFacetPositions))
-		for pos in OnSphereFacetPositions:
+
+		#for pos in OnSphereFacetPositions:
+		#	posListStr += str(pos) + "\n"
+
+		facetPosList = Functions.generateOnSpherePos(len(graphList), FACET_SPHERE_SCALE)
+		for pos in facetPosList:
 			posListStr += str(pos) + "\n"
+
 		graphString += posListStr
+
 
 		# "massive dataset visualizer layout file"
 		outputFile = open(outputPath + ("output - " + str(date.today()) + ".mdvl"), "w")
