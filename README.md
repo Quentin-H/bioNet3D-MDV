@@ -44,7 +44,7 @@ using Star by Ali Coşkun from the Noun Project (Sprite)
 
 using iGraph
 
-using Python
+using RangeSlider.cs by Ben MacKinnon
 
 using C# / Mono / .NET / Unity
 
