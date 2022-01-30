@@ -17,7 +17,7 @@ public class NetworkCamera : MonoBehaviour
     [HideInInspector] [SerializeField] private Camera cam;
 
     //Node Click Variables
-    const float RAYCAST_DISTANCE = 10000;
+    const float RAYCAST_DISTANCE = 100000;
     PhysicsWorld physicsWorld => World.DefaultGameObjectInjectionWorld.GetExistingSystem<BuildPhysicsWorld>().PhysicsWorld;
     EntityManager entityManager => World.DefaultGameObjectInjectionWorld.EntityManager;
     private Entity selectedEntity;

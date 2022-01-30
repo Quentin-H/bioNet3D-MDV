@@ -6109,7 +6109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 1626e90186f5375428fa583ff5652730, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1626e90186f5375428fa583ff5652730, type: 3}
       propertyPath: m_RootOrder
@@ -7298,6 +7298,7 @@ GameObject:
   - component: {fileID: 1956825213}
   - component: {fileID: 1956825215}
   - component: {fileID: 1956825216}
+  - component: {fileID: 1956825212}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -7305,6 +7306,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1956825212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956825211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9e82c5c120e6ff408a6e417cc79cb47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  networkCamera: {fileID: 1956825215}
+  networkSceneManager: {fileID: 684218366}
+  showHideNodeEdgesButton: {fileID: 828938461}
+  showHideClusterEdgesButton: {fileID: 1909075304}
 --- !u!20 &1956825213
 Camera:
   m_ObjectHideFlags: 0

@@ -73,7 +73,6 @@ public class NetworkSceneManager : MonoBehaviour
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         blobAssetStore = new BlobAssetStore();
         gameObjectConversionSettings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
-        //nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy(nodePrefab, settings);
         
         ConvertRawInputNodes(); 
 
@@ -96,8 +95,6 @@ public class NetworkSceneManager : MonoBehaviour
         string rawLayoutInput = "";
         try { rawLayoutInput = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile; } catch { }
         try { SpawnFacetCircles(rawLayoutInput); } catch {}
-        Debug.Log(maxAbsBlineScore);
-        Debug.Log((-maxAbsBlineScore));
     }
 
     private void OnDestroy() 
@@ -246,7 +243,7 @@ public class NetworkSceneManager : MonoBehaviour
     {
         //string[] facetCoordLines = rawInput.Split('#')[1].Split('$')[1].Split('\n');
         string[] facetCoordLines = rawInput.Split('$')[1].Split('\n');
-        Debug.Log(facetCoordLines.Length);
+
         foreach(string line in facetCoordLines) 
         {
             try 
@@ -259,7 +256,6 @@ public class NetworkSceneManager : MonoBehaviour
                 GameObject newFacetCircle = Instantiate(facetCircleObject, coords, Quaternion.identity);
                 // if second param set to Vector3.up it looks  cool
                 newFacetCircle.transform.LookAt(Vector3.zero);
-                Debug.Log(coords);
             } catch { 
                 Debug.Log(line); 
             }
@@ -297,9 +293,20 @@ public class NetworkSceneManager : MonoBehaviour
             }
             catch
             {
-                throw new ArgumentException("Invalid Node Query");
+                throw new ArgumentException("Node not found");
             }
         }
+    }
+
+    //private Dictionary<Entity, List<Entity>> entitiesToConnectedEntities = new Dictionary<Entity, List<Entity>>();
+    public List<Entity> GetConnectedEntities(Entity entity)
+    {
+        return entitiesToConnectedEntities[entity];
+    }
+
+    public List<Entity> GetEntitiesInCluster(int clusterNumber)
+    {
+        return clusterNumbersToEntities[clusterNumber];
     }
 
     //  U      U    I
