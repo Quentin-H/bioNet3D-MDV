@@ -225,13 +225,10 @@ class Functions:
 				j = 0
 				for coordinate in layout: # for each node in the mini graph
 					newGraph.vs[j]["cluster"] = i
-					coord = [coordinate[0], coordinate[1], newGraph.vs[j].degree() / 100]
-					#coord = [coordinate[0], coordinate[1], 0]
-					#do transformation here
+					coord = [coordinate[0] * FINAL_SCALE, coordinate[1] * FINAL_SCALE, (newGraph.vs[j].degree() / 100) * FINAL_SCALE]
 					coord = numpy.dot( coord, tfmrot ) + tfmtranslate
 				
 					coord = "[%g,%g,%g]" % (coord[0], coord[1], coord[2])
-
 					newGraph.vs[j]["coordinates"] = coord
 					j += 1
 
@@ -251,9 +248,10 @@ class Functions:
 			for neighbor in node.neighbors():
 				connectionListStr += neighbor["name"] + "," 
 
-			multipliedCoord = [element * FINAL_SCALE for element in node["coordinates"]]
+			#multipliedCoord = [element * FINAL_SCALE for element in node["coordinates"]]
+			
 			currentLine = (node["name"] # feature ID
-				+ "|" + str(multipliedCoord) 
+				+ "|" + str(node["coordinates"])
 				+ "|" + node["displayName"] 
 				+ "|" + node["description"]
 				+ "|" + str(node["networkRank"]) 
@@ -276,15 +274,11 @@ class Functions:
 		graphString += "#$" + "\n"
 		posListStr = ""
 
-		#for pos in OnSphereFacetPositions:
-		#	posListStr += str(pos) + "\n"
-
-		facetPosList = Functions.generateOnSpherePos(len(graphList), FACET_SPHERE_SCALE)
+		facetPosList = Functions.generateOnSpherePos(len(graphList), FACET_SPHERE_SCALE * FINAL_SCALE)
 		for pos in facetPosList:
 			posListStr += str(pos) + "\n"
 
 		graphString += posListStr
-
 
 		# "massive dataset visualizer layout file"
 		outputFile = open(outputPath + ("output - " + str(date.today()) + ".mdvl"), "w")
