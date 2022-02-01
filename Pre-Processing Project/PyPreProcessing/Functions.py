@@ -194,7 +194,7 @@ class Functions:
 		graphList = inputGraphList
 
 		miscBucketLayout = graphList[0].layout("fr3d") # maybe try drl_3d too
-		miscBucketLayout.center(-160,0,0)
+		miscBucketLayout.center(-160,0,0) #wtf????
 		newMiscGraph = graphList[0]
 		i = 0
 		for coordinate in miscBucketLayout: 
