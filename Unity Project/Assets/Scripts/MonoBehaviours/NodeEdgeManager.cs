@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,42 +18,49 @@ public class NodeEdgeManager : MonoBehaviour
     public Button showHideNodeEdgesButton;
     public Button showHideClusterEdgesButton;
 
-    private bool selectedNodeEdgesShowing = false;
-    private bool clusterEdgesShowing = false;
+    private bool edgesShowing = false;
     private List<GameObject> activeLines = new List<GameObject>();
 
-
-    public void ShowHideNodeEdges(Entity entity)
+    public void ShowHideNodeEdges()
     {
-        if (selectedNodeEdgesShowing = true)
+        if (edgesShowing == true)
         {
             HideAllEdges();
-        }
-        else
+            showHideNodeEdgesButton.GetComponentInChildren<Text>().text = "Show Node Edges";
+            Debug.Log("1");
+        } 
+        if (edgesShowing == false)
         {
             ShowNodeEdges(networkCamera.getSelectedEntity());
+            showHideNodeEdgesButton.GetComponentInChildren<Text>().text = "Hide Node Edges";
+            Debug.Log("2");
         }
+        edgesShowing = !edgesShowing;
+        Debug.Log(edgesShowing);
     }
 
-    public void ShowHideClusterEdges(Entity entity)
+    public void ShowHideClusterEdges()
     {
-        if (clusterEdgesShowing = true)
+        if (edgesShowing == true)
         {
             HideAllEdges();
-        }
-        else
+            showHideClusterEdgesButton.GetComponentInChildren<Text>().text = "Show Cluster Edges";
+        } 
+        if (edgesShowing == false)
         {
+            Entity entity = networkCamera.getSelectedEntity();
             int clusterNumber = entityManager.GetComponentData<NodeData>(entity).cluster;
             List<Entity> clusterEntities = networkSceneManager.GetEntitiesInCluster(clusterNumber);
             ShowClusterEdges(clusterEntities);
+            showHideClusterEdgesButton.GetComponentInChildren<Text>().text = "Hide Cluster Edges";
         }
+        edgesShowing = !edgesShowing;
     }
 
     private void ShowNodeEdges(Entity entity)
     {
             try 
             {
-                selectedNodeEdgesShowing = true;
                 float4 entityPosAs4 = entityManager.GetComponentData<LocalToWorld>(entity).Value[3];
                 float3 entityPos = new float3(entityPosAs4.x, entityPosAs4.y, entityPosAs4.z);
 
@@ -73,15 +81,13 @@ public class NodeEdgeManager : MonoBehaviour
                     lr.SetPosition(0, entityPos);
                     lr.SetPosition(1, connectedEntityPos);
                 }
-            } catch { } 
+            } catch (Exception e) { Debug.Log(e); } 
     }
 
     private void ShowClusterEdges(List<Entity> entities)
     {
         try 
         {
-            clusterEdgesShowing = true;
-
             foreach(Entity cur in entities)
             {
                 ShowNodeEdges(cur);
@@ -92,15 +98,11 @@ public class NodeEdgeManager : MonoBehaviour
 
     private void HideAllEdges()
     {
-        selectedNodeEdgesShowing = false;
-        clusterEdgesShowing = false;
-
         foreach(GameObject cur in activeLines) 
-            {
-                Destroy(cur);
-                //Destroy(cur.GetComponent<Renderer>().material); to prevent memory leak, causes error
-            }
-            Resources.UnloadUnusedAssets(); // i think this gets rid of materials, prevents memory leak
-            showHideNodeEdgesButton.GetComponentInChildren<Text>().text = "Show Node Edges";
+        {
+            Destroy(cur);
+            //Destroy(cur.GetComponent<Renderer>().material); to prevent memory leak, causes error
+        }
+        Resources.UnloadUnusedAssets(); // i think this gets rid of materials, prevents memory leak
     }
 }

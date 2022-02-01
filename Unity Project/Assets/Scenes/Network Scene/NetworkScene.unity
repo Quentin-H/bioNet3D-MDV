@@ -2805,9 +2805,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 684218366}
-        m_TargetAssemblyTypeName: NetworkSceneManager, Assembly-CSharp
-        m_MethodName: showHideNodeEdges
+      - m_Target: {fileID: 1956825212}
+        m_TargetAssemblyTypeName: NodeEdgeManager, Assembly-CSharp
+        m_MethodName: ShowHideNodeEdges
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7085,9 +7085,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 684218366}
-        m_TargetAssemblyTypeName: NetworkSceneManager, Assembly-CSharp
-        m_MethodName: showHideClusterEdges
+      - m_Target: {fileID: 1956825212}
+        m_TargetAssemblyTypeName: NodeEdgeManager, Assembly-CSharp
+        m_MethodName: ShowHideClusterEdges
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

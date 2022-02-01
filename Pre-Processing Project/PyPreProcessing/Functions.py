@@ -66,7 +66,7 @@ class Functions:
 		nodeParsePercent = 0
 		i = 1 # first line has headers
 
-		if not(len(scoreFileLines) < 2): #reverse > to include
+		if (scoreFileLines is not None):
 			bScores = {}
 			j = 0
 			for scoreLine in scoreFileLines:
