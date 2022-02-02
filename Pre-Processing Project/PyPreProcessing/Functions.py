@@ -274,7 +274,7 @@ class Functions:
 		graphString += "#$" + "\n"
 		posListStr = ""
 
-		facetPosList = Functions.generateOnSpherePos(len(graphList), FACET_SPHERE_SCALE * FINAL_SCALE)
+		facetPosList = Functions.generateOnSpherePos(len(graphList), FINAL_SCALE)  #*FACET_SPHERE_SCALE
 		for pos in facetPosList:
 			posListStr += str(pos) + "\n"
 

@@ -67,7 +67,7 @@ public class NetworkSceneManager : MonoBehaviour
         instance = this;
 
         inputDataHolder = GameObject.Find("InputDataHolder");
-
+        // MAYBE SET TO 0
         try { positionMultiplier = inputDataHolder.GetComponent<DataHolder>().positionMultiplier; } catch { positionMultiplier = 10; }
 
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -94,7 +94,7 @@ public class NetworkSceneManager : MonoBehaviour
 
         string rawLayoutInput = "";
         try { rawLayoutInput = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile; } catch { }
-        try { SpawnFacetCircles(rawLayoutInput); } catch {}
+        try { SpawnFacetCircles(rawLayoutInput); } catch { Debug.Log("Facet Circle Spawn Failed"); }
     }
 
     private void OnDestroy() 
@@ -156,8 +156,7 @@ public class NetworkSceneManager : MonoBehaviour
                     connectedIDs.Add(connectedNode.Trim());
                 }
                 entitiesToConnectedIDs.Add(e, connectedIDs);
-                // then in another thing create edge positions, must do this after when all nodes are spawned
-            } catch { Debug.Log(line); } // Sometimes somehow the node has already been spawned and is present in the scene
+            } catch { Debug.Log(line); } 
         }
 
         foreach(KeyValuePair<Entity, List<string>> entry in entitiesToConnectedIDs) 
@@ -249,15 +248,22 @@ public class NetworkSceneManager : MonoBehaviour
             try 
             {
                 string[] coordStrings = line.Split('[')[1].Split(']')[0].Split(',');
+
                 float x = float.Parse(coordStrings[0]) * 5f;
                 float y = float.Parse(coordStrings[1]) * 5f;
                 float z = float.Parse(coordStrings[2]) * 5f;
+
+                Debug.Log(x);
+                Debug.Log(y);
+                Debug.Log(z);
+
                 Vector3 coords = new Vector3(x, y, z);
+                coords = coords * 1.5f;
                 GameObject newFacetCircle = Instantiate(facetCircleObject, coords, Quaternion.identity);
                 // if second param set to Vector3.up it looks  cool
                 newFacetCircle.transform.LookAt(Vector3.zero);
             } catch { 
-                Debug.Log(line); 
+                Debug.Log("%%"); 
             }
         }
     }
