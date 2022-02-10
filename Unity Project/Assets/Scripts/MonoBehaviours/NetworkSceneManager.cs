@@ -66,7 +66,7 @@ public class NetworkSceneManager : MonoBehaviour
 
         inputDataHolder = GameObject.Find("InputDataHolder");
         // MAYBE SET TO 0
-        try { positionMultiplier = inputDataHolder.GetComponent<DataHolder>().positionMultiplier; } catch { positionMultiplier = 10; }
+        try { positionMultiplier = inputDataHolder.GetComponent<DataHolder>().positionMultiplier; } catch { positionMultiplier = 100; }
 
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         blobAssetStore = new BlobAssetStore();
@@ -130,10 +130,19 @@ public class NetworkSceneManager : MonoBehaviour
             try
             {
                 fID = line.Split('|')[0].Trim();
-                
-                coord.x = float.Parse(line.Split('[')[1].Split(',')[0].Trim()) * positionMultiplier;
-                coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim()) * positionMultiplier;
-                coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim()) * positionMultiplier;
+
+                if (clusterNum == 0)
+                {
+                    coord.x = (float.Parse(line.Split('[')[1].Split(',')[0].Trim()) - 160.0f) ;
+                    coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim());
+                    coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim());
+                } 
+                else 
+                {
+                    coord.x = float.Parse(line.Split('[')[1].Split(',')[0].Trim()) * positionMultiplier;
+                    coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim()) * positionMultiplier;
+                    coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim()) * positionMultiplier;
+                }
 
                 dName = line.Split('|')[2];
                 desc = line.Split('|')[3];
@@ -246,16 +255,11 @@ public class NetworkSceneManager : MonoBehaviour
             {
                 string[] coordStrings = line.Split('[')[1].Split(']')[0].Split(',');
 
-                float x = float.Parse(coordStrings[0]) * 5f;
-                float y = float.Parse(coordStrings[1]) * 5f;
-                float z = float.Parse(coordStrings[2]) * 5f;
-
-                Debug.Log(x);
-                Debug.Log(y);
-                Debug.Log(z);
+                float x = float.Parse(coordStrings[0]) * positionMultiplier;
+                float y = float.Parse(coordStrings[1]) * positionMultiplier;
+                float z = float.Parse(coordStrings[2]) * positionMultiplier;
 
                 Vector3 coords = new Vector3(x, y, z);
-                coords = coords * 1.5f;
                 GameObject newFacetCircle = Instantiate(facetCircleObject, coords, Quaternion.identity);
                 // if second param set to Vector3.up it looks  cool
                 newFacetCircle.transform.LookAt(Vector3.zero);

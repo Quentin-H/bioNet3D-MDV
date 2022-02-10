@@ -10,9 +10,6 @@ from decimal import Decimal
 import numpy
 import sphvoronoi
 
-FINAL_SCALE = 1
-FACET_SPHERE_SCALE = 1
-#OnSphereFacetPositions = []
 
 class Functions:
 
@@ -149,11 +146,10 @@ class Functions:
 		clusterSizeHistOutputFile.close()
 
 
-	def generateOnSpherePos(numOfPos, scale):
+	def generateOnSpherePos(numOfPos):
 		graph = igraph.Graph(numOfPos)
 		layout = graph.layout("sphere")
 		layout.center(0,0,0)
-		#layout.scale(scale)
 		posList = []
 		for coordinate in layout:
 			posList.append(coordinate)
@@ -193,7 +189,7 @@ class Functions:
 		graphList = inputGraphList
 
 		miscBucketLayout = graphList[0].layout("fr3d") # maybe try drl_3d too
-		#miscBucketLayout.center(-160,0,0) #wtf???? now do this in unity
+		#miscBucketLayout.center(-160,0,0) #not in use, leaving to help debug 3D issue with large network
 		newMiscGraph = graphList[0]
 		i = 0
 		for coordinate in miscBucketLayout: 
@@ -203,7 +199,7 @@ class Functions:
 		graphListWithPos.append(newMiscGraph)
 
 		OnSpherePositions = []
-		OnSpherePositions = Functions.generateOnSpherePos(len(graphList), FACET_SPHERE_SCALE) #maybe subtract 1 since misc isnt included
+		OnSpherePositions = Functions.generateOnSpherePos(len(graphList)) #maybe subtract 1 since misc isnt included
 		
 		OnSphereFacetPositions = OnSpherePositions
 		
@@ -246,8 +242,6 @@ class Functions:
 
 			for neighbor in node.neighbors():
 				connectionListStr += neighbor["name"] + "," 
-
-			#multipliedCoord = [element * FINAL_SCALE for element in node["coordinates"]]
 			
 			currentLine = (node["name"] # feature ID
 				+ "|" + str(node["coordinates"])
@@ -273,7 +267,7 @@ class Functions:
 		graphString += "#$" + "\n"
 		posListStr = ""
 
-		facetPosList = Functions.generateOnSpherePos(len(graphList), FINAL_SCALE)  #*FACET_SPHERE_SCALE
+		facetPosList = Functions.generateOnSpherePos(len(graphList)) 
 		for pos in facetPosList:
 			posListStr += str(pos) + "\n"
 

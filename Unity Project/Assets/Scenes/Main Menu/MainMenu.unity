@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rawNodeLayoutFile: 
-  positionMultiplier: 1
+  positionMultiplier: 100
 --- !u!4 &53305936
 Transform:
   m_ObjectHideFlags: 0
