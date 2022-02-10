@@ -47,15 +47,13 @@ public class NetworkSceneManager : MonoBehaviour
     private IDictionary<FixedString32, Entity> fixedIDsToSceneNodeEntities = new Dictionary<FixedString32, Entity>(); // This is for use internally liek creating edges, since internally genes are identified by feature IDs
     private IDictionary<String, Entity> namesToSceneNodeEntities = new Dictionary<String, Entity>(); // This is for use with searching for nodes since the user would use names
     private Dictionary<Entity, List<Entity>> entitiesToConnectedEntities = new Dictionary<Entity, List<Entity>>();
-    private List<Entity> allEntities = new List<Entity>();
+    private List<Entity> allNodeEntities = new List<Entity>();
     private Dictionary<int, List<Entity>> clusterNumbersToEntities = new Dictionary<int, List<Entity>>();
 
     private double maxAbsBlineScore = -1.0;
     private List<float4> blineList = new List<float4>(); // first 3 values are coordinates, last is value, populated when spawning nodes, uses absolute values
     private List<float4> degreeList = new List<float4>();  // first 3 values are coordinates, last is value, populated when spawning nodes
  
-    private List<GameObject> activeLines = new List<GameObject>();
-
 
     private void Start() 
     {
@@ -150,7 +148,6 @@ public class NetworkSceneManager : MonoBehaviour
                 Entity e = SpawnNode(fID, coord, dName, desc, nRank, blineScore, deg, clusterNum);
 
                 List<string> connectedIDs = new List<string>(); 
-
                 foreach(string connectedNode in connectionIDsFromFile) 
                 {
                     connectedIDs.Add(connectedNode.Trim());
@@ -172,7 +169,7 @@ public class NetworkSceneManager : MonoBehaviour
             entitiesToConnectedEntities.Add(entry.Key, connectedEntities);
         }
 
-        foreach(Entity curEntity in allEntities) // this can be any dictionary that has all entities as the keys
+        foreach(Entity curEntity in allNodeEntities) // this can be any dictionary that has all entities as the keys
         {
             int clusterNumber = entityManager.GetComponentData<NodeData>(curEntity).cluster;
             // if key already exists, add to this entity to the list at this key
@@ -234,7 +231,7 @@ public class NetworkSceneManager : MonoBehaviour
         FixedString32 idAsFixed = fID;
         fixedIDsToSceneNodeEntities.Add(idAsFixed, newNodeEntity);
         namesToSceneNodeEntities.Add(dName, newNodeEntity);
-        allEntities.Add(newNodeEntity);
+        allNodeEntities.Add(newNodeEntity);
         return newNodeEntity;
     }
 
@@ -267,6 +264,8 @@ public class NetworkSceneManager : MonoBehaviour
             }
         }
     }
+
+    public List<Entity> GetSimpleNodeEntityList() { return allNodeEntities; }
 
     public void ChangeNodeColors(Gradient gradient) 
     {

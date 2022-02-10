@@ -10,8 +10,8 @@ from decimal import Decimal
 import numpy
 import sphvoronoi
 
-FINAL_SCALE = 8
-FACET_SPHERE_SCALE = 75
+FINAL_SCALE = 1
+FACET_SPHERE_SCALE = 1
 #OnSphereFacetPositions = []
 
 class Functions:
@@ -149,12 +149,11 @@ class Functions:
 		clusterSizeHistOutputFile.close()
 
 
-	# maybe automate scale arg by basing it on number of nodes in each subgraph somehow
 	def generateOnSpherePos(numOfPos, scale):
 		graph = igraph.Graph(numOfPos)
 		layout = graph.layout("sphere")
 		layout.center(0,0,0)
-		layout.scale(scale)
+		#layout.scale(scale)
 		posList = []
 		for coordinate in layout:
 			posList.append(coordinate)
@@ -194,7 +193,7 @@ class Functions:
 		graphList = inputGraphList
 
 		miscBucketLayout = graphList[0].layout("fr3d") # maybe try drl_3d too
-		miscBucketLayout.center(-160,0,0) #wtf????
+		#miscBucketLayout.center(-160,0,0) #wtf???? now do this in unity
 		newMiscGraph = graphList[0]
 		i = 0
 		for coordinate in miscBucketLayout: 
@@ -225,7 +224,7 @@ class Functions:
 				j = 0
 				for coordinate in layout: # for each node in the mini graph
 					newGraph.vs[j]["cluster"] = i
-					coord = [coordinate[0] * FINAL_SCALE, coordinate[1] * FINAL_SCALE, (newGraph.vs[j].degree() / 100) * FINAL_SCALE]
+					coord = [coordinate[0], coordinate[1], (newGraph.vs[j].degree() / 100) ]
 					coord = numpy.dot( coord, tfmrot ) + tfmtranslate
 				
 					coord = "[%g,%g,%g]" % (coord[0], coord[1], coord[2])
