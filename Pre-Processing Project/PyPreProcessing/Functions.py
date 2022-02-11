@@ -220,7 +220,7 @@ class Functions:
 				j = 0
 				for coordinate in layout: # for each node in the mini graph
 					newGraph.vs[j]["cluster"] = i
-					coord = [coordinate[0], coordinate[1], (newGraph.vs[j].degree() / 100) + 1 ] # add 1 so its above facet sphere should probably figure out more sophisticated way to do this taking into account avg or max degree in network
+					coord = [coordinate[0], coordinate[1], (newGraph.vs[j].degree() / 100)] # should probably figure out more sophisticated way to do this taking into account avg or max degree in network
 					coord = numpy.dot( coord, tfmrot ) + tfmtranslate
 				
 					coord = "[%g,%g,%g]" % (coord[0], coord[1], coord[2])

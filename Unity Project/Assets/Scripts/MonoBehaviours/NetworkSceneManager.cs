@@ -23,7 +23,7 @@ public class NetworkSceneManager : MonoBehaviour
     [SerializeField] private Gradient edgeValueGradient;
     // If set to low number ex. 10, creates beautiful patterns on layouts besides fr3d
     // Figure out a way to automatically set this based on the layout so points aren't too close together
-    public float positionMultiplier;
+    private float positionMultiplier;
     private Entity nodeEntityPrefab;
 
     private EntityManager entityManager;
@@ -53,7 +53,8 @@ public class NetworkSceneManager : MonoBehaviour
     private double maxAbsBlineScore = -1.0;
     private List<float4> blineList = new List<float4>(); // first 3 values are coordinates, last is value, populated when spawning nodes, uses absolute values
     private List<float4> degreeList = new List<float4>();  // first 3 values are coordinates, last is value, populated when spawning nodes
- 
+    private List<GameObject> facetCircles = new List<GameObject>();
+
 
     private void Start() 
     {
@@ -65,7 +66,7 @@ public class NetworkSceneManager : MonoBehaviour
         instance = this;
 
         inputDataHolder = GameObject.Find("InputDataHolder");
-        // MAYBE SET TO 0
+
         try { positionMultiplier = inputDataHolder.GetComponent<DataHolder>().positionMultiplier; } catch { positionMultiplier = 100; }
 
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -93,6 +94,61 @@ public class NetworkSceneManager : MonoBehaviour
         string rawLayoutInput = "";
         try { rawLayoutInput = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile; } catch { }
         try { SpawnFacetCircles(rawLayoutInput); } catch { Debug.Log("Facet Circle Spawn Failed"); }
+    
+        AutoScaling();
+    }
+
+    private void AutoScaling() 
+    {
+        const float minDesiredDistance = 10;
+        float minDistance =  Mathf.Infinity;
+
+        foreach(Entity entity in allNodeEntities)
+        {
+            float3 entityPosition = new float3(
+                entityManager.GetComponentData<Translation>(entity).Value.x, 
+                entityManager.GetComponentData<Translation>(entity).Value.y, 
+                entityManager.GetComponentData<Translation>(entity).Value.z);
+
+            if (entityManager.GetComponentData<NodeData>(entity).cluster != 0)
+            {
+                cluster = entityManager.GetComponentData<NodeData>(entity).cluster;
+
+                foreach(KeyValuePair<int,List<Entity>> clustersToEntityLists in clusterNumbersToEntities)
+                {
+                    if (clustersToEntityLists.Key != cluster) 
+                    {
+                        foreach(Entity clusterMember in clustersToEntityLists.Value)
+                        {
+                            float3 clusterMemberPos = new float3(
+                                entityManager.GetComponentData<Translation>(clusterMember).Value.x, 
+                                entityManager.GetComponentData<Translation>(clusterMember).Value.y, 
+                                entityManager.GetComponentData<Translation>(clusterMember).Value.z);
+                            
+                            float distance = Vector3.Distance(clusterMemberPos, entityPosition);
+
+                            if(distance < minDistance)
+                            {
+                                minDistance = distance;
+                            }
+                        }
+                    }
+                }
+            }  
+        }
+
+        float scalingValue = minDesiredDistance / minDistance;
+
+        ScaleFacetCircles(scalingValue); // should probably multiply by less than positionMultiplier to ensure nodes are above facet circles
+        foreach (int key in clusterNumbersToEntities.Keys)
+        {
+            if (key != 0) 
+            {
+                ScaleNodesByCluster(key, scalingValue);
+            }
+        }
+
+        // write seperate algorithm for misc cluster, maybe find minimum distances in it and use that?
     }
 
     private void OnDestroy() 
@@ -139,9 +195,9 @@ public class NetworkSceneManager : MonoBehaviour
                 } 
                 else 
                 {
-                    coord.x = float.Parse(line.Split('[')[1].Split(',')[0].Trim()) * positionMultiplier;
-                    coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim()) * positionMultiplier;
-                    coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim()) * positionMultiplier;
+                    coord.x = float.Parse(line.Split('[')[1].Split(',')[0].Trim());
+                    coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim());
+                    coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim());
                 }
 
                 dName = line.Split('|')[2];
@@ -255,14 +311,15 @@ public class NetworkSceneManager : MonoBehaviour
             {
                 string[] coordStrings = line.Split('[')[1].Split(']')[0].Split(',');
 
-                float x = float.Parse(coordStrings[0]) * positionMultiplier;
-                float y = float.Parse(coordStrings[1]) * positionMultiplier;
-                float z = float.Parse(coordStrings[2]) * positionMultiplier;
+                float x = float.Parse(coordStrings[0]);
+                float y = float.Parse(coordStrings[1]);
+                float z = float.Parse(coordStrings[2]);
 
                 Vector3 coords = new Vector3(x, y, z);
                 GameObject newFacetCircle = Instantiate(facetCircleObject, coords, Quaternion.identity);
                 // if second param set to Vector3.up it looks  cool
                 newFacetCircle.transform.LookAt(Vector3.zero);
+                facetCircles.Add(newFacetCircle);
             } catch { 
                 Debug.Log("%%"); 
             }
@@ -316,6 +373,34 @@ public class NetworkSceneManager : MonoBehaviour
     public List<Entity> GetEntitiesInCluster(int clusterNumber)
     {
         return clusterNumbersToEntities[clusterNumber];
+    }
+
+    public void ScaleNodesByCluster(int clusterNumber, float scale)
+    {
+        foreach(Entity entity in clusterNumbersToEntities[clusterNumber])
+        {
+            float3 newCoordinate = new float3(
+                entityManager.GetComponentData<Translation>(entity).Value.x * positionMultiplier, 
+                entityManager.GetComponentData<Translation>(entity).Value.y * positionMultiplier, 
+                entityManager.GetComponentData<Translation>(entity).Value.z * positionMultiplier);
+
+            Translation translation = new Translation() { Value = newCoordinate };
+            entityManager.AddComponentData( entity, translation );
+        }
+    }
+
+    // maybe seperate into coord scaling and scale scaling?
+    public void ScaleFacetCircles(float scale)
+    {
+        foreach(GameObject circle in facetCircles)
+        {
+            circle.transform.position = new Vector3(
+                circle.transform.position.x * positionMultiplier, 
+                circle.transform.position.y * positionMultiplier, 
+                circle.transform.position.z * positionMultiplier);
+
+            //circle.transform.localScale = new float3(positionMultiplier, positionMultiplier, positionMultiplier);
+        }
     }
 
     //  U      U    I
