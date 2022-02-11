@@ -95,12 +95,12 @@ public class NetworkSceneManager : MonoBehaviour
         try { rawLayoutInput = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile; } catch { }
         try { SpawnFacetCircles(rawLayoutInput); } catch { Debug.Log("Facet Circle Spawn Failed"); }
     
-        AutoScaling();
+        AutoScaleNetwork();
     }
 
-    private void AutoScaling() 
+    private void AutoScaleNetwork() 
     {
-        const float minDesiredDistance = 10;
+        const float minDesiredDistance = 15;
         float minDistance =  Mathf.Infinity;
 
         foreach(Entity entity in allNodeEntities)
@@ -112,7 +112,7 @@ public class NetworkSceneManager : MonoBehaviour
 
             if (entityManager.GetComponentData<NodeData>(entity).cluster != 0)
             {
-                cluster = entityManager.GetComponentData<NodeData>(entity).cluster;
+                int cluster = entityManager.GetComponentData<NodeData>(entity).cluster;
 
                 foreach(KeyValuePair<int,List<Entity>> clustersToEntityLists in clusterNumbersToEntities)
                 {
@@ -380,9 +380,9 @@ public class NetworkSceneManager : MonoBehaviour
         foreach(Entity entity in clusterNumbersToEntities[clusterNumber])
         {
             float3 newCoordinate = new float3(
-                entityManager.GetComponentData<Translation>(entity).Value.x * positionMultiplier, 
-                entityManager.GetComponentData<Translation>(entity).Value.y * positionMultiplier, 
-                entityManager.GetComponentData<Translation>(entity).Value.z * positionMultiplier);
+                entityManager.GetComponentData<Translation>(entity).Value.x * scale, 
+                entityManager.GetComponentData<Translation>(entity).Value.y * scale, 
+                entityManager.GetComponentData<Translation>(entity).Value.z * scale);
 
             Translation translation = new Translation() { Value = newCoordinate };
             entityManager.AddComponentData( entity, translation );
@@ -395,11 +395,11 @@ public class NetworkSceneManager : MonoBehaviour
         foreach(GameObject circle in facetCircles)
         {
             circle.transform.position = new Vector3(
-                circle.transform.position.x * positionMultiplier, 
-                circle.transform.position.y * positionMultiplier, 
-                circle.transform.position.z * positionMultiplier);
+                circle.transform.position.x * scale, 
+                circle.transform.position.y * scale, 
+                circle.transform.position.z * scale);
 
-            //circle.transform.localScale = new float3(positionMultiplier, positionMultiplier, positionMultiplier);
+            //circle.transform.localScale = new float3(scale, scale, scale);
         }
     }
 
