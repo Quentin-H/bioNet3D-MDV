@@ -74,7 +74,7 @@ class Functions:
 				j += 1
 
 		for nodeLine in nodeFileLines: # go through every gene in the file and add it as a node to the graph
-			nodeParsePercent = round(100 * (i / len(nodeFileLines)), 3) # change this to every 2 percent, hashtable bline scores, look up feaureID -> score
+			#nodeParsePercent = round(100 * (i / len(nodeFileLines)), 3) # change this to every 2 percent, hashtable bline scores, look up feaureID -> score
 			#sys.stdout.write("\r{0}".format("Node parsing: "+ str(nodeParsePercent) + "% done"))
 			#sys.stdout.flush()
 
@@ -83,7 +83,11 @@ class Functions:
 				dName = nodeLine.split()[3].strip()
 				desc = nodeLine.split("\t")[4].strip()
 				nRank = i
-				bScore = bScores[featureID]
+				bScore = 0
+				try: 
+					bScore = bScores[featureID] 
+				except: 
+					bScore = 0
 
 				# Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute
 				graph.add_vertex(name = featureID, displayName = dName, description = desc, networkRank = nRank, baselineScore = bScore)

@@ -48,6 +48,7 @@ public class NetworkCamera : MonoBehaviour
     private void Start() 
     {
         cam = Camera.main;
+        //this.x + (distanceFromOrigin(node[0]) * 1.75)
     }
 
     private void Update()

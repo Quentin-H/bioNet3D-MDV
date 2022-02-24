@@ -52,7 +52,9 @@ public class NetworkSceneManager : MonoBehaviour
 
     private double maxAbsBlineScore = -1.0;
     private List<float4> blineList = new List<float4>(); // first 3 values are coordinates, last is value, populated when spawning nodes, uses absolute values
-    private List<float4> degreeList = new List<float4>();  // first 3 values are coordinates, last is value, populated when spawning nodes
+    private List<float4> rankList = new List<float4>();
+    private List<float4> degreeList = new List<float4>();  
+    
     private List<GameObject> facetCircles = new List<GameObject>();
 
 
@@ -75,20 +77,6 @@ public class NetworkSceneManager : MonoBehaviour
         
         ConvertRawInputNodes(); 
 
-        blineList = blineList.OrderByDescending(o => o.w).ToList();
-        for (int i = 0; i < 200; i++)
-        {
-            GameObject newObject = Instantiate(topBaselineScoreObject, new float3(blineList[i].x, blineList[i].y, blineList[i].z), Quaternion.identity);
-            topBaselineScoreObjects.Add(newObject);
-        }
-
-        degreeList = degreeList.OrderByDescending(o => o.w).ToList();
-        for (int i = 0; i < 200; i++)
-        {
-            GameObject newObject = Instantiate(topDegreeObject, new float3(degreeList[i].x, degreeList[i].y, degreeList[i].z), Quaternion.identity);
-            topDegreeObjects.Add(newObject);
-        }
-
         ChangeNodeColors(nodeValueGradient);
 
         string rawLayoutInput = "";
@@ -96,13 +84,42 @@ public class NetworkSceneManager : MonoBehaviour
         try { SpawnFacetCircles(rawLayoutInput); } catch { Debug.Log("Facet Circle Spawn Failed"); }
     
         AutoScaleNetwork();
+        GenerateTopLists();
     }
 
     private void AutoScaleNetwork() 
     {
-        const float minDesiredDistance = 15;
-        float minDistance =  Mathf.Infinity;
+        const float minIntraClusterDistance = 5;
+        const float minInterClusterDistance = 20;
+        
+        /*float minIntraDistance =  Mathf.Infinity;
+        foreach(KeyValuePair<int,List<Entity>> clustersToEntityLists in clusterNumbersToEntities)
+        {
+            foreach(Entity clusterMember1 in clustersToEntityLists.Value)
+            {
+                float3 entity1Position = new float3(
+                    entityManager.GetComponentData<Translation>(clusterMember1).Value.x, 
+                    entityManager.GetComponentData<Translation>(clusterMember1).Value.y, 
+                    entityManager.GetComponentData<Translation>(clusterMember1).Value.z);
+                
+                foreach(Entity clusterMember2 in clustersToEntityLists.Value)
+                {
+                    float3 entity2Position = new float3(
+                        entityManager.GetComponentData<Translation>(clusterMember2).Value.x, 
+                        entityManager.GetComponentData<Translation>(clusterMember2).Value.y, 
+                        entityManager.GetComponentData<Translation>(clusterMember2).Value.z);
 
+                    float distance = Vector3.Distance(entity1Position, entity2Position);
+                    if(distance < minIntraDistance)
+                    {
+                        minIntraDistance = distance;
+                    }
+                }
+            }
+        }*/
+
+
+        float minInterDistance =  Mathf.Infinity;
         foreach(Entity entity in allNodeEntities)
         {
             float3 entityPosition = new float3(
@@ -127,9 +144,9 @@ public class NetworkSceneManager : MonoBehaviour
                             
                             float distance = Vector3.Distance(clusterMemberPos, entityPosition);
 
-                            if(distance < minDistance)
+                            if(distance < minInterDistance)
                             {
-                                minDistance = distance;
+                                minInterDistance = distance;
                             }
                         }
                     }
@@ -137,7 +154,8 @@ public class NetworkSceneManager : MonoBehaviour
             }  
         }
 
-        float scalingValue = minDesiredDistance / minDistance;
+        //float scalingValue = (minInterClusterDistance / minInterDistance) * (minIntraClusterDistance / minIntraDistance);
+        float scalingValue = minInterClusterDistance / minInterDistance;
 
         ScaleFacetCircles(scalingValue); // should probably multiply by less than positionMultiplier to ensure nodes are above facet circles
         foreach (int key in clusterNumbersToEntities.Keys)
@@ -149,6 +167,43 @@ public class NetworkSceneManager : MonoBehaviour
         }
 
         // write seperate algorithm for misc cluster, maybe find minimum distances in it and use that?
+    }
+
+    private void GenerateTopLists()
+    {
+        foreach(Entity entity in allNodeEntities)
+        {
+            float3 entityPos = new float3(
+                entityManager.GetComponentData<Translation>(entity).Value.x, 
+                entityManager.GetComponentData<Translation>(entity).Value.y, 
+                entityManager.GetComponentData<Translation>(entity).Value.z);
+
+            float rank = (float)entityManager.GetComponentData<NodeData>(entity).networkRank;
+            float blineScore = (float)entityManager.GetComponentData<NodeData>(entity).baselineScore;
+            float degree = (float)entityManager.GetComponentData<NodeData>(entity).degree;
+
+            rankList.Add(new float4(entityPos.x, entityPos.y, entityPos.z, rank));
+            blineList.Add(new float4(entityPos.x, entityPos.y, entityPos.z, blineScore));
+            degreeList.Add(new float4(entityPos.x, entityPos.y, entityPos.z, degree));
+        }
+
+        rankList = rankList.OrderByDescending(o => o.w).ToList();
+        blineList = blineList.OrderByDescending(o => o.w).ToList();
+        degreeList = degreeList.OrderByDescending(o => o.w).ToList();
+
+        for(int i = 1; i <= 200; i++)
+        {
+            GameObject newObject;
+
+            newObject = Instantiate(topNetworkRankObject, new float3(rankList[i].x, rankList[i].y, rankList[i].z), Quaternion.identity);
+            topNetworkRankObjects.Add(newObject);
+
+            newObject = Instantiate(topBaselineScoreObject, new float3(blineList[i].x, blineList[i].y, blineList[i].z), Quaternion.identity);
+            topBaselineScoreObjects.Add(newObject);
+
+            newObject = Instantiate(topDegreeObject, new float3(degreeList[i].x, degreeList[i].y, degreeList[i].z), Quaternion.identity);
+            topDegreeObjects.Add(newObject);
+        }
     }
 
     private void OnDestroy() 
@@ -257,15 +312,6 @@ public class NetworkSceneManager : MonoBehaviour
 
     private Entity SpawnNode(string fID, float3 coord, string dName, string desc, int nRank, double blineScore, int deg, int clusterNum)
     {
-        if (nRank <= 200) // adds a billboard if the network rank is less than or equal to 200
-        {
-            GameObject newObject = Instantiate(topNetworkRankObject, new float3(coord.x, coord.y, coord.z), Quaternion.identity);
-            topNetworkRankObjects.Add(newObject);
-        }
-
-        blineList.Add( new float4(coord.x, coord.y, coord.z, System.Math.Abs((float)blineScore) ));
-        degreeList.Add( new float4(coord.x, coord.y, coord.z, (float)deg ));
-
         float4 colorF = new float4( 0, 0, 0, 0 );
 
         nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy( nodePrefab, gameObjectConversionSettings );

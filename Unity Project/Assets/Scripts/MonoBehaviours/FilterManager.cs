@@ -25,7 +25,7 @@ public class FilterManager : MonoBehaviour
         // if hide is enabled, if its the others create other things
         foreach(Entity entity in filteredOutEntities)
         {
-            EntityManager.SetEnabled(entity, false);
+            //entityManager.SetEnabled(entity, false);
         }
     }
 
@@ -33,7 +33,7 @@ public class FilterManager : MonoBehaviour
     {
         foreach(Entity entity in allEntities)
         {
-            EntityManager.SetEnabled(entity, true);
+            //entityManager.SetEnabled(entity, true);
         }
     }
 }
