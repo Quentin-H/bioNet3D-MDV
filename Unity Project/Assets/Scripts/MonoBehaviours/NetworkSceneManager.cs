@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
@@ -363,8 +364,8 @@ public class NetworkSceneManager : MonoBehaviour
 
                 Vector3 coords = new Vector3(x, y, z);
                 GameObject newFacetCircle = Instantiate(facetCircleObject, coords, Quaternion.identity);
-                // if second param set to Vector3.up it looks  cool
-                newFacetCircle.transform.LookAt(Vector3.zero);
+                
+                newFacetCircle.transform.LookAt(Vector3.zero); // if second param set to Vector3.up it looks  cool
                 facetCircles.Add(newFacetCircle);
             } catch { 
                 Debug.Log("%%"); 
@@ -445,7 +446,7 @@ public class NetworkSceneManager : MonoBehaviour
                 circle.transform.position.y * scale, 
                 circle.transform.position.z * scale);
 
-            //circle.transform.localScale = new float3(scale, scale, scale);
+            circle.transform.localScale = new float3(scale / 4, scale / 4, scale / 4);
         }
     }
 
