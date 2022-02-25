@@ -193,7 +193,6 @@ class Functions:
 		graphList = inputGraphList
 
 		miscBucketLayout = graphList[0].layout("fr3d") # maybe try drl_3d too
-		#miscBucketLayout.center(-160,0,0) #not in use, leaving to help debug 3D issue with large network
 		newMiscGraph = graphList[0]
 		i = 0
 		for coordinate in miscBucketLayout: 
@@ -202,39 +201,36 @@ class Functions:
 			i += 1 
 		graphListWithPos.append(newMiscGraph)
 
-		OnSpherePositions = []
-		OnSpherePositions = Functions.generateOnSpherePos(len(graphList)) #maybe subtract 1 since misc isnt included
-		
-		OnSphereFacetPositions = OnSpherePositions
-		
+		OnSpherePositions = Functions.generateOnSpherePos(len(graphList) - 1) # subtract 1 since misc isnt included
+				
 		hullnet = sphvoronoi.HullNet( OnSpherePositions )
 
 		i = 0
-		for graph in graphList:
+		for graph in graphList[1:]:
 			newGraph = graph
-			if i != 0:
-				tfm = hullnet.findcentertfm(i, on_facet=True)
-				tfmrot = tfm[0:3, 0:3]
-				tfmtranslate = tfm[3, 0:3]
 
-				layout = graph.layout_fruchterman_reingold()
-				bbox = BoundingBox( -0.7, -0.7, 0.7, 0.7 )
-				layout.fit_into(bbox)
+			tfm = hullnet.findcentertfm(i, on_facet=True)
+			tfmrot = tfm[0:3, 0:3]
+			tfmtranslate = tfm[3, 0:3]
 
-				j = 0
-				for coordinate in layout: # for each node in the mini graph
-					newGraph.vs[j]["cluster"] = i
-					coord = [coordinate[0], coordinate[1], (newGraph.vs[j].degree() / 100)] # should probably figure out more sophisticated way to do this taking into account avg or max degree in network
-					coord = numpy.dot( coord, tfmrot ) + tfmtranslate
+			layout = graph.layout_fruchterman_reingold()
+			bbox = BoundingBox( -0.7, -0.7, 0.7, 0.7 )
+			layout.fit_into(bbox)
+
+			j = 0
+			for coordinate in layout: # for each node in the graph
+				newGraph.vs[j]["cluster"] = i + 1
+				coord = [coordinate[0], coordinate[1], ( (newGraph.vs[j].degree() / 150) + 1 )] # should probably figure out more sophisticated way to do this taking into account avg or max degree in network
+				coord = numpy.dot( coord, tfmrot ) + tfmtranslate
 				
-					coord = "[%g,%g,%g]" % (coord[0], coord[1], coord[2])
-					newGraph.vs[j]["coordinates"] = coord
-					j += 1
-
-				graphListWithPos.append(newGraph)
+				coord = "[%g,%g,%g]" % (coord[0], coord[1], coord[2])
+				newGraph.vs[j]["coordinates"] = coord
+				j += 1
+			graphListWithPos.append(newGraph)
 			i += 1
+
+		print("worked2")
 	
-		#get pos on sphere for length - 1 and do fr3d on each cluster and set center to a pos on sphere
 		return graphListWithPos
 
 
@@ -271,7 +267,7 @@ class Functions:
 		graphString += "#$" + "\n"
 		posListStr = ""
 
-		facetPosList = Functions.generateOnSpherePos(len(graphList)) 
+		facetPosList = Functions.generateOnSpherePos(len(graphList) - 1) # subtract 1 since misc isn't on sphere
 		for pos in facetPosList:
 			posListStr += str(pos) + "\n"
 

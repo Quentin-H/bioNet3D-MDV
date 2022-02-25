@@ -155,7 +155,7 @@ public class NetworkSceneManager : MonoBehaviour
             }  
         }
 
-        //float scalingValue = (minInterClusterDistance / minInterDistance) * (minIntraClusterDistance / minIntraDistance);
+        //float scalingValue = (minInterClusterDistance / minInterDistance) + (minIntraClusterDistance / minIntraDistance);
         float scalingValue = minInterClusterDistance / minInterDistance;
 
         ScaleFacetCircles(scalingValue); // should probably multiply by less than positionMultiplier to ensure nodes are above facet circles
@@ -446,7 +446,7 @@ public class NetworkSceneManager : MonoBehaviour
                 circle.transform.position.y * scale, 
                 circle.transform.position.z * scale);
 
-            circle.transform.localScale = new float3(scale / 4, scale / 4, scale / 4);
+            circle.transform.localScale = new float3(scale / 4, scale / 4, scale / 4); // maybe sqrt?
         }
     }
 
