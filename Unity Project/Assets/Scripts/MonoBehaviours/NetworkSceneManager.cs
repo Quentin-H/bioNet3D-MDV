@@ -19,6 +19,8 @@ public class NetworkSceneManager : MonoBehaviour
     public static NetworkSceneManager instance;
     [SerializeField] private NetworkCamera networkCamera;
 
+    [SerializeField] private GameObject innerSphere;
+
     [SerializeField] private GameObject nodePrefab;
     [SerializeField] private Gradient nodeValueGradient;
     [SerializeField] private Gradient edgeValueGradient;
@@ -448,6 +450,8 @@ public class NetworkSceneManager : MonoBehaviour
 
             circle.transform.localScale = new float3(scale / 4, scale / 4, scale / 4); // maybe sqrt?
         }
+        
+        innerSphere.transform.localScale = new float3(scale * 1.9f, scale * 1.9f, scale * 1.9f);
     }
 
     //  U      U    I
