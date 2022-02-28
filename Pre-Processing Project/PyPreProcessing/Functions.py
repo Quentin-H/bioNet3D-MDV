@@ -79,9 +79,9 @@ class Functions:
 			#sys.stdout.flush()
 
 			try:
-				featureID = nodeLine.split()[0].strip()
-				dName = nodeLine.split()[3].strip()
-				desc = nodeLine.split("\t")[4].strip()
+				featureID = nodeLine.split()[0].strip().replace("$", " ").replace("|", " ").replace("#", " ")
+				dName = nodeLine.split()[3].strip().replace("$", " ").replace("|", " ").replace("#", " ")
+				desc = nodeLine.split("\t")[4].strip().replace("$", " ").replace("|", " ").replace("#", " ")
 				nRank = i
 				bScore = 0
 				try: 
