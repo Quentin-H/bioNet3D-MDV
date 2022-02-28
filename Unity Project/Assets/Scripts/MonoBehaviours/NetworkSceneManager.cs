@@ -474,7 +474,7 @@ public class NetworkSceneManager : MonoBehaviour
         
         innerSphere.transform.localScale = new float3(scale * 1.9f, scale * 1.9f, scale * 1.9f);
     }
-
+    
     //  U      U    I
     //  U      U    I
     //  U      U    I
