@@ -1,5 +1,8 @@
 using Unity.Collections;
 using Unity.Mathematics;
+using Unity.Entities;
+using Unity.Transforms;
+
 
 namespace NodeViz
 {
@@ -20,6 +23,17 @@ namespace NodeViz
             nodeBCoords = setNodeBCoords;
             nodeBName = setNodeBName;
             weight = setWeight;
+        }
+    }
+
+    public class Utilities
+    {
+        public float3 GetNodePositon(Entity entity, EntityManager entityManager)
+        {
+            return new float3(
+                entityManager.GetComponentData<Translation>(entity).Value.x, 
+                entityManager.GetComponentData<Translation>(entity).Value.y, 
+                entityManager.GetComponentData<Translation>(entity).Value.z);
         }
     }
 }

@@ -88,6 +88,27 @@ public class NetworkSceneManager : MonoBehaviour
     
         AutoScaleNetwork();
         GenerateTopLists();
+        PlaceCamera(Camera.main);
+    }
+
+    private void PlaceCamera(Camera camera)
+    {
+        float maxDist = 0;
+
+        foreach(Entity entity in allNodeEntities)
+        {
+            float3 entityPosition = new float3(
+                entityManager.GetComponentData<Translation>(entity).Value.x, 
+                entityManager.GetComponentData<Translation>(entity).Value.y, 
+                entityManager.GetComponentData<Translation>(entity).Value.z);
+
+            if (Vector3.Distance(entityPosition, Vector3.zero) > maxDist)
+            {
+                maxDist = Vector3.Distance(entityPosition, Vector3.zero);
+            }
+        }
+
+        camera.transform.position = new float3(0, 0, -1.25f * maxDist);
     }
 
     private void AutoScaleNetwork() 
