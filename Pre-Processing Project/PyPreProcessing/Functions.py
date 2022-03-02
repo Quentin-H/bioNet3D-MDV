@@ -2,6 +2,7 @@ import sys
 from igraph import *
 import igraph
 import time
+import math
 import pyhull
 import pyhull.convex_hull
 from datetime import datetime
@@ -205,6 +206,13 @@ class Functions:
 				
 		hullnet = sphvoronoi.HullNet( OnSpherePositions )
 
+		#find max degree
+		maxDegree = 0
+		for graph in graphList[1:]:
+			for node in graph.vs:
+				if node.degree() > maxDegree:
+					maxDegree = node.degree()
+
 		i = 0
 		for graph in graphList[1:]:
 			newGraph = graph
@@ -220,7 +228,7 @@ class Functions:
 			j = 0
 			for coordinate in layout: # for each node in the graph
 				newGraph.vs[j]["cluster"] = i + 1
-				coord = [coordinate[0], coordinate[1], newGraph.vs[j].degree()] # should probably figure out more sophisticated way to do this taking into account avg or max degree in network
+				coord = [coordinate[0], coordinate[1], 1 + (newGraph.vs[j].degree() / math.sqrt(maxDegree))] # should probably figure out more sophisticated way to do this taking into account avg or max degree in network
 				coord = numpy.dot( coord, tfmrot ) + tfmtranslate
 				
 				coord = "[%g,%g,%g]" % (coord[0], coord[1], coord[2])
