@@ -471,7 +471,6 @@ public class NetworkSceneManager : MonoBehaviour
 
             circle.transform.localScale = new float3(scale / 4, scale / 4, scale / 4); // maybe sqrt?
         }
-        
         innerSphere.transform.localScale = new float3(scale * 1.9f, scale * 1.9f, scale * 1.9f);
     }
     

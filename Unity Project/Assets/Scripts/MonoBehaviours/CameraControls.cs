@@ -7,45 +7,81 @@ using Unity.Mathematics;
 public class CameraControls : MonoBehaviour
 {
     Transform camParent;
+    float sensitivity = 1f;
 
     void Awake()
     {
         camParent = this.transform.parent;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        sensitivity += GetSensitivityInput();
+
         float3 rotation = new float3();
 
-        if (camParent.eulerAngles.x < 90f && camParent.eulerAngles.x > -90f)
-        {
-            rotation = GetBaseInput();
-        } 
-
+        //if (camParent.eulerAngles.x < 90f && camParent.eulerAngles.x > -90f)
+        //{
+            rotation = GetRotationInput();
+        //} 
+        
         camParent.Rotate(rotation, Space.Self);
+
+        camParent.eulerAngles = new float3(
+            camParent.eulerAngles.x,
+            camParent.eulerAngles.y,
+            0);
+
+        transform.Translate(Vector3.forward * GetZoomInput());
     }
 
-    private Vector3 GetBaseInput() // helper for moveCamera
+    private Vector3 GetRotationInput()
     {
-        Vector3 velocity = new Vector3();
+        Vector3 rotation = new Vector3();
 
         // Forwards
         if (Input.GetKey(KeyCode.W))
-            velocity += new Vector3(1f, 0, 0);
+            rotation += new Vector3(1f, 0, 0);
 
         // Backwards
         if (Input.GetKey(KeyCode.S))
-            velocity += new Vector3(1f, 0, 0);
+            rotation += new Vector3(-1f, 0, 0);
 
         // Left
         if (Input.GetKey(KeyCode.A))
-            velocity += new Vector3(0, 1f, 0);
+            rotation += new Vector3(0, 1f, 0);
 
         // Right
         if (Input.GetKey(KeyCode.D))
-            velocity += new Vector3(0, 1f, 0);
+            rotation += new Vector3(0, -1f, 0);
 
-        return velocity;
+        return rotation;
+    }
+
+    private float GetSensitivityInput()
+    {
+        float sensitivityInput = 1f;
+        const float sensitivityInputSensitivity = .01f;
+
+        if (Input.GetKey(KeyCode.KeypadPlus))
+            sensitivityInput += sensitivityInputSensitivity;
+
+        if (Input.GetKey(KeyCode.Minus))
+            sensitivityInput += sensitivityInputSensitivity;
+
+        return sensitivityInput;
+    }
+
+    private float GetZoomInput()
+    {
+        float zoomInput = 0;
+
+        if (Input.GetKey(KeyCode.LeftShift))
+            zoomInput += 0.1f; // maybe these should be equal to sensitivity
+
+        if (Input.GetKey(KeyCode.LeftControl))
+            zoomInput -= 0.1f;
+
+        return zoomInput;
     }
 }
