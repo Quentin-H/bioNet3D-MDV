@@ -26,7 +26,7 @@ print(' ')
 # for large human
 nPath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/9606.node_map.txt"
 sPath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/Doxorubicin_bootstrap_net_correlation_pearson (Score file).txt"
-ePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/BDI_PPI (seems to be incorrect).edge"
+ePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/BDI_PPI.edge"
 
 
 outputPath = input("Enter output destination, leave blank for default... ")
