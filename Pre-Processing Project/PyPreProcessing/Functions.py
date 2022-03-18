@@ -59,6 +59,7 @@ class Functions:
 		scoreParseFails = 0
 		nodeParseFails = 0
 		edgeParseFails = 0
+		invalidEdges = 0
 
 		node_time = time.time()
 		nodeParsePercent = 0
@@ -75,14 +76,16 @@ class Functions:
 				j += 1
 
 		for nodeLine in nodeFileLines: # go through every gene in the file and add it as a node to the graph
-			#nodeParsePercent = round(100 * (i / len(nodeFileLines)), 3) # change this to every 2 percent, hashtable bline scores, look up feaureID -> score
-			#sys.stdout.write("\r{0}".format("Node parsing: "+ str(nodeParsePercent) + "% done"))
-			#sys.stdout.flush()
+			
+			nodeParsePercent = round(100 * (i / len(nodeFileLines)), 3)
+			if nodeParsePercent % 0.5 == 0:
+				sys.stdout.write("\r{0}".format("Node parsing: "+ str(nodeParsePercent) + "%"))
+				sys.stdout.flush()
 
 			try:
-				featureID = nodeLine.split()[0].strip().replace("$", " ").replace("|", " ").replace("#", " ")
-				dName = nodeLine.split()[3].strip().replace("$", " ").replace("|", " ").replace("#", " ")
-				desc = nodeLine.split("\t")[4].strip().replace("$", " ").replace("|", " ").replace("#", " ")
+				featureID = nodeLine.split()[0].strip().replace("$", " ").replace("|", " ").replace("#", " ").strip()
+				dName = nodeLine.split()[3].strip().replace("$", " ").replace("|", " ").replace("#", " ").strip()
+				desc = nodeLine.split("\t")[4].strip().replace("$", " ").replace("|", " ").replace("#", " ").strip()
 				nRank = i
 				bScore = 0
 				try: 
@@ -96,33 +99,44 @@ class Functions:
 			except:
 				nodeParseFails += 1
 
-		print("\nNode parsing took " +  "%s seconds" % (time.time() - node_time))
+		print("\nNode parsing took " +  "%s seconds" % (time.time() - node_time)  + " with " + str(nodeParseFails) + " parsing fails")
+
+		edgePairs = []
 		edge_time = time.time()
 		edgeParsePercent = 0
 		i = 0
 		# go through the edge input file for each edge and create an edge between both genes (which are nodes in the network due to the previous step)
 		for edgeLine in edgeFileLines:
+			
 			edgeParsePercent = round(100 * (i / len(edgeFileLines)), 3)
-			#sys.stdout.write("\r{0}".format("Edge parsing: "+ str(edgeParsePercent) + "% done"))
-			#sys.stdout.flush()
+			if edgeParsePercent % 0.5 == 0:
+				sys.stdout.write("\r{0}".format("Edge parsing: "+ str(edgeParsePercent) + "%"))
+				sys.stdout.flush()
+
 
 			try:
 				node1 = edgeLine.split()[0].strip()
 				node2 = edgeLine.split()[1].strip()
 
+				graph.vs.find(name=node1) # these fail if node doesn't exist
+				graph.vs.find(name=node2)
+
 				if node1 != node2: # we don't need self connections 
 					#weight = Decimal(edgeLine.split()[2])
-					#graph.add_edge(node1, node2, Edge_Weight = weight) we don't care about weights for now
-					graph.add_edge(node1, node2, Edge_Weight = 0)
+					edgePair = (node1, node2)
+					edgePairs.append(edgePair)
+
 			except:
-				#print(node1)
-				#print(node2)
+				print(edgeLine.split()[0].strip() + " | " + edgeLine.split()[0].strip())
 				edgeParseFails += 1
 
 			i += 1
-		print("\n" + str(i))
 
-		print("\nEdge parsing took " +  "%s seconds" % (time.time() - edge_time))
+		graph.add_edges(edgePairs)
+
+		print(len(graph.es))
+
+		print("\nEdge parsing took " +  "%s seconds" % (time.time() - edge_time) + " with " + str(edgeParseFails) + " parsing fails")
 
 		timeToGenerateiGraph = "%s" % (time.time() - graph_start_time)
 		print("Took " +  "%s seconds to generate iGraph" % (time.time() - graph_start_time))
@@ -133,7 +147,7 @@ class Functions:
 		return graph
 
 
-	def outputHist(graphList, outputPath):
+	def OutputHist(graphList, outputPath):
 		histogramDict = { 1 : 0 }
 
 		for subGraph in graphList:
@@ -162,8 +176,8 @@ class Functions:
 		return posList
 
 
-	#runs louvain and puts small clusters into a seperate graph
-	def lvnProcessing(graph):
+	#runs louvain and puts small clusters into a seperate graphs
+	def LvnProcessing(graph):
 		lvnClusteredGraph = graph.community_multilevel() # clusteredGraph is a vertex clustering object
 		amountOfBiggerThan5 = 0
 		for subgraph in lvnClusteredGraph.subgraphs():
@@ -189,7 +203,7 @@ class Functions:
 		return graphList
 
 
-	def genNodePos(inputGraphList):
+	def GenNodePos(inputGraphList):
 		graphListWithPos = []
 		graphList = inputGraphList
 
@@ -236,8 +250,6 @@ class Functions:
 				j += 1
 			graphListWithPos.append(newGraph)
 			i += 1
-
-		print("worked2")
 	
 		return graphListWithPos
 
@@ -265,7 +277,7 @@ class Functions:
 		return outputStr
 
 
-	def outputData(graphList, outputPath):
+	def OutputData(graphList, outputPath):
 		graphString = ""
 		i = 0
 		for subgraph in graphList:

@@ -19,14 +19,15 @@ print(' ')
 #ePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Yeast Sample/4932.blastp_homology.edge"
 
 # for small human
-nPath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Small Human Sample/9606.node_map.txt"
-sPath = ""
-ePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Small Human Sample/9606.reactome_PPI_reaction.edge"
+#nPath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Small Human Sample/9606.node_map.txt"
+#sPath = ""
+#ePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Small Human Sample/9606.reactome_PPI_reaction.edge"
 
 # for large human
-#nPath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/9606.node_map.txt"
-#sPath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/Doxorubicin_bootstrap_net_correlation_pearson (Score file).txt"
-#ePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/BDI_PPI.edge"
+nPath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/9606.node_map.txt"
+sPath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/Doxorubicin_bootstrap_net_correlation_pearson (Score file).txt"
+ePath = "C:/Users/Quentin/GitHub Repositories/bioNet3D-MDV/Sample Files/Big Human Sample (Amin's Dataset)/BDI_PPI (seems to be incorrect).edge"
+
 
 outputPath = input("Enter output destination, leave blank for default... ")
 if not outputPath.strip():
@@ -38,11 +39,17 @@ if analysisRawInput.strip() == "y":
 	doClusteringAnalysis = True
 
 graph = Functions.FileToGraph(nodePath = nPath, scorePath = sPath, edgePath = ePath)
-graphList = Functions.lvnProcessing(graph)
-graphList = Functions.genNodePos(graphList)
-Functions.outputData(graphList, outputPath)
+print("imported data")
+graphList = Functions.LvnProcessing(graph)
+print("ran louvain")
 
 if doClusteringAnalysis == True:
-	Functions.outputHist(graphList, outputPath)
+	Functions.OutputHist(graphList, outputPath)
+	print("output hist")
+
+graphList = Functions.GenNodePos(graphList)
+print("generated node positions")
+Functions.OutputData(graphList, outputPath)
+print("outputted data")
 
 print('Done.')

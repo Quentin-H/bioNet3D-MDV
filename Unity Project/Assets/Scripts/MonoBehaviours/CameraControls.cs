@@ -16,7 +16,8 @@ public class CameraControls : MonoBehaviour
 
     void Update()
     {
-        sensitivity += GetSensitivityInput();
+        if (sensitivity > 1)
+            sensitivity += GetSensitivityInput();
 
         float3 rotation = new float3();
 
@@ -41,33 +42,35 @@ public class CameraControls : MonoBehaviour
 
         // Forwards
         if (Input.GetKey(KeyCode.W))
-            rotation += new Vector3(1f, 0, 0);
+            rotation += new Vector3(1f  * sensitivity, 0, 0);
 
         // Backwards
         if (Input.GetKey(KeyCode.S))
-            rotation += new Vector3(-1f, 0, 0);
+            rotation += new Vector3(-1f  * sensitivity, 0, 0);
 
         // Left
         if (Input.GetKey(KeyCode.A))
-            rotation += new Vector3(0, 1f, 0);
+            rotation += new Vector3(0, 1f  * sensitivity, 0);
 
         // Right
         if (Input.GetKey(KeyCode.D))
-            rotation += new Vector3(0, -1f, 0);
+            rotation += new Vector3(0, -1f  * sensitivity, 0);
 
         return rotation;
     }
 
     private float GetSensitivityInput()
     {
-        float sensitivityInput = 1f;
-        const float sensitivityInputSensitivity = .01f;
+        float sensitivityInput = 0f;
+        const float sensitivityInputSensitivity = .1f;
 
-        if (Input.GetKey(KeyCode.KeypadPlus))
+        if (Input.GetKey(KeyCode.Equals))
             sensitivityInput += sensitivityInputSensitivity;
 
         if (Input.GetKey(KeyCode.Minus))
-            sensitivityInput += sensitivityInputSensitivity;
+            sensitivityInput -= sensitivityInputSensitivity;
+
+        Debug.Log(sensitivityInput);
 
         return sensitivityInput;
     }

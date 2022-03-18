@@ -55,7 +55,7 @@ public class NetworkCamera : MonoBehaviour
     {
         if (cameraLocked == false)
         {
-            moveCamera();
+            //moveCamera();
         }
 
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
