@@ -5,8 +5,7 @@
     <ProjectGuid>521af94b-2e0c-4bf2-8b7c-36edec68dd0a</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>PyPreProcessing.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>Stuart</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>PyPreProcessing</Name>
@@ -25,6 +24,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PyPreProcessing.py" />
+    <Compile Include="Stuart\spacedpoints.py" />
+    <Compile Include="Stuart\sphnudged.py" />
+    <Compile Include="Stuart\sphvoronoi.py" />
+    <Compile Include="Stuart\tfm.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Stuart\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -127,14 +127,12 @@ class Functions:
 					edgePairs.append(edgePair)
 
 			except:
-				print(edgeLine.split()[0].strip() + " | " + edgeLine.split()[0].strip())
+				#print(edgeLine.split()[0].strip() + " | " + edgeLine.split()[0].strip())
 				edgeParseFails += 1
 
 			i += 1
 
 		graph.add_edges(edgePairs)
-
-		print(len(graph.es))
 
 		print("\nEdge parsing took " +  "%s seconds" % (time.time() - edge_time) + " with " + str(edgeParseFails) + " parsing fails")
 
@@ -242,7 +240,10 @@ class Functions:
 			j = 0
 			for coordinate in layout: # for each node in the graph
 				newGraph.vs[j]["cluster"] = i + 1
-				coord = [coordinate[0], coordinate[1], math.log(newGraph.vs[j].degree() + 1) ]
+
+				#coord = [coordinate[0], coordinate[1], math.log(newGraph.vs[j].degree() + 1) ]
+				coord = [coordinate[0], coordinate[1], newGraph.vs[j].degree() + 1 ]
+
 				coord = numpy.dot( coord, tfmrot ) + tfmtranslate
 				
 				coord = "[%g,%g,%g]" % (coord[0], coord[1], coord[2])
