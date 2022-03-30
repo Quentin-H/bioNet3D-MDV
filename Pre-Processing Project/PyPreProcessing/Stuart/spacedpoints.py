@@ -124,8 +124,8 @@ class SpacedPoints(object):
             else:
                 self.bestxy[:] = xypts
 
-        if self.ecount > self.maxfuncalls:
-            raise GoodEnoughException
+        #if self.ecount > self.maxfuncalls:
+            #raise GoodEnoughException
 
         if self.reportrate > 0 and self.ecount % self.reportrate == 0:
             print("# eval %d energy %g" % (self.ecount, etotal), flush=True)

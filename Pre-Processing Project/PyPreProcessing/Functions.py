@@ -215,8 +215,18 @@ class Functions:
 			i += 1 
 		graphListWithPos.append(newMiscGraph)
 
-		OnSpherePositions = Functions.generateOnSpherePos(len(graphList) - 1) # subtract 1 since misc isnt included
-				
+		#this line is replaced with new spaced points algorithm by Stuart
+		#OnSpherePositions = Functions.generateOnSpherePos(len(graphList) - 1) # subtract 1 since misc isnt included
+		clusterSizes = []
+		for graph in graphList[1:]:
+			clusterSizes.append(graph.vcount())
+
+		spt = spacedpoints.SpacedPoints()
+		spt.seedpoints( clusterSizes )
+		#spt.reportrate = 100
+		OnSpherePositions = spt.nudgepoints()
+
+
 		hullnet = sphvoronoi.HullNet( OnSpherePositions )
 
 		#find max degree
