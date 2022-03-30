@@ -10,6 +10,7 @@ from datetime import date
 from decimal import Decimal
 import numpy
 import sphvoronoi
+import spacedpoints
 
 
 class Functions:
@@ -229,7 +230,7 @@ class Functions:
 		for graph in graphList[1:]:
 			newGraph = graph
 
-			tfm = hullnet.findcentertfm(i, on_facet=True)
+			tfm = hullnet.findcentertfm(i, on_facet=False)
 			tfmrot = tfm[0:3, 0:3]
 			tfmtranslate = tfm[3, 0:3]
 
@@ -241,8 +242,7 @@ class Functions:
 			for coordinate in layout: # for each node in the graph
 				newGraph.vs[j]["cluster"] = i + 1
 
-				#coord = [coordinate[0], coordinate[1], math.log(newGraph.vs[j].degree() + 1) ]
-				coord = [coordinate[0], coordinate[1], newGraph.vs[j].degree() + 1 ]
+				coord = [coordinate[0], coordinate[1], math.log(newGraph.vs[j].degree() / math.sqrt(maxDegree)) ]
 
 				coord = numpy.dot( coord, tfmrot ) + tfmtranslate
 				
