@@ -108,7 +108,7 @@ public class NetworkSceneManager : MonoBehaviour
             }
         }
 
-        camera.transform.position = new float3(0, 0, -1.25f * maxDist);
+        camera.transform.position = new float3(0, 0, 1.25f * maxDist);
     }
 
     private void AutoScaleNetwork() 

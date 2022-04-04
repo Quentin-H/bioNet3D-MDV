@@ -224,6 +224,7 @@ class Functions:
 		spt = spacedpoints.SpacedPoints()
 		spt.seedpoints( clusterSizes )
 		#spt.reportrate = 100
+		global OnSpherePositions
 		OnSpherePositions = spt.nudgepoints()
 
 
@@ -252,7 +253,7 @@ class Functions:
 			for coordinate in layout: # for each node in the graph
 				newGraph.vs[j]["cluster"] = i + 1
 
-				coord = [coordinate[0], coordinate[1], math.log(newGraph.vs[j].degree() / math.sqrt(maxDegree)) ]
+				coord = [coordinate[0], coordinate[1], math.log(newGraph.vs[j].degree()) / 5 ]
 
 				coord = numpy.dot( coord, tfmrot ) + tfmtranslate
 				
@@ -298,8 +299,9 @@ class Functions:
 		graphString += "#$" + "\n"
 		posListStr = ""
 
-		facetPosList = Functions.generateOnSpherePos(len(graphList) - 1) # subtract 1 since misc isn't on sphere
-		for pos in facetPosList:
+		#facetPosList = Functions.generateOnSpherePos(len(graphList) - 1) # subtract 1 since misc isn't on sphere
+		
+		for pos in OnSpherePositions:
 			posListStr += str(pos) + "\n"
 
 		graphString += posListStr

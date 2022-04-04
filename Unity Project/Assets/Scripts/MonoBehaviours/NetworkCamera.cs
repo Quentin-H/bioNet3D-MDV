@@ -21,6 +21,7 @@ public class NetworkCamera : MonoBehaviour
     PhysicsWorld physicsWorld => World.DefaultGameObjectInjectionWorld.GetExistingSystem<BuildPhysicsWorld>().PhysicsWorld;
     EntityManager entityManager => World.DefaultGameObjectInjectionWorld.EntityManager;
     private Entity selectedEntity;
+    [SerializeField] private Transform camParent;
     [SerializeField] private GameObject selectedNodeUI;
     [SerializeField] private Text nodeNameText;
     [SerializeField] private Text nodeDescriptionText;
@@ -206,7 +207,7 @@ public class NetworkCamera : MonoBehaviour
         selectedNodeUI.SetActive(true); 
     }   
 
-    public void searchForNode(string query) // move this into network camera
+    public void searchForNode(string query)
     {        
         try 
         {
@@ -221,8 +222,22 @@ public class NetworkCamera : MonoBehaviour
         if (nodeSelected == true)
         {
             //When you get a position of an entity it returns a 4 dimensional coordinate, I don't know why
-            float4 entityPos = entityManager.GetComponentData<LocalToWorld>(selectedEntity).Value[3];
-            cam.transform.SetPositionAndRotation(new float3(entityPos.x, entityPos.y, entityPos.z - 15), new Quaternion(0, 0, 0, 0));
+            float4 entityPos4 = entityManager.GetComponentData<LocalToWorld>(selectedEntity).Value[3];
+            float3 entityPos = new float3(entityPos4.x, entityPos4.y, entityPos4.z);
+
+            //find distance between node and orange
+            // make camera parent look at node
+            // set z of camera as subtracting distance + 10
+            camParent.transform.LookAt(entityPos, Vector3.right);
+
+            camParent.eulerAngles = new float3(
+                camParent.eulerAngles.x,
+                camParent.eulerAngles.y,
+                0);
+            float distance = Vector3.Distance(Vector3.zero, entityPos);
+            float3 currentPos = cam.transform.localPosition;
+            currentPos.z = distance + 10f;
+            cam.transform.localPosition = currentPos;
         }
     }
 
