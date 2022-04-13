@@ -16,8 +16,11 @@ public class CameraControls : MonoBehaviour
 
     void Update()
     {
-        if (sensitivity > 1)
-            sensitivity += GetSensitivityInput();
+        sensitivity += GetSensitivityInput();
+
+        if (sensitivity < 1)
+            sensitivity = 1;
+
 
         float3 rotation = new float3();
 
@@ -33,7 +36,7 @@ public class CameraControls : MonoBehaviour
             camParent.eulerAngles.y,
             0);
 
-        transform.Translate(Vector3.forward * GetZoomInput());
+        transform.Translate(Vector3.forward * GetZoomInput() * sensitivity);
     }
 
     private Vector3 GetRotationInput()
@@ -42,11 +45,11 @@ public class CameraControls : MonoBehaviour
 
         // Forwards
         if (Input.GetKey(KeyCode.W))
-            rotation += new Vector3(1f  * sensitivity, 0, 0);
+            rotation += new Vector3(-1f  * sensitivity, 0, 0);
 
         // Backwards
         if (Input.GetKey(KeyCode.S))
-            rotation += new Vector3(-1f  * sensitivity, 0, 0);
+            rotation += new Vector3(1f  * sensitivity, 0, 0);
 
         // Left
         if (Input.GetKey(KeyCode.A))
@@ -70,7 +73,6 @@ public class CameraControls : MonoBehaviour
         if (Input.GetKey(KeyCode.Minus))
             sensitivityInput -= sensitivityInputSensitivity;
 
-        Debug.Log(sensitivityInput);
 
         return sensitivityInput;
     }
@@ -80,10 +82,10 @@ public class CameraControls : MonoBehaviour
         float zoomInput = 0;
 
         if (Input.GetKey(KeyCode.LeftShift))
-            zoomInput += 0.1f; // maybe these should be equal to sensitivity
+            zoomInput += 1f * sensitivity; // maybe these should be equal to sensitivity
 
         if (Input.GetKey(KeyCode.LeftControl))
-            zoomInput -= 0.1f;
+            zoomInput -= 1f * sensitivity;
 
         return zoomInput;
     }

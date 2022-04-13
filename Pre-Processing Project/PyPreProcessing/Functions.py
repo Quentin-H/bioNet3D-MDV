@@ -223,7 +223,6 @@ class Functions:
 
 		spt = spacedpoints.SpacedPoints()
 		spt.seedpoints( clusterSizes )
-		#spt.reportrate = 100
 		global OnSpherePositions
 		OnSpherePositions = spt.nudgepoints()
 

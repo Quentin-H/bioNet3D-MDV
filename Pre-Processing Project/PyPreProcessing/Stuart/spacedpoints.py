@@ -15,7 +15,7 @@ class GoodEnoughException(Exception):
 
 class SpacedPoints(object):
 
-    maxfuncalls = 10000
+    maxfuncalls = 2000 #default 10000
 
     def __init__(self):
 
