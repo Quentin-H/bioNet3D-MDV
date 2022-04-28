@@ -21,7 +21,10 @@ public class NetworkCamera : MonoBehaviour
     PhysicsWorld physicsWorld => World.DefaultGameObjectInjectionWorld.GetExistingSystem<BuildPhysicsWorld>().PhysicsWorld;
     EntityManager entityManager => World.DefaultGameObjectInjectionWorld.EntityManager;
     private Entity selectedEntity;
-    [SerializeField] private Transform camParent;
+
+    [SerializeField] private Transform camOriginParent;
+    [SerializeField] private Transform camLookAtParent;
+
     [SerializeField] private GameObject selectedNodeUI;
     [SerializeField] private Text nodeNameText;
     [SerializeField] private Text nodeDescriptionText;
@@ -49,7 +52,6 @@ public class NetworkCamera : MonoBehaviour
     private void Start() 
     {
         cam = Camera.main;
-        //this.x + (distanceFromOrigin(node[0]) * 1.75)
     }
 
     private void Update()
@@ -59,7 +61,8 @@ public class NetworkCamera : MonoBehaviour
             //moveCamera();
         }
 
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) 
+        {
             sendRay();
         }
 
@@ -228,11 +231,11 @@ public class NetworkCamera : MonoBehaviour
             //find distance between node and orange
             // make camera parent look at node
             // set z of camera as subtracting distance + 10
-            camParent.transform.LookAt(entityPos, Vector3.right);
+            camOriginParent.transform.LookAt(entityPos, Vector3.right);
 
-            camParent.eulerAngles = new float3(
-                camParent.eulerAngles.x,
-                camParent.eulerAngles.y,
+            camOriginParent.eulerAngles = new float3(
+                camOriginParent.eulerAngles.x,
+                camOriginParent.eulerAngles.y,
                 0);
             float distance = Vector3.Distance(Vector3.zero, entityPos);
             float3 currentPos = cam.transform.localPosition;

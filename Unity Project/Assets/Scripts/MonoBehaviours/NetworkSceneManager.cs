@@ -35,6 +35,10 @@ public class NetworkSceneManager : MonoBehaviour
 
     private GameObject inputDataHolder;
     private bool edgesShowing = false;
+
+    [SerializeField] private Text gradientMinBaselineText;
+    [SerializeField] private Text gradientMaxBaselineText;
+
     [SerializeField] private Button showHideNodeEdgesButton;
     [SerializeField] private Button showHideClusterEdgesButton;
 
@@ -54,6 +58,10 @@ public class NetworkSceneManager : MonoBehaviour
     private Dictionary<int, List<Entity>> clusterNumbersToEntities = new Dictionary<int, List<Entity>>();
 
     private double maxAbsBlineScore = -1.0;
+
+    private double maxBlineScore = Double.NegativeInfinity;
+    private double minBlineScore = Double.PositiveInfinity;
+
     private List<float4> blineList = new List<float4>(); // first 3 values are coordinates, last is value, populated when spawning nodes, uses absolute values
     private List<float4> rankList = new List<float4>();
     private List<float4> degreeList = new List<float4>();  
@@ -89,6 +97,9 @@ public class NetworkSceneManager : MonoBehaviour
         AutoScaleNetwork();
         GenerateTopLists();
         PlaceCamera(Camera.main);
+
+        gradientMinBaselineText.text = minBlineScore.ToString();
+        gradientMaxBaselineText.text = maxAbsBlineScore.ToString();
     }
 
     private void PlaceCamera(Camera camera)
@@ -107,7 +118,6 @@ public class NetworkSceneManager : MonoBehaviour
                 maxDist = Vector3.Distance(entityPosition, Vector3.zero);
             }
         }
-
         camera.transform.position = new float3(0, 0, 1.25f * maxDist);
     }
 
@@ -211,7 +221,7 @@ public class NetworkSceneManager : MonoBehaviour
             degreeList.Add(new float4(entityPos.x, entityPos.y, entityPos.z, degree));
         }
 
-        rankList = rankList.OrderByDescending(o => o.w).ToList();
+        rankList = rankList.OrderBy(o => o.w).ToList();
         blineList = blineList.OrderByDescending(o => o.w).ToList();
         degreeList = degreeList.OrderByDescending(o => o.w).ToList();
 
@@ -297,6 +307,9 @@ public class NetworkSceneManager : MonoBehaviour
                     connectedIDs.Add(connectedNode.Trim());
                 }
                 entitiesToConnectedIDs.Add(e, connectedIDs);
+
+                if (blineScore < minBlineScore) minBlineScore = blineScore;
+                if (blineScore > maxBlineScore) maxBlineScore = blineScore;
             } catch { Debug.Log(line); } 
         }
 
@@ -391,7 +404,7 @@ public class NetworkSceneManager : MonoBehaviour
                 newFacetCircle.transform.LookAt(Vector3.zero); // if second param set to Vector3.up it looks  cool
                 facetCircles.Add(newFacetCircle);
             } catch { 
-                Debug.Log("%%"); 
+                Debug.Log("failed to import coordinate"); 
             }
         }
     }

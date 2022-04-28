@@ -68,13 +68,16 @@ class Functions:
 
 		if (scoreFileLines is not None):
 			bScores = {}
-			j = 0
+			ranks = {}
+
+			i = 0
 			for scoreLine in scoreFileLines:
-				if j != 0:
+				if i != 0:
 					splitLine = scoreLine.split()
 					featureID = splitLine[1]
 					bScores[featureID] = splitLine[4]
-				j += 1
+					ranks[featureID] = i
+				i += 1
 
 		for nodeLine in nodeFileLines: # go through every gene in the file and add it as a node to the graph
 			
@@ -87,7 +90,7 @@ class Functions:
 				featureID = nodeLine.split()[0].strip().replace("$", " ").replace("|", " ").replace("#", " ").strip()
 				dName = nodeLine.split()[3].strip().replace("$", " ").replace("|", " ").replace("#", " ").strip()
 				desc = nodeLine.split("\t")[4].strip().replace("$", " ").replace("|", " ").replace("#", " ").strip()
-				nRank = i
+				nRank = ranks[featureID]
 				bScore = 0
 				try: 
 					bScore = bScores[featureID] 
@@ -301,7 +304,7 @@ class Functions:
 		#facetPosList = Functions.generateOnSpherePos(len(graphList) - 1) # subtract 1 since misc isn't on sphere
 		
 		for pos in OnSpherePositions:
-			posListStr += str(pos) + "\n"
+			posListStr += str("[%g,%g,%g]" % (pos[0], pos[1], pos[2])) + "\n"
 
 		graphString += posListStr
 

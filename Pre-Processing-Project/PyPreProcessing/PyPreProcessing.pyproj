@@ -24,13 +24,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PyPreProcessing.py" />
-    <Compile Include="Stuart\spacedpoints.py" />
-    <Compile Include="Stuart\sphnudged.py" />
-    <Compile Include="Stuart\sphvoronoi.py" />
-    <Compile Include="Stuart\tfm.py" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Stuart\" />
+    <Compile Include="spacedpoints.py" />
+    <Compile Include="sphnudged.py" />
+    <Compile Include="sphvoronoi.py" />
+    <Compile Include="tfm.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

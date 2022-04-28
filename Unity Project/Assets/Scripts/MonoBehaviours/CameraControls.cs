@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using Unity.Mathematics;
 
 
 public class CameraControls : MonoBehaviour
 {
+    [SerializeField] private InputField searchInput;
     Transform camParent;
     float sensitivity = 1f;
 
@@ -21,22 +24,19 @@ public class CameraControls : MonoBehaviour
         if (sensitivity < 1)
             sensitivity = 1;
 
-
-        float3 rotation = new float3();
-
-        //if (camParent.eulerAngles.x < 90f && camParent.eulerAngles.x > -90f)
-        //{
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            float3 rotation = new float3();
             rotation = GetRotationInput();
-        //} 
-        
-        camParent.Rotate(rotation, Space.Self);
+            camParent.Rotate(rotation, Space.Self);
 
-        camParent.eulerAngles = new float3(
-            camParent.eulerAngles.x,
-            camParent.eulerAngles.y,
-            0);
+            camParent.eulerAngles = new float3(
+                camParent.eulerAngles.x,
+                camParent.eulerAngles.y,
+                0);
 
-        transform.Translate(Vector3.forward * GetZoomInput() * sensitivity);
+            transform.Translate(Vector3.forward * GetZoomInput() * sensitivity);
+        }
     }
 
     private Vector3 GetRotationInput()
