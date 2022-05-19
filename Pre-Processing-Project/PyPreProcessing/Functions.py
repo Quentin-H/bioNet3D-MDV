@@ -218,8 +218,6 @@ class Functions:
 			i += 1 
 		graphListWithPos.append(newMiscGraph)
 
-		#this line is replaced with new spaced points algorithm by Stuart
-		#OnSpherePositions = Functions.generateOnSpherePos(len(graphList) - 1) # subtract 1 since misc isnt included
 		clusterSizes = []
 		for graph in graphList[1:]:
 			clusterSizes.append(graph.vcount())
@@ -300,11 +298,9 @@ class Functions:
 
 		graphString += "#$" + "\n"
 		posListStr = ""
-
-		#facetPosList = Functions.generateOnSpherePos(len(graphList) - 1) # subtract 1 since misc isn't on sphere
 		
 		for pos in OnSpherePositions:
-			posListStr += str("[%g,%g,%g]" % (pos[0], pos[1], pos[2])) + "\n"
+			posListStr += str("[%g,%g,%g]" % (pos[0], pos[1], pos[2])) + " | " + "testSizeplaceholder" + " | " + "testClusterplaceholder" + "\n"
 
 		graphString += posListStr
 

@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class MainMenuManager : MonoBehaviour
 {
 	public DataHolder dataHolder;
+	public ErrorMessenger errorMessenger;
 	private bool nodeLayoutFileSet;
 
 	private void Start() 
@@ -55,7 +56,7 @@ public class MainMenuManager : MonoBehaviour
 		if (nodeLayoutFileSet) 
 		{
 			SceneManager.LoadScene("NetworkScene");  
-		} else { Debug.Log("Select a valid file first!"); } 
+		} else { errorMessenger.DisplayError("No network file selected!", "Please select a network layout file before continuing."); } 
 	}
 
 	public void ExitApplication()

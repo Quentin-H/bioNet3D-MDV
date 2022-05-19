@@ -15,9 +15,9 @@ using NodeViz;
 
 public class NetworkSceneManager : MonoBehaviour
 {
-    [HideInInspector]
-    public static NetworkSceneManager instance;
+    [HideInInspector] public static NetworkSceneManager instance;
     [SerializeField] private NetworkCamera networkCamera;
+    [SerializeField] private ErrorMessenger errorMessenger;
 
     [SerializeField] private GameObject innerSphere;
 
@@ -43,12 +43,12 @@ public class NetworkSceneManager : MonoBehaviour
     [SerializeField] private Button showHideClusterEdgesButton;
 
     [SerializeField] private GameObject topNetworkRankObject;
-    private List<GameObject> topNetworkRankObjects = new List<GameObject>();
+    [HideInInspector] public List<GameObject> topNetworkRankObjects = new List<GameObject>();
     [SerializeField] private GameObject topBaselineScoreObject;
-    private List<GameObject> topBaselineScoreObjects = new List<GameObject>();
+    [HideInInspector] public List<GameObject> topBaselineScoreObjects = new List<GameObject>();
     private float4[] topBaselineScoreLocations = new float4[200]; // first 3 values are coordinates, the last one is the value associated with the node here
     [SerializeField] private GameObject topDegreeObject;
-    private List<GameObject> topDegreeObjects = new List<GameObject>();
+    [HideInInspector] public List<GameObject> topDegreeObjects = new List<GameObject>();
     [SerializeField] private GameObject facetCircleObject;
 
     private IDictionary<FixedString32, Entity> fixedIDsToSceneNodeEntities = new Dictionary<FixedString32, Entity>(); // This is for use internally liek creating edges, since internally genes are identified by feature IDs
@@ -98,8 +98,15 @@ public class NetworkSceneManager : MonoBehaviour
         GenerateTopLists();
         PlaceCamera(Camera.main);
 
-        gradientMinBaselineText.text = minBlineScore.ToString();
-        gradientMaxBaselineText.text = maxAbsBlineScore.ToString();
+        gradientMinBaselineText.text = minBlineScore.ToString("0.00");
+        gradientMaxBaselineText.text = maxAbsBlineScore.ToString("0.00");
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(inputDataHolder);
+        entityManager.DestroyEntity(entityManager.UniversalQuery);
+        blobAssetStore.Dispose();
     }
 
     private void PlaceCamera(Camera camera)
@@ -196,7 +203,7 @@ public class NetworkSceneManager : MonoBehaviour
         {
             if (key != 0) 
             {
-                ScaleNodesByCluster(key, scalingValue);
+                ScaleNodeDistanceByCluster(key, scalingValue);
             }
         }
 
@@ -238,12 +245,6 @@ public class NetworkSceneManager : MonoBehaviour
             newObject = Instantiate(topDegreeObject, new float3(degreeList[i].x, degreeList[i].y, degreeList[i].z), Quaternion.identity);
             topDegreeObjects.Add(newObject);
         }
-    }
-
-    private void OnDestroy() 
-    {
-        entityManager.DestroyEntity(entityManager.UniversalQuery);
-        blobAssetStore.Dispose();
     }
 
     private void ConvertRawInputNodes() 
@@ -458,7 +459,7 @@ public class NetworkSceneManager : MonoBehaviour
         return clusterNumbersToEntities[clusterNumber];
     }
 
-    public void ScaleNodesByCluster(int clusterNumber, float scale)
+    public void ScaleNodeDistanceByCluster(int clusterNumber, float scale)
     {
         foreach(Entity entity in clusterNumbersToEntities[clusterNumber])
         {

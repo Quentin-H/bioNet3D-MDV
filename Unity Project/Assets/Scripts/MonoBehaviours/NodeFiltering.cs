@@ -10,12 +10,12 @@ using TMPro;
 public class NodeFiltering : MonoBehaviour
 {
     [SerializeField] private NetworkSceneManager networkSceneManager;
+    [SerializeField] private ErrorMessenger errorMessenger;
     private EntityManager entityManager;
     //private ReadOnlyCollection<Entity> allEntities = new ReadOnlyCollection<Entity>();
     private List<Entity> allEntities = new List<Entity>();
 
     public Dropdown clusterOptionsField;
-    public int cluster;
     public InputField minRankField;
     public int minRank = 0;
     public InputField maxRankField;
@@ -33,10 +33,28 @@ public class NodeFiltering : MonoBehaviour
     public Dropdown showingOptionsField;
 
 
-    private void Start() 
+    private async void Start() 
     { 
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager; 
         allEntities = networkSceneManager.GetSimpleNodeEntityList();
+
+        int numberOfClusters = 0;
+        foreach (Entity entity in allEntities)
+        {
+            if (entityManager.GetComponentData<NodeData>(entity).cluster > numberOfClusters)
+            {
+                numberOfClusters = entityManager.GetComponentData<NodeData>(entity).cluster;
+            }
+        }
+
+        List<string> dropdownOptions = new List<string>{ "All Clusters" };
+
+        for (int i = 0; i < numberOfClusters; i++)
+        {
+            dropdownOptions.Add("Cluster " + (i + 1));
+        }
+
+        clusterOptionsField.AddOptions(dropdownOptions);
     }
 
     public void UpdateKeywords(string rawKeywords)
@@ -44,7 +62,7 @@ public class NodeFiltering : MonoBehaviour
         keywords.Clear();
         string[] keywordArray = rawKeywords.Split(',');
 
-        foreach(string keyword in keywordArray)
+        foreach (string keyword in keywordArray)
         {
             keywords.Add(keyword.Trim());
         } 
@@ -54,22 +72,22 @@ public class NodeFiltering : MonoBehaviour
     {
         clusterOptionsField.value = 0;
 
-        minRankField.text = Convert.ToString(0);
+        minRankField.text = "";
         minRank = 0;
 
-        maxRankField.text = Convert.ToString(1);
+        maxRankField.text = "";
         maxRank = 1;
 
-        minBaselineField.text = Convert.ToString(0);
+        minBaselineField.text = "";
         minBaselineScore = 0;
 
-        maxBaselineField.text = Convert.ToString(1);
+        maxBaselineField.text = "";
         maxBaselineScore = 1;
 
-        minDegreeField.text = Convert.ToString(0);
+        minDegreeField.text = "";
         minDegree = 0;
 
-        maxDegreeField.text = Convert.ToString(1);
+        maxDegreeField.text = "";
         maxDegree = 1;
 
         keywordsField.text = "";
@@ -85,14 +103,12 @@ public class NodeFiltering : MonoBehaviour
 
         Int32.TryParse(minRankField.text, out minRank);
         Int32.TryParse(maxRankField.text, out maxRank);
-
+        
         Double.TryParse(minBaselineField.text, out minBaselineScore);
         Double.TryParse(maxBaselineField.text, out maxBaselineScore);
 
         Int32.TryParse(minDegreeField.text, out minDegree);
         Int32.TryParse(maxDegreeField.text, out maxDegree);
-
-        keywordsField.text = "";
 
         if (showingOptionsField.value == 0) // hide
         {
@@ -114,51 +130,62 @@ public class NodeFiltering : MonoBehaviour
     {
         List<Entity> toHide = new List<Entity>();
 
-        foreach(Entity entity in allEntities)
+        foreach (Entity entity in allEntities)
         {
             //if cluster
             if (clusterOptionsField.value != 0)
             {
-                if (!(entityManager.GetComponentData<NodeData>(entity).cluster == clusterOptionsField.value + 1))
+                if (!(entityManager.GetComponentData<NodeData>(entity).cluster == clusterOptionsField.value))
                 {
                     toHide.Add(entity);
                     continue;
                 }
             }
             
-            if (!(entityManager.GetComponentData<NodeData>(entity).networkRank >= minRank && entityManager.GetComponentData<NodeData>(entity).networkRank <= maxRank))
+            if (minRankField.text.Trim() != "" && minRankField.text.Trim() != "")
             {
-                Debug.Log("on hide list");
-                toHide.Add(entity);
-                continue;
-            }
-
-            if (!(entityManager.GetComponentData<NodeData>(entity).baselineScore >= minBaselineScore && entityManager.GetComponentData<NodeData>(entity).baselineScore <= maxBaselineScore))
-            {
-                toHide.Add(entity);
-                continue;
-            }
-
-            if (!(entityManager.GetComponentData<NodeData>(entity).degree >= minDegree && entityManager.GetComponentData<NodeData>(entity).degree <= maxDegree))
-            {
-                toHide.Add(entity);
-                continue;
-            }
-
-            bool containsKeyword = false;
-            string nodeDescription = entityManager.GetComponentData<NodeData>(entity).description.ToString();
-            foreach(string keyword in keywords)
-            {
-                if (nodeDescription.Contains(keyword))
+                if (!(entityManager.GetComponentData<NodeData>(entity).networkRank >= minRank && entityManager.GetComponentData<NodeData>(entity).networkRank <= maxRank))
                 {
-                    containsKeyword = true;
+                    toHide.Add(entity);
+                    continue;
                 }
             }
 
-            if (containsKeyword == false)
+            if (minBaselineField.text.Trim() != "" && minBaselineField.text.Trim() != "")
             {
-                toHide.Add(entity);
-                continue;
+                if (!(entityManager.GetComponentData<NodeData>(entity).baselineScore >= minBaselineScore && entityManager.GetComponentData<NodeData>(entity).baselineScore <= maxBaselineScore))
+                {
+                    toHide.Add(entity);
+                    continue;
+                }
+            }
+
+            if (minDegreeField.text.Trim() != "" && minDegreeField.text.Trim() != "")
+            {
+                if (!(entityManager.GetComponentData<NodeData>(entity).degree >= minDegree && entityManager.GetComponentData<NodeData>(entity).degree <= maxDegree))
+                {
+                    toHide.Add(entity);
+                    continue;
+                }
+            }
+
+            if (keywordsField.text.Trim() != "")
+            {
+                bool containsKeyword = false;
+                string nodeDescription = entityManager.GetComponentData<NodeData>(entity).description.ToString();
+                foreach(string keyword in keywords)
+                {
+                    if (nodeDescription.Contains(keyword))
+                    {
+                        containsKeyword = true;
+                    }
+                }
+
+                if (containsKeyword == false)
+                {
+                    toHide.Add(entity);
+                    continue;
+                }
             }
         }
         
@@ -167,7 +194,7 @@ public class NodeFiltering : MonoBehaviour
 
     private void ShowAllNodes()
     {
-        foreach(Entity entity in allEntities)
+        foreach (Entity entity in allEntities)
         {
             try 
             {
@@ -179,15 +206,24 @@ public class NodeFiltering : MonoBehaviour
 
     private void HideNodes(List<Entity> entitiesToHide)
     {
-        foreach(Entity entity in entitiesToHide)
+        foreach (Entity entity in entitiesToHide)
         {
             entityManager.AddComponentData( entity, new Disabled() );
+        }
+
+        if (entitiesToHide.Count == allEntities.Count)
+        {
+            errorMessenger.DisplayWarning("All nodes filtered", "The filter settings you have set filter out all nodes in the network.");
+        } 
+        else if (entitiesToHide.Count == 0) 
+        {
+            errorMessenger.DisplayWarning("No nodes filtered", "All nodes in the network fit the parameters of the filter settings. All nodes remain shown.");
         }
     }
 
     private void HighlightNodes(List<Entity> entitiesToHide) // need to make remove highlight method
     {
-        foreach(Entity entity in entitiesToHide)
+        foreach (Entity entity in entitiesToHide)
         {
             //entityManager.AddComponentData( entity,  );
         }

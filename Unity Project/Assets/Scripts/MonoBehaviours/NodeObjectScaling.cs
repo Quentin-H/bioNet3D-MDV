@@ -29,6 +29,10 @@ public class NodeObjectScaling : MonoBehaviour
     public void ScaleNodes()
     {
         List<Entity> nodes = networkSceneManager.GetSimpleNodeEntityList();
+
+        List<GameObject> topRankObjects = networkSceneManager.topNetworkRankObjects;
+        List<GameObject> topBaselineObjects = networkSceneManager.topBaselineScoreObjects;
+        List<GameObject> topDegreeObjects = networkSceneManager.topDegreeObjects;
         
         foreach(Entity entity in nodes)
         {
@@ -40,6 +44,23 @@ public class NodeObjectScaling : MonoBehaviour
                     scale:          nodeScale
                 )
             });
+        }
+
+        float3 nodeScaleAs3 = new float3(nodeScale, nodeScale, nodeScale);
+
+        foreach(GameObject curObject in topRankObjects)
+        {
+            curObject.transform.localScale = nodeScaleAs3 * curObject.GetComponent<Billboard>().scale;
+        }
+
+        foreach(GameObject curObject in topBaselineObjects)
+        {
+            curObject.transform.localScale = nodeScaleAs3 * curObject.GetComponent<Billboard>().scale;
+        }
+
+        foreach(GameObject curObject in topDegreeObjects)
+        {
+            curObject.transform.localScale = nodeScaleAs3 * curObject.GetComponent<Billboard>().scale;
         }
     }
 }
