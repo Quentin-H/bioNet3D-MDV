@@ -292,9 +292,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataHolder: {fileID: 53305935}
   errorMessenger: {fileID: 442397973}
-  nodeLayoutFile: {fileID: 4900000, guid: b0f7915da20ecb74ea26b4709a6a3b6e, type: 3}
-  nodeInformationFile: {fileID: 4900000, guid: 9fc63139af48d414eac9e086af606e16, type: 3}
-  nodeScoreFile: {fileID: 4900000, guid: e25acbcff2a8e04438a75357a6b71cf5, type: 3}
+  nodeLayoutFile: {fileID: 4900000, guid: c1c0c27d77b218349806768f77ca1d9d, type: 3}
+  nodeInformationFile: {fileID: 4900000, guid: a20a87f106d91174b9a16aaa70423d97, type: 3}
+  nodeScoreFile: {fileID: 4900000, guid: ef027903cb2976b4199e4f91596d948e, type: 3}
 --- !u!4 &352836295
 Transform:
   m_ObjectHideFlags: 0
