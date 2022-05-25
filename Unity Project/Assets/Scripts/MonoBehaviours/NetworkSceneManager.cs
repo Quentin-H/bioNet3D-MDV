@@ -2,104 +2,91 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
 using Unity.Rendering;
 using Unity.Collections;
+
 using NodeViz;
+
 
 public class NetworkSceneManager : MonoBehaviour
 {
+    // Scene stuff
     [HideInInspector] public static NetworkSceneManager instance;
     [SerializeField] private NetworkCamera networkCamera;
     [SerializeField] private ErrorMessenger errorMessenger;
-
     [SerializeField] private GameObject innerSphere;
-
     [SerializeField] private GameObject nodePrefab;
-    [SerializeField] private Gradient nodeValueGradient;
-    [SerializeField] private Gradient edgeValueGradient;
-    // If set to low number ex. 10, creates beautiful patterns on layouts besides fr3d
-    // Figure out a way to automatically set this based on the layout so points aren't too close together
-    private float positionMultiplier;
-    private Entity nodeEntityPrefab;
-
-    private EntityManager entityManager;
-    private BlobAssetStore blobAssetStore;
-    private GameObjectConversionSettings gameObjectConversionSettings;
-
     private GameObject inputDataHolder;
-    private bool edgesShowing = false;
-
-    [SerializeField] private Text gradientMinBaselineText;
-    [SerializeField] private Text gradientMaxBaselineText;
-
-    [SerializeField] private Button showHideNodeEdgesButton;
-    [SerializeField] private Button showHideClusterEdgesButton;
-
     [SerializeField] private GameObject topNetworkRankObject;
     [HideInInspector] public List<GameObject> topNetworkRankObjects = new List<GameObject>();
     [SerializeField] private GameObject topBaselineScoreObject;
     [HideInInspector] public List<GameObject> topBaselineScoreObjects = new List<GameObject>();
-    private float4[] topBaselineScoreLocations = new float4[200]; // first 3 values are coordinates, the last one is the value associated with the node here
     [SerializeField] private GameObject topDegreeObject;
     [HideInInspector] public List<GameObject> topDegreeObjects = new List<GameObject>();
     [SerializeField] private GameObject facetCircleObject;
+    private List<GameObject> facetCircles = new List<GameObject>();
 
+    // ECS stuff
+    private Entity nodeEntityPrefab;
+    private EntityManager entityManager;
+    private BlobAssetStore blobAssetStore;
+    private GameObjectConversionSettings gameObjectConversionSettings;
+
+    //UI stuff
+    [SerializeField] private Text gradientMinBaselineText;
+    [SerializeField] private Text gradientMaxBaselineText;
+    [SerializeField] private Gradient nodeValueGradient;
+    [SerializeField] private Gradient edgeValueGradient;
+    
+    // dictionaries
     private IDictionary<FixedString32, Entity> fixedIDsToSceneNodeEntities = new Dictionary<FixedString32, Entity>(); // This is for use internally liek creating edges, since internally genes are identified by feature IDs
     private IDictionary<String, Entity> namesToSceneNodeEntities = new Dictionary<String, Entity>(); // This is for use with searching for nodes since the user would use names
     private Dictionary<Entity, List<Entity>> entitiesToConnectedEntities = new Dictionary<Entity, List<Entity>>();
-    private List<Entity> allNodeEntities = new List<Entity>();
     private Dictionary<int, List<Entity>> clusterNumbersToEntities = new Dictionary<int, List<Entity>>();
 
+    // misc
+    private List<Entity> allNodeEntities = new List<Entity>();
     private double maxAbsBlineScore = -1.0;
-
     private double maxBlineScore = Double.NegativeInfinity;
     private double minBlineScore = Double.PositiveInfinity;
 
-    private List<float4> blineList = new List<float4>(); // first 3 values are coordinates, last is value, populated when spawning nodes, uses absolute values
-    private List<float4> rankList = new List<float4>();
-    private List<float4> degreeList = new List<float4>();  
     
-    private List<GameObject> facetCircles = new List<GameObject>();
-
 
     private void Start() 
     {
+        inputDataHolder = GameObject.Find("InputDataHolder");
+        string rawLayoutInput = "";
+        try { rawLayoutInput = inputDataHolder.GetComponent<DataHolder>().nodeLayoutFile; } catch { Debug.Log("Failed to import node layout file"); }
+        try { SpawnFacetCircles(rawLayoutInput); } catch { Debug.Log("Facet Circle Spawn Failed"); }
+
         if (instance != null && instance != this) 
         {
             Destroy(gameObject);
             return;
         }
         instance = this;
-
-        inputDataHolder = GameObject.Find("InputDataHolder");
-
-        try { positionMultiplier = inputDataHolder.GetComponent<DataHolder>().positionMultiplier; } catch { positionMultiplier = 100; }
-
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         blobAssetStore = new BlobAssetStore();
         gameObjectConversionSettings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
-        
+
         ConvertRawInputNodes(); 
-
         ChangeNodeColors(nodeValueGradient);
-
-        string rawLayoutInput = "";
-        try { rawLayoutInput = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile; } catch { }
-        try { SpawnFacetCircles(rawLayoutInput); } catch { Debug.Log("Facet Circle Spawn Failed"); }
-    
         AutoScaleNetwork();
         GenerateTopLists();
         PlaceCamera(Camera.main);
 
         gradientMinBaselineText.text = minBlineScore.ToString("0.00");
-        gradientMaxBaselineText.text = maxAbsBlineScore.ToString("0.00");
+        gradientMaxBaselineText.text = maxBlineScore.ToString("0.00");
     }
 
     private void OnDestroy()
@@ -198,7 +185,7 @@ public class NetworkSceneManager : MonoBehaviour
         //float scalingValue = (minInterClusterDistance / minInterDistance) + (minIntraClusterDistance / minIntraDistance);
         float scalingValue = minInterClusterDistance / minInterDistance;
 
-        ScaleFacetCircles(scalingValue); // should probably multiply by less than positionMultiplier to ensure nodes are above facet circles
+        ScaleFacetCircles(scalingValue); 
         foreach (int key in clusterNumbersToEntities.Keys)
         {
             if (key != 0) 
@@ -212,6 +199,11 @@ public class NetworkSceneManager : MonoBehaviour
 
     private void GenerateTopLists()
     {
+        // first 3 values are coordinates, last is value, populated when spawning nodes
+        List<float4> blineList = new List<float4>(); // uses absolute values
+        List<float4> rankList = new List<float4>();
+        List<float4> degreeList = new List<float4>();  
+
         foreach(Entity entity in allNodeEntities)
         {
             float3 entityPos = new float3(
@@ -247,18 +239,44 @@ public class NetworkSceneManager : MonoBehaviour
         }
     }
 
-    private void ConvertRawInputNodes() 
+    private async void ConvertRawInputNodes() 
     {
         Debug.Log("started node conversion");
 
         string[] rawLayoutInputLines = new string[0];
-        try { rawLayoutInputLines = inputDataHolder.GetComponent<DataHolder>().rawNodeLayoutFile.Split('\n'); } catch { }
+        try { rawLayoutInputLines = inputDataHolder.GetComponent<DataHolder>().nodeLayoutFile.Split('$')[0].Split('#')[0].Split('\n'); } catch { }
+
+        string[] rawNodeDescriptiveInfoInputLines = new string[0];
+        try { rawNodeDescriptiveInfoInputLines = inputDataHolder.GetComponent<DataHolder>().nodeInfoFile.Split('\n'); } catch { }
+        Dictionary<string, string> fIDsToNodeDescriptiveInfoLines = new Dictionary<string, string>();
+        foreach (string curLine in rawNodeDescriptiveInfoInputLines.Skip(1))
+        {
+            try { fIDsToNodeDescriptiveInfoLines.Add(curLine.Split()[0].Trim(), curLine); } 
+            catch { Debug.Log("Error parsing node info line: " + curLine); }
+        }
+
+        string[] rawNumericInfoInputLines = new string[0];
+        try { rawNumericInfoInputLines = inputDataHolder.GetComponent<DataHolder>().nodeRankingFile.Split('\n'); } catch { }
+        Dictionary<string, double> fIDsToBlineScoresLines = new Dictionary<string, double>();
+        Dictionary<string, int> fIDsToRanks = new Dictionary<string, int>();
+        int j = 1;
+        foreach (string curLine in rawNumericInfoInputLines.Skip(1))
+        {
+            try 
+            {
+                fIDsToBlineScoresLines.Add(curLine.Split()[1].Trim(), double.Parse(curLine.Split()[4].Trim()));
+                fIDsToRanks.Add(curLine.Split()[1].Trim(), j);
+            } catch (Exception e) { Debug.Log(e + " | Error parsing node ranking line: " + curLine); }
+            j++;
+        }
+
 
         Dictionary<Entity, List<String>> entitiesToConnectedIDs = new Dictionary<Entity, List<String>>();
 
-        foreach(string line in rawLayoutInputLines) 
+        int i = 0;
+        foreach (string nodeLayoutFileLine in rawLayoutInputLines) 
         {
-            if (String.IsNullOrWhiteSpace(line))
+            if (String.IsNullOrWhiteSpace(nodeLayoutFileLine))
             {
                 continue;
             }
@@ -275,28 +293,20 @@ public class NetworkSceneManager : MonoBehaviour
 
             try
             {
-                fID = line.Split('|')[0].Trim();
-
-                if (clusterNum == 0)
-                {
-                    coord.x = (float.Parse(line.Split('[')[1].Split(',')[0].Trim()) - 160.0f) ;
-                    coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim());
-                    coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim());
-                } 
-                else 
-                {
-                    coord.x = float.Parse(line.Split('[')[1].Split(',')[0].Trim());
-                    coord.y = float.Parse(line.Split(',')[1].Split(',')[0].Trim());
-                    coord.z = float.Parse(line.Split(',')[2].Split(']')[0].Trim());
-                }
-
-                dName = line.Split('|')[2];
-                desc = line.Split('|')[3];
-                nRank = int.Parse(line.Split('|')[4].Trim());
-                blineScore = double.Parse(line.Split('|')[5].Trim());
-                deg = int.Parse(line.Split('|')[6].Trim());
-                clusterNum = int.Parse(line.Split('|')[7].Trim());
-                connectionIDsFromFile = line.Split('|')[8].Trim().Split(',');
+                // from layout file
+                fID = nodeLayoutFileLine.Split('|')[0].Trim();
+                try { clusterNum = Int32.Parse(nodeLayoutFileLine.Split('|')[2].Trim()); } catch (Exception f) {Debug.Log(nodeLayoutFileLine);}
+                connectionIDsFromFile = nodeLayoutFileLine.Split('|')[3].Trim().Split(',');
+                coord.x = float.Parse(nodeLayoutFileLine.Split('[')[1].Split(',')[0].Trim());
+                coord.y = float.Parse(nodeLayoutFileLine.Split(',')[1].Split(',')[0].Trim());
+                coord.z = float.Parse(nodeLayoutFileLine.Split(',')[2].Split(']')[0].Trim());
+                deg = connectionIDsFromFile.Length;
+                //From descriptive file
+                dName = fIDsToNodeDescriptiveInfoLines[fID].Split('\t')[3].Trim(); 
+                desc = fIDsToNodeDescriptiveInfoLines[fID].Split('\t')[4].Trim(); 
+                //From rank file
+                nRank = fIDsToRanks[fID];
+                blineScore = fIDsToBlineScoresLines[fID];
 
                 if (System.Math.Abs(blineScore) > maxAbsBlineScore) { maxAbsBlineScore = blineScore; }
 
@@ -305,13 +315,14 @@ public class NetworkSceneManager : MonoBehaviour
                 List<string> connectedIDs = new List<string>(); 
                 foreach(string connectedNode in connectionIDsFromFile) 
                 {
-                    connectedIDs.Add(connectedNode.Trim());
+                    connectedIDs.Add(connectedNode.Trim().Trim());
                 }
                 entitiesToConnectedIDs.Add(e, connectedIDs);
 
                 if (blineScore < minBlineScore) minBlineScore = blineScore;
                 if (blineScore > maxBlineScore) maxBlineScore = blineScore;
-            } catch { Debug.Log(line); } 
+            } catch (Exception e) { /*Debug.Log(e + " | " + nodeLayoutFileLine);*/ } 
+            i++;
         }
 
         foreach(KeyValuePair<Entity, List<string>> entry in entitiesToConnectedIDs) 
@@ -327,11 +338,11 @@ public class NetworkSceneManager : MonoBehaviour
             entitiesToConnectedEntities.Add(entry.Key, connectedEntities);
         }
 
-        foreach(Entity curEntity in allNodeEntities) // this can be any dictionary that has all entities as the keys
+        foreach(Entity curEntity in allNodeEntities)
         {
             int clusterNumber = entityManager.GetComponentData<NodeData>(curEntity).cluster;
-            // if key already exists, add to this entity to the list at this key
-            try 
+            
+            try // if key already exists, add to this entity to the list at this key
             {
                 List<Entity> entitiesInCluster = clusterNumbersToEntities[clusterNumber];
                 entitiesInCluster.Add(curEntity);
@@ -344,7 +355,6 @@ public class NetworkSceneManager : MonoBehaviour
                 clusterNumbersToEntities.Add(clusterNumber, entitiesInCluster);
             }
         }
-
         Debug.Log("Done Spawning");
     }
 
@@ -386,7 +396,6 @@ public class NetworkSceneManager : MonoBehaviour
 
     private void SpawnFacetCircles(string rawInput) 
     {
-        //string[] facetCoordLines = rawInput.Split('#')[1].Split('$')[1].Split('\n');
         string[] facetCoordLines = rawInput.Split('$')[1].Split('\n');
 
         foreach(string line in facetCoordLines) 
@@ -402,7 +411,7 @@ public class NetworkSceneManager : MonoBehaviour
                 Vector3 coords = new Vector3(x, y, z);
                 GameObject newFacetCircle = Instantiate(facetCircleObject, coords, Quaternion.identity);
                 
-                newFacetCircle.transform.LookAt(Vector3.zero); // if second param set to Vector3.up it looks  cool
+                newFacetCircle.transform.LookAt(Vector3.zero);
                 facetCircles.Add(newFacetCircle);
             } catch { 
                 Debug.Log("failed to import coordinate"); 
@@ -448,7 +457,6 @@ public class NetworkSceneManager : MonoBehaviour
         }
     }
 
-    //private Dictionary<Entity, List<Entity>> entitiesToConnectedEntities = new Dictionary<Entity, List<Entity>>();
     public List<Entity> GetConnectedEntities(Entity entity)
     {
         return entitiesToConnectedEntities[entity];
@@ -473,7 +481,6 @@ public class NetworkSceneManager : MonoBehaviour
         }
     }
 
-    // maybe seperate into coord scaling and scale scaling?
     public void ScaleFacetCircles(float scale)
     {
         foreach(GameObject circle in facetCircles)
@@ -516,7 +523,6 @@ public class NetworkSceneManager : MonoBehaviour
         }
     }
 
-    // Gradient Editing stuff
     public void editNodeGradient() 
     {
         GradientPicker.Create(nodeValueGradient, "Choose Node Baseline Value Gradient...", SetColor, editNodeGradientFinished);
@@ -539,5 +545,4 @@ public class NetworkSceneManager : MonoBehaviour
     }
 
     private void SetColor(Gradient currentGradient) { }
-    //--------------------------------------------------
 }

@@ -4278,6 +4278,15 @@ MonoBehaviour:
   errorMessenger: {fileID: 739263256}
   innerSphere: {fileID: 2058229521}
   nodePrefab: {fileID: 3965336401097284566, guid: 70549e732c38e9b4ea38873e27940219, type: 3}
+  topNetworkRankObject: {fileID: 8138096982709289787, guid: 08884c52dea0e784a90715356828bd52, type: 3}
+  topNetworkRankObjects: []
+  topBaselineScoreObject: {fileID: 3487573651647648863, guid: b58a8cdfc099a0d4fa46933f90a53de0, type: 3}
+  topBaselineScoreObjects: []
+  topDegreeObject: {fileID: 8881776253432505988, guid: 756fba98f9a75a3419b9d5af2dce5edb, type: 3}
+  topDegreeObjects: []
+  facetCircleObject: {fileID: 2091350923440774569, guid: 8d6b9b6c9a4a8d14e9e1e65ecddd397a, type: 3}
+  gradientMinBaselineText: {fileID: 850959115}
+  gradientMaxBaselineText: {fileID: 342912180}
   nodeValueGradient:
     serializedVersion: 2
     key0: {r: 0.5188679, g: 0, b: 0, a: 1}
@@ -4336,17 +4345,6 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  gradientMinBaselineText: {fileID: 850959115}
-  gradientMaxBaselineText: {fileID: 342912180}
-  showHideNodeEdgesButton: {fileID: 828938461}
-  showHideClusterEdgesButton: {fileID: 1909075304}
-  topNetworkRankObject: {fileID: 8138096982709289787, guid: 08884c52dea0e784a90715356828bd52, type: 3}
-  topNetworkRankObjects: []
-  topBaselineScoreObject: {fileID: 3487573651647648863, guid: b58a8cdfc099a0d4fa46933f90a53de0, type: 3}
-  topBaselineScoreObjects: []
-  topDegreeObject: {fileID: 8881776253432505988, guid: 756fba98f9a75a3419b9d5af2dce5edb, type: 3}
-  topDegreeObjects: []
-  facetCircleObject: {fileID: 2091350923440774569, guid: 8d6b9b6c9a4a8d14e9e1e65ecddd397a, type: 3}
 --- !u!4 &684218367
 Transform:
   m_ObjectHideFlags: 0
@@ -6828,7 +6826,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11004,7 +11002,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1705969131
 RectTransform:
   m_ObjectHideFlags: 0

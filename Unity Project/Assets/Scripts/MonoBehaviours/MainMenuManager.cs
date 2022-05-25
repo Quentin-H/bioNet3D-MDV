@@ -9,7 +9,15 @@ public class MainMenuManager : MonoBehaviour
 {
 	public DataHolder dataHolder;
 	public ErrorMessenger errorMessenger;
-	private bool nodeLayoutFileSet;
+	private bool nodeLayoutFileSet = false;
+	private bool nodeInformationFileSet = false;
+	private bool nodeScoreFileSet = false;
+
+	//debugging only --------------------------
+	public TextAsset nodeLayoutFile;
+	public TextAsset nodeInformationFile;
+	public TextAsset nodeScoreFile;
+	//-----------------------------------------
 
 	private void Start() 
 	{
@@ -22,6 +30,20 @@ public class MainMenuManager : MonoBehaviour
 			FileBrowser.AddQuickLink( "Sample Files", projectPath, null );
 		}
 		//add a random layout of points to rotate around in the background
+
+		// debugging only
+		SetDebugDefaultFiles();
+	}
+
+	private void SetDebugDefaultFiles()
+	{
+		dataHolder.nodeLayoutFile = nodeLayoutFile.text;
+		dataHolder.nodeInfoFile = nodeInformationFile.text;
+		dataHolder.nodeRankingFile = nodeScoreFile.text;
+
+		nodeLayoutFileSet = true;
+		nodeInformationFileSet = true;
+		nodeScoreFileSet = true;
 	}
 
     public void OpenLayoutFileDialog()
@@ -40,15 +62,10 @@ public class MainMenuManager : MonoBehaviour
 			for(int i = 0; i < FileBrowser.Result.Length; i++)
 			{
 				string path = FileBrowser.Result[i];					
-				dataHolder.rawNodeLayoutFile = File.ReadAllText(path);
+				dataHolder.nodeLayoutFile = File.ReadAllText(path);
 				nodeLayoutFileSet = true;
 			}
         }
-	}
-
-	public void ChangePositionMultiplier(string multiplier)
-	{
-		dataHolder.positionMultiplier = float.Parse(multiplier);
 	}
 
 	public void OpenNetworkScene()

@@ -152,8 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 725c8f8fc90d53b4fb99cc36b26dfdc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rawNodeLayoutFile: 
-  positionMultiplier: 60
+  nodeLayoutFile: 
+  nodeInfoFile: 
+  nodeRankingFile: 
 --- !u!4 &53305936
 Transform:
   m_ObjectHideFlags: 0
@@ -291,6 +292,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataHolder: {fileID: 53305935}
   errorMessenger: {fileID: 442397973}
+  nodeLayoutFile: {fileID: 4900000, guid: b0f7915da20ecb74ea26b4709a6a3b6e, type: 3}
+  nodeInformationFile: {fileID: 4900000, guid: 9fc63139af48d414eac9e086af606e16, type: 3}
+  nodeScoreFile: {fileID: 4900000, guid: e25acbcff2a8e04438a75357a6b71cf5, type: 3}
 --- !u!4 &352836295
 Transform:
   m_ObjectHideFlags: 0
@@ -527,7 +531,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &926046517
 RectTransform:
   m_ObjectHideFlags: 0

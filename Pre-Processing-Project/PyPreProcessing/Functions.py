@@ -79,6 +79,7 @@ class Functions:
 					ranks[featureID] = i
 				i += 1
 
+		i = 0
 		for nodeLine in nodeFileLines: # go through every gene in the file and add it as a node to the graph
 			
 			nodeParsePercent = round(100 * (i / len(nodeFileLines)), 3)
@@ -272,16 +273,21 @@ class Functions:
 		for node in graph.vs:
 			connectionListStr = ""
 
+			i = 0
 			for neighbor in node.neighbors():
-				connectionListStr += neighbor["name"] + "," 
+				if i == len(node.neighbors()) - 1:
+					connectionListStr += neighbor["name"]
+				else:
+					connectionListStr += neighbor["name"] + "," 
+				i += 1
 			
 			currentLine = (node["name"] # feature ID
 				+ "|" + str(node["coordinates"])
-				+ "|" + node["displayName"] 
-				+ "|" + node["description"]
-				+ "|" + str(node["networkRank"]) 
-				+ "|" + str(node["baselineScore"]) 
-				+ "|" + str(node.degree())
+				#+ "|" + node["displayName"] 
+				#+ "|" + node["description"]
+				#+ "|" + str(node["networkRank"]) 
+				#+ "|" + str(node["baselineScore"]) 
+				#+ "|" + str(node.degree()) (get these based on number of edge ids when importing to unity)
 				+ "|" + str(node["cluster"])
 				+ "|" + connectionListStr
 				+ "\n")
@@ -304,7 +310,7 @@ class Functions:
 
 		graphString += posListStr
 
-		# "massive dataset visualizer layout file"
-		outputFile = open(outputPath + ("output - " + str(date.today()) + ".mdvl"), "w")
+		# "bionet node layout file"
+		outputFile = open(outputPath + ("output - " + str(date.today()) + ".bnlf"), "w")
 		outputFile.write(graphString)
 		outputFile.close()
