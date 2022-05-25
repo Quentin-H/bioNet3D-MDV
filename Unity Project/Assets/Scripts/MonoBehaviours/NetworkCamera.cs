@@ -168,10 +168,6 @@ public class NetworkCamera : MonoBehaviour
 
     private void sendRay()
     {
-        // Sanity checks, checking if the mouse is over a UI element, checking if left mouse button isn't clicked
-        //if (cam == null || !Input.GetMouseButtonDown(0) || EventSystem.current.IsPointerOverGameObject()) return; 
-        //if (EventSystem.current.IsPointerOverGameObject()) return;
-
         // sends a ray through the scene
         var position = Input.mousePosition;
         var screenPointToRay = cam.ScreenPointToRay(position);

@@ -63,7 +63,6 @@ class Functions:
 		invalidEdges = 0
 
 		node_time = time.time()
-		nodeParsePercent = 0
 		i = 1 # first line has headers
 
 		if (scoreFileLines is not None):
@@ -79,6 +78,7 @@ class Functions:
 					ranks[featureID] = i
 				i += 1
 
+		nodeParsePercent = 0
 		i = 0
 		for nodeLine in nodeFileLines: # go through every gene in the file and add it as a node to the graph
 			
@@ -91,7 +91,12 @@ class Functions:
 				featureID = nodeLine.split()[0].strip().replace("$", " ").replace("|", " ").replace("#", " ").strip()
 				dName = nodeLine.split()[3].strip().replace("$", " ").replace("|", " ").replace("#", " ").strip()
 				desc = nodeLine.split("\t")[4].strip().replace("$", " ").replace("|", " ").replace("#", " ").strip()
-				nRank = ranks[featureID]
+				nRank = -1
+				try: 
+					nRank = ranks[featureID]
+				except:
+					nRank = -1
+					
 				bScore = 0
 				try: 
 					bScore = bScores[featureID] 
@@ -101,8 +106,9 @@ class Functions:
 				# Sets the name of the vertex as the knowENG ID, this lets us refer to the vertex by ID rather than index, has one attribute
 				graph.add_vertex(name = featureID, displayName = dName, description = desc, networkRank = nRank, baselineScore = bScore)
 				i += 1
-			except:
+			except Exception as e:
 				nodeParseFails += 1
+				print(e)
 
 		print("\nNode parsing took " +  "%s seconds" % (time.time() - node_time)  + " with " + str(nodeParseFails) + " parsing fails")
 
@@ -131,9 +137,10 @@ class Functions:
 					edgePair = (node1, node2)
 					edgePairs.append(edgePair)
 
-			except:
+			except Exception as e:
 				#print(edgeLine.split()[0].strip() + " | " + edgeLine.split()[0].strip())
 				edgeParseFails += 1
+				#print(e)
 
 			i += 1
 

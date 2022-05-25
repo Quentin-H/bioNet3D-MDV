@@ -5,13 +5,16 @@ using UnityEngine.UI;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using Unity.Physics;
+using Unity.Physics.Systems;
+using SphereCollider = Unity.Physics.SphereCollider;
 
 public class NodeObjectScaling : MonoBehaviour
 {
     EntityManager entityManager => World.DefaultGameObjectInjectionWorld.EntityManager;
     public NetworkSceneManager networkSceneManager;
     public Slider scaleSlider;
-    public float nodeScale {get; set;}
+    public float nodeScale { get; set;}
     
     
     public void SetNodeScaleMax(string maxString)
@@ -36,6 +39,7 @@ public class NodeObjectScaling : MonoBehaviour
         
         foreach(Entity entity in nodes)
         {
+            //Modify entity's scale
             var ltw = entityManager.GetComponentData<LocalToWorld>(entity);
             entityManager.SetComponentData<LocalToWorld>( entity , new LocalToWorld{
                 Value = float4x4.TRS(
@@ -44,6 +48,17 @@ public class NodeObjectScaling : MonoBehaviour
                     scale:          nodeScale
                 )
             });
+
+            //Modify entity's collider scale (this is supposed to fix the node selection bug when nodes are scaled larger)
+            unsafe
+            {
+                // grab the sphere pointer
+                SphereCollider* scPtr = (SphereCollider*)entityManager.GetComponentData<PhysicsCollider>(entity).ColliderPtr;              
+                 // update the collider geometry
+                var sphereGeometry = scPtr->Geometry;
+                sphereGeometry.Radius = nodeScale;
+                scPtr->Geometry = sphereGeometry;
+            }
         }
 
         float3 nodeScaleAs3 = new float3(nodeScale, nodeScale, nodeScale);
