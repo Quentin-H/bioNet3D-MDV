@@ -63,12 +63,12 @@ public class NetworkCamera : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) 
         {
-            sendRay();
+            SendRay();
         }
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            focusOnSelectedNode();
+            FocusOnSelectedNode();
         }
 
         if (Input.GetKeyDown(KeyCode.P))
@@ -76,11 +76,11 @@ public class NetworkCamera : MonoBehaviour
             ScreenCapture.CaptureScreenshot("C:/Users/Quentin/Desktop/MDV_Screencap.png", 1);
         }
 
-        locking();
+        Locking();
     }
 
     // this takes care of checking key presses for the various locking features the application has
-    private void locking()
+    private void Locking()
     {
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -107,7 +107,7 @@ public class NetworkCamera : MonoBehaviour
         }
     }
 
-    private void moveCamera()
+    private void MoveCamera()
     {
         //replace with a better fps mouselook
         lastMouse = Input.mousePosition - lastMouse;
@@ -116,7 +116,7 @@ public class NetworkCamera : MonoBehaviour
         transform.eulerAngles = lastMouse;
         lastMouse = Input.mousePosition;
 
-        Vector3 p = getBaseInput();
+        Vector3 p = GetBaseInput();
         if (Input.GetKey(KeyCode.LeftShift))
         {
             totalRun += Time.deltaTime;
@@ -135,7 +135,7 @@ public class NetworkCamera : MonoBehaviour
         transform.Translate(p);
     }
 
-    private Vector3 getBaseInput() // helper for moveCamera
+    private Vector3 GetBaseInput() // helper for moveCamera
     {
         Vector3 p_Velocity = new Vector3();
 
@@ -166,7 +166,7 @@ public class NetworkCamera : MonoBehaviour
         return p_Velocity;
     }
 
-    private void sendRay()
+    private void SendRay()
     {
         // sends a ray through the scene
         var position = Input.mousePosition;
@@ -185,11 +185,11 @@ public class NetworkCamera : MonoBehaviour
             selectedNodeUI.SetActive(false);
         } else {
             Entity entity = physicsWorld.Bodies[hit.RigidBodyIndex].Entity;
-            selectNode(entity);
+            SelectNode(entity);
         }
     }
 
-    public void selectNode(Entity entity) 
+    public void SelectNode(Entity entity) 
     {
         nodeSelected = true;
         selectedEntity = entity;
@@ -206,17 +206,17 @@ public class NetworkCamera : MonoBehaviour
         selectedNodeUI.SetActive(true); 
     }   
 
-    public void searchForNode(string query)
+    public void SearchForNode(string query)
     {        
         try 
         {
-            selectNode(sceneManager.FindNode(query));
-            focusOnSelectedNode();
+            SelectNode(sceneManager.FindNode(query.Trim()));
+            FocusOnSelectedNode();
         } catch { Debug.Log("Node not found (" + query.Trim() + ")"); }
     }
 
     // called by search bar
-    public void focusOnSelectedNode()
+    public void FocusOnSelectedNode()
     {
         if (nodeSelected == true)
         {
@@ -240,13 +240,13 @@ public class NetworkCamera : MonoBehaviour
         }
     }
 
-    public Entity getSelectedEntity() 
+    public Entity GetSelectedEntity() 
     {
         return selectedEntity;
     }
 
     // called by UI
-    public void setViewAxis(int view) // if the user clicks a view option from the dropdown menu it will bring them to a zoomed out view from that axis
+    public void SetViewAxis(int view) // if the user clicks a view option from the dropdown menu it will bring them to a zoomed out view from that axis
     {
         if (view == 0) { return; } // if the user chooses the blank option return because we don't want anything to happen
         if (view == 1) //x 

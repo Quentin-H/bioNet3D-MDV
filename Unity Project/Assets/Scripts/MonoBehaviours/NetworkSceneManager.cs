@@ -85,8 +85,8 @@ public class NetworkSceneManager : MonoBehaviour
         GenerateTopLists();
         PlaceCamera(Camera.main);
 
-        gradientMinBaselineText.text = minBlineScore.ToString("0.00");
-        gradientMaxBaselineText.text = maxBlineScore.ToString("0.00");
+        gradientMinBaselineText.text = (-maxAbsBlineScore).ToString("0.00");
+        gradientMaxBaselineText.text = maxAbsBlineScore.ToString("0.00");
     }
 
     private void OnDestroy()
@@ -259,17 +259,19 @@ public class NetworkSceneManager : MonoBehaviour
         try { rawNumericInfoInputLines = inputDataHolder.GetComponent<DataHolder>().nodeRankingFile.Split('\n'); } catch { }
         Dictionary<string, double> fIDsToBlineScoresLines = new Dictionary<string, double>();
         Dictionary<string, int> fIDsToRanks = new Dictionary<string, int>();
-        int j = 1;
-        foreach (string curLine in rawNumericInfoInputLines.Skip(1))
+        try 
         {
-            try 
+            int j = 1;
+            foreach (string curLine in rawNumericInfoInputLines.Skip(1))
             {
-                fIDsToBlineScoresLines.Add(curLine.Split()[1].Trim(), double.Parse(curLine.Split()[4].Trim()));
-                fIDsToRanks.Add(curLine.Split()[1].Trim(), j);
-            } catch (Exception e) { Debug.Log(e + " | Error parsing node ranking line: " + curLine); }
-            j++;
-        }
-
+                try 
+                {
+                    fIDsToBlineScoresLines.Add(curLine.Split()[1].Trim(), double.Parse(curLine.Split()[4].Trim()));
+                    fIDsToRanks.Add(curLine.Split()[1].Trim(), j);
+                } catch (Exception e) { Debug.Log(e + " | Error parsing node ranking line: " + curLine); }
+                j++;
+            }
+        } catch { Debug.Log("No ranking file"); }
 
         Dictionary<Entity, List<String>> entitiesToConnectedIDs = new Dictionary<Entity, List<String>>();
 
@@ -295,7 +297,7 @@ public class NetworkSceneManager : MonoBehaviour
             {
                 // from layout file
                 fID = nodeLayoutFileLine.Split('|')[0].Trim();
-                try { clusterNum = Int32.Parse(nodeLayoutFileLine.Split('|')[2].Trim()); } catch (Exception f) {Debug.Log(nodeLayoutFileLine);}
+                try { clusterNum = Int32.Parse(nodeLayoutFileLine.Split('|')[2].Trim()); } catch { }
                 connectionIDsFromFile = nodeLayoutFileLine.Split('|')[3].Trim().Split(',');
                 coord.x = float.Parse(nodeLayoutFileLine.Split('[')[1].Split(',')[0].Trim());
                 coord.y = float.Parse(nodeLayoutFileLine.Split(',')[1].Split(',')[0].Trim());
@@ -305,10 +307,11 @@ public class NetworkSceneManager : MonoBehaviour
                 dName = fIDsToNodeDescriptiveInfoLines[fID].Split('\t')[3].Trim(); 
                 desc = fIDsToNodeDescriptiveInfoLines[fID].Split('\t')[4].Trim(); 
                 //From rank file
-                nRank = fIDsToRanks[fID];
-                blineScore = fIDsToBlineScoresLines[fID];
-
-                if (System.Math.Abs(blineScore) > maxAbsBlineScore) { maxAbsBlineScore = blineScore; }
+                try 
+                {
+                    nRank = fIDsToRanks[fID];
+                    blineScore = fIDsToBlineScoresLines[fID];
+                } catch { }
 
                 Entity e = SpawnNode(fID, coord, dName, desc, nRank, blineScore, deg, clusterNum);
 
@@ -321,8 +324,18 @@ public class NetworkSceneManager : MonoBehaviour
 
                 if (blineScore < minBlineScore) minBlineScore = blineScore;
                 if (blineScore > maxBlineScore) maxBlineScore = blineScore;
-            } catch (Exception e) { /*Debug.Log(e + " | " + nodeLayoutFileLine);*/ } 
+                if (System.Math.Abs(blineScore) > maxAbsBlineScore) { maxAbsBlineScore = System.Math.Abs(blineScore); }
+            } catch { } 
             i++;
+        }
+
+        if (System.Math.Abs(maxBlineScore) > System.Math.Abs(minBlineScore))
+        {
+            maxAbsBlineScore = System.Math.Abs(maxBlineScore);
+        }
+        else
+        {
+            maxAbsBlineScore = System.Math.Abs(minBlineScore);
         }
 
         foreach(KeyValuePair<Entity, List<string>> entry in entitiesToConnectedIDs) 
@@ -348,7 +361,7 @@ public class NetworkSceneManager : MonoBehaviour
                 entitiesInCluster.Add(curEntity);
                 clusterNumbersToEntities[clusterNumber] = entitiesInCluster;
             }
-            catch   // if key doesn't exist, create new list with only this entity in it and add it at this key
+            catch // if key doesn't exist, create new list with only this entity in it and add it at this key
             {
                 List<Entity> entitiesInCluster = new List<Entity>();
                 entitiesInCluster.Add(curEntity);
@@ -377,7 +390,8 @@ public class NetworkSceneManager : MonoBehaviour
         };
         entityManager.AddComponentData( newNodeEntity, translation );
 
-        entityManager.SetComponentData(newNodeEntity, new NodeData { 
+        entityManager.SetComponentData(newNodeEntity, new NodeData 
+        { 
             featureID = fID, 
             displayName = dName, 
             description = desc, 
@@ -402,15 +416,22 @@ public class NetworkSceneManager : MonoBehaviour
         {
             try 
             {
+                //get facet circle position
                 string[] coordStrings = line.Split('[')[1].Split(']')[0].Split(',');
-
                 float x = float.Parse(coordStrings[0]);
                 float y = float.Parse(coordStrings[1]);
                 float z = float.Parse(coordStrings[2]);
-
                 Vector3 coords = new Vector3(x, y, z);
+
+                //scale facet circle
                 GameObject newFacetCircle = Instantiate(facetCircleObject, coords, Quaternion.identity);
+                float scale = float.Parse(line.Split('|')[2].Trim());
+                newFacetCircle.transform.localScale = new float3(scale, scale, scale);
+
+                //spawn cluster letter
+                int cluster = Int32.Parse(line.Split('|')[1].Trim());
                 
+                //rotate 
                 newFacetCircle.transform.LookAt(Vector3.zero);
                 facetCircles.Add(newFacetCircle);
             } catch { 
@@ -490,9 +511,9 @@ public class NetworkSceneManager : MonoBehaviour
                 circle.transform.position.y * scale, 
                 circle.transform.position.z * scale);
 
-            circle.transform.localScale = new float3(scale / 4, scale / 4, scale / 4); // maybe sqrt?
+            circle.transform.localScale = new float3(scale, scale, scale); // maybe sqrt?
         }
-        innerSphere.transform.localScale = new float3(scale * 1.9f, scale * 1.9f, scale * 1.9f);
+        innerSphere.transform.localScale = new float3(scale, scale, scale); //1.9
     }
     
     //  U      U    I

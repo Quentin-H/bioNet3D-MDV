@@ -105,7 +105,7 @@ public class GradientPicker : MonoBehaviour
         }
         foreach (GradientAlphaKey k in originalGradient.alphaKeys)
         {
-            CreateAlphaKey(k);
+            //CreateAlphaKey(k); removed for alpha key
         }
         CalculateTexture();
         interact = true;

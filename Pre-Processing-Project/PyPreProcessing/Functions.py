@@ -81,7 +81,6 @@ class Functions:
 		nodeParsePercent = 0
 		i = 0
 		for nodeLine in nodeFileLines: # go through every gene in the file and add it as a node to the graph
-			
 			nodeParsePercent = round(100 * (i / len(nodeFileLines)), 3)
 			if nodeParsePercent % 0.5 == 0:
 				sys.stdout.write("\r{0}".format("Node parsing: "+ str(nodeParsePercent) + "%"))
@@ -124,7 +123,6 @@ class Functions:
 				sys.stdout.write("\r{0}".format("Edge parsing: "+ str(edgeParsePercent) + "%"))
 				sys.stdout.flush()
 
-
 			try:
 				node1 = edgeLine.split()[0].strip()
 				node2 = edgeLine.split()[1].strip()
@@ -141,7 +139,6 @@ class Functions:
 				#print(edgeLine.split()[0].strip() + " | " + edgeLine.split()[0].strip())
 				edgeParseFails += 1
 				#print(e)
-
 			i += 1
 
 		graph.add_edges(edgePairs)
@@ -226,17 +223,29 @@ class Functions:
 			i += 1 
 		graphListWithPos.append(newMiscGraph)
 
+		###
 		clusterSizes = []
 		for graph in graphList[1:]:
 			clusterSizes.append(graph.vcount())
 
 		spt = spacedpoints.SpacedPoints()
 		spt.seedpoints( clusterSizes )
-		global OnSpherePositions
+		global OnSpherePositions # x,y,z then after sending to Hullnet add cluster number, and scale
 		OnSpherePositions = spt.nudgepoints()
-
-
 		hullnet = sphvoronoi.HullNet( OnSpherePositions )
+
+		NewOnSpherePositions = []
+		for pos in OnSpherePositions:
+			NewOnSpherePositions.append(pos.tolist())
+		OnSpherePositions = NewOnSpherePositions
+		for pos in OnSpherePositions:
+			facetClusterNumber = 0 # how to get this
+			facetScale = 1 # how to get this
+			pos.append(facetClusterNumber) 
+			pos.append(facetScale)
+
+		# final format is list of lists like x, y, z, clusternumber, clusterfacetscale
+		###
 
 		#find max degree
 		maxDegree = 0
@@ -313,7 +322,8 @@ class Functions:
 		posListStr = ""
 		
 		for pos in OnSpherePositions:
-			posListStr += str("[%g,%g,%g]" % (pos[0], pos[1], pos[2])) + " | " + "testSizeplaceholder" + " | " + "testClusterplaceholder" + "\n"
+			#posListStr += str("[%g,%g,%g] | %g, | %g," % (pos[0], pos[1], pos[2]), pos[3], pos[4]) + "\n"
+			posListStr += "[{0}, {1}, {2}] | {3} | {4}".format(pos[0], pos[1], pos[2], pos[3], pos[4]) + "\n"
 
 		graphString += posListStr
 

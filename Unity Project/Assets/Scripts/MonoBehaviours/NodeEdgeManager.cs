@@ -36,7 +36,7 @@ public class NodeEdgeManager : MonoBehaviour
                 HideClusterEdges();
             }
 
-            ShowNodeEdges(networkCamera.getSelectedEntity());
+            ShowNodeEdges(networkCamera.GetSelectedEntity());
 
             showHideNodeEdgesButton.GetComponentInChildren<Text>().text = "Hide Node Edges";
             nodeEdgesShowing = true;
@@ -56,7 +56,7 @@ public class NodeEdgeManager : MonoBehaviour
                 HideNodeEdges();
             }
 
-            Entity entity = networkCamera.getSelectedEntity();
+            Entity entity = networkCamera.GetSelectedEntity();
             int clusterNumber = entityManager.GetComponentData<NodeData>(entity).cluster;
             List<Entity> clusterEntities = networkSceneManager.GetEntitiesInCluster(clusterNumber);
             ShowClusterEdges(clusterEntities);

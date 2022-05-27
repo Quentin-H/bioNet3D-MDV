@@ -31,19 +31,21 @@ public class MainMenuManager : MonoBehaviour
 		}
 		//add a random layout of points to rotate around in the background
 
-		// debugging only
+		// debugging only (for including hardcoded files)
 		SetDebugDefaultFiles();
 	}
 
 	private void SetDebugDefaultFiles()
 	{
-		dataHolder.nodeLayoutFile = nodeLayoutFile.text;
-		dataHolder.nodeInfoFile = nodeInformationFile.text;
-		dataHolder.nodeRankingFile = nodeScoreFile.text;
+		try { dataHolder.nodeLayoutFile = nodeLayoutFile.text; nodeLayoutFileSet = true; } 
+		catch { errorMessenger.DisplayError("No network layout file selected!", "Please set a network layout file before continuing."); }
 
-		nodeLayoutFileSet = true;
-		nodeInformationFileSet = true;
-		nodeScoreFileSet = true;
+		try { dataHolder.nodeInfoFile = nodeInformationFile.text; nodeInformationFileSet = true; } 
+		catch { errorMessenger.DisplayError("No node info file selected!", "Please set a node info file before continuing."); }
+
+		// viz can run without ranking/score file
+		try { dataHolder.nodeRankingFile = nodeScoreFile.text; nodeScoreFileSet = true; } 
+		catch { nodeScoreFileSet = false; } 
 	}
 
     public void OpenLayoutFileDialog()
