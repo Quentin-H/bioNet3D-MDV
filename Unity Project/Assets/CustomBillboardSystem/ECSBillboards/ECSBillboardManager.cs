@@ -30,10 +30,9 @@ public class ECSBillboardManager : MonoBehaviour
         gameObjectConversionSettings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
     }
 
-    private Entity selectionPrefabEntity;
     public void HighlightSelectedNode(Entity selectedEntity)
     {
-        try { entityManager.DestroyEntity(selectionHighlight); } catch { }
+        //try { entityManager.DestroyEntity(selectionHighlight); } catch { }
 
         float3 entityPos = new float3
         (
@@ -42,7 +41,7 @@ public class ECSBillboardManager : MonoBehaviour
             entityManager.GetComponentData<Translation>(selectedEntity).Value.z
         );
         
-        selectionPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy( selectionPrefab, gameObjectConversionSettings );
+        Entity selectionPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy( selectionPrefab, gameObjectConversionSettings );
         selectionHighlight = entityManager.Instantiate( selectionPrefabEntity );
         
         Translation translation = new Translation() { Value = entityPos };
