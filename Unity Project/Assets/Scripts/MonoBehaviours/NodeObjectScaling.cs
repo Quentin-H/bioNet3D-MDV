@@ -68,22 +68,22 @@ public class NodeObjectScaling : MonoBehaviour
 
         foreach(GameObject curObject in topRankObjects)
         {
-            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().scale;
+            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().initialScale;
         }
 
         foreach(GameObject curObject in topBaselineObjects)
         {
-            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().scale;
+            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().initialScale;
         }
 
         foreach(GameObject curObject in topDegreeObjects)
         {
-            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().scale;
+            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().initialScale;
         }
 
         foreach(GameObject curObject in highlightedBillboardObjects)
         {
-            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().scale;
+            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().initialScale;
         }
     }
 }

@@ -94,6 +94,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eef586effe51aa44ba57abdd95505ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scale: 10
+  initialScale: 10
   yawAngleOffset: 0
   screenspace: 0

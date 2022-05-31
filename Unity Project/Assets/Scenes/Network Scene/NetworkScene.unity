@@ -4260,6 +4260,7 @@ GameObject:
   - component: {fileID: 684218366}
   - component: {fileID: 684218368}
   - component: {fileID: 684218369}
+  - component: {fileID: 684218370}
   m_Layer: 0
   m_Name: Network Scene Manager
   m_TagString: Untagged
@@ -4410,6 +4411,23 @@ MonoBehaviour:
   keywordsField: {fileID: 398819889}
   keywords: []
   showingOptionsField: {fileID: 1371406849}
+--- !u!114 &684218370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 684218365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b37485df100bb51469803a3c8de1cb7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topRankPrefab: {fileID: 0}
+  topBaselinePrefab: {fileID: 0}
+  topDegreePrefab: {fileID: 0}
+  filteredHighlightPrefab: {fileID: 0}
+  selectionPrefab: {fileID: 0}
 --- !u!1 &728852450
 GameObject:
   m_ObjectHideFlags: 0
@@ -13379,6 +13397,7 @@ MonoBehaviour:
   viewAxisDropdown: {fileID: 728852452}
   sceneManager: {fileID: 684218366}
   nodeScaleManager: {fileID: 684218368}
+  ecsBillboardManager: {fileID: 684218370}
   mainSpeed: 10
   shiftAdd: 25
   maxShift: 100

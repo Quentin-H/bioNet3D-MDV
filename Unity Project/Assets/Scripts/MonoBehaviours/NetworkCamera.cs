@@ -43,6 +43,7 @@ public class NetworkCamera : MonoBehaviour
     [SerializeField] private Dropdown viewAxisDropdown;
     [SerializeField] private NetworkSceneManager sceneManager;
     [SerializeField] private NodeObjectScaling nodeScaleManager;
+    [SerializeField] private ECSBillboardManager ecsBillboardManager;
     
     // Fly Cam Variables
     public float mainSpeed = 10.0f;   // Default speed
@@ -65,11 +66,6 @@ public class NetworkCamera : MonoBehaviour
 
     private void Update()
     {
-        if (cameraLocked == false)
-        {
-            //moveCamera();
-        }
-
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) 
         {
             SendRay();
@@ -84,95 +80,6 @@ public class NetworkCamera : MonoBehaviour
         {
             ScreenCapture.CaptureScreenshot("C:/Users/Quentin/Desktop/MDV_Screencap.png", 1);
         }
-
-        Locking();
-    }
-
-    // this takes care of checking key presses for the various locking features the application has
-    private void Locking()
-    {
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            cameraLocked = !cameraLocked;
-
-            if (cameraLocked) { lockCameraText.text = "Press C to unlock camera"; }
-            if (!cameraLocked) { lockCameraText.text = "Press C to lock camera"; }
-        }
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            cursorLocked = !cursorLocked;
-
-            if (cursorLocked) 
-            { 
-                lockCursorText.text = "Press V to unlock cursor"; 
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            if (!cursorLocked) 
-            { 
-                lockCursorText.text = "Press V to lock cursor"; 
-                Cursor.lockState = CursorLockMode.None;
-            }
-        }
-    }
-
-    private void MoveCamera()
-    {
-        //replace with a better fps mouselook
-        lastMouse = Input.mousePosition - lastMouse;
-        lastMouse = new Vector3(-lastMouse.y * camSens, lastMouse.x * camSens, 0);
-        lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);
-        transform.eulerAngles = lastMouse;
-        lastMouse = Input.mousePosition;
-
-        Vector3 p = GetBaseInput();
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            totalRun += Time.deltaTime;
-            p *= totalRun * shiftAdd;
-            p.x = Mathf.Clamp(p.x, -maxShift, maxShift);
-            p.y = Mathf.Clamp(p.y, -maxShift, maxShift);
-            p.z = Mathf.Clamp(p.z, -maxShift, maxShift);
-        }
-        else
-        {
-            totalRun = Mathf.Clamp(totalRun * 0.5f, 1f, 1000f);
-            p *= mainSpeed;
-        }
-
-        p *= Time.deltaTime;
-        transform.Translate(p);
-    }
-
-    private Vector3 GetBaseInput() // helper for moveCamera
-    {
-        Vector3 p_Velocity = new Vector3();
-
-        // Forwards
-        if (Input.GetKey(KeyCode.W))
-            p_Velocity += new Vector3(0, 0, 1);
-
-        // Backwards
-        if (Input.GetKey(KeyCode.S))
-            p_Velocity += new Vector3(0, 0, -1);
-
-        // Left
-        if (Input.GetKey(KeyCode.A))
-            p_Velocity += new Vector3(-1, 0, 0);
-
-        // Right
-        if (Input.GetKey(KeyCode.D))
-            p_Velocity += new Vector3(1, 0, 0);
-
-        // Up
-        if (Input.GetKey(KeyCode.Space))
-            p_Velocity += new Vector3(0, 1, 0);
-
-        // Down
-        if (Input.GetKey(KeyCode.LeftControl))
-            p_Velocity += new Vector3(0, -1, 0);
-
-        return p_Velocity;
     }
 
     private void SendRay()
@@ -200,6 +107,7 @@ public class NetworkCamera : MonoBehaviour
 
     public void SelectNode(Entity entity) 
     {
+        ecsBillboardManager.HighlightSelectedNode(entity);
         nodeSelected = true;
         selectedEntity = entity;
         NodeData selectedNodeData = entityManager.GetComponentData<NodeData>(entity);

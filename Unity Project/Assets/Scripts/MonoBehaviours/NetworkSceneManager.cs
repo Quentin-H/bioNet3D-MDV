@@ -378,16 +378,10 @@ public class NetworkSceneManager : MonoBehaviour
         nodeEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy( nodePrefab, gameObjectConversionSettings );
         Entity newNodeEntity = entityManager.Instantiate( nodeEntityPrefab );
 
-        ColorOverride colorOverride = new ColorOverride()
-        {
-            Value = colorF
-        };
+        ColorOverride colorOverride = new ColorOverride() { Value = colorF };
         entityManager.AddComponentData( newNodeEntity, colorOverride );
 
-        Translation translation = new Translation()
-        {
-            Value = coord
-        };
+        Translation translation = new Translation() { Value = coord };
         entityManager.AddComponentData( newNodeEntity, translation );
 
         entityManager.SetComponentData(newNodeEntity, new NodeData 
