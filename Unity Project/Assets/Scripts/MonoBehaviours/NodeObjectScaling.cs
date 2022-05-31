@@ -11,11 +11,13 @@ using SphereCollider = Unity.Physics.SphereCollider;
 
 public class NodeObjectScaling : MonoBehaviour
 {
-    EntityManager entityManager => World.DefaultGameObjectInjectionWorld.EntityManager;
-    public NetworkSceneManager networkSceneManager;
-    public Slider scaleSlider;
-    public float nodeScale { get; set;}
+    private EntityManager entityManager => World.DefaultGameObjectInjectionWorld.EntityManager;
+    [SerializeField] private NetworkSceneManager networkSceneManager;
+    [SerializeField] private NetworkCamera networkCamera;
+    [SerializeField] private Slider scaleSlider;
+    public float nodeScale { get; set;} = 1;
     
+
     
     public void SetNodeScaleMax(string maxString)
     {
@@ -36,6 +38,7 @@ public class NodeObjectScaling : MonoBehaviour
         List<GameObject> topRankObjects = networkSceneManager.topNetworkRankObjects;
         List<GameObject> topBaselineObjects = networkSceneManager.topBaselineScoreObjects;
         List<GameObject> topDegreeObjects = networkSceneManager.topDegreeObjects;
+        List<GameObject> highlightedBillboardObjects = networkCamera.highlightBillboardObjects;
         
         foreach(Entity entity in nodes)
         {
@@ -61,21 +64,26 @@ public class NodeObjectScaling : MonoBehaviour
             }
         }
 
-        float3 nodeScaleAs3 = new float3(nodeScale, nodeScale, nodeScale);
+        float3 scaleAsFloat3 = new float3(nodeScale, nodeScale, nodeScale);
 
         foreach(GameObject curObject in topRankObjects)
         {
-            curObject.transform.localScale = nodeScaleAs3 * curObject.GetComponent<Billboard>().scale;
+            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().scale;
         }
 
         foreach(GameObject curObject in topBaselineObjects)
         {
-            curObject.transform.localScale = nodeScaleAs3 * curObject.GetComponent<Billboard>().scale;
+            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().scale;
         }
 
         foreach(GameObject curObject in topDegreeObjects)
         {
-            curObject.transform.localScale = nodeScaleAs3 * curObject.GetComponent<Billboard>().scale;
+            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().scale;
+        }
+
+        foreach(GameObject curObject in highlightedBillboardObjects)
+        {
+            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().scale;
         }
     }
 }

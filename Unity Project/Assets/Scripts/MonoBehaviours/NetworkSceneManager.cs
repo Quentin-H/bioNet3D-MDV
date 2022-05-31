@@ -449,14 +449,10 @@ public class NetworkSceneManager : MonoBehaviour
             double blineScore = entityManager.GetComponentData<NodeData>(entry.Value).baselineScore;
             double normalizedblineScore = (blineScore - (-maxAbsBlineScore)) / (maxAbsBlineScore - (-maxAbsBlineScore));
             Color evaluatedColor = Color.white;
-            if (blineScore == 0)
-            {
-                evaluatedColor = Color.white;
-            } 
-            else
+            if (inputDataHolder.GetComponent<DataHolder>().nodeRankingFile.Trim() != "")
             {
                 evaluatedColor = gradient.Evaluate((float)normalizedblineScore);
-            }
+            } 
 
             float4 colorF = new float4( evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a );
             

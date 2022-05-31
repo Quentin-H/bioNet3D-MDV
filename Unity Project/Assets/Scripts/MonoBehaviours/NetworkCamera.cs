@@ -1,7 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+
 using Unity.Physics;
 using Unity.Physics.Systems;
 using RaycastHit = Unity.Physics.RaycastHit;
@@ -10,11 +13,12 @@ using Unity.Rendering;
 using Unity.Transforms;
 using Unity.Mathematics;
 using Unity.Collections;
-using NodeViz; // not necessary
+
+
 
 public class NetworkCamera : MonoBehaviour
 {
-    [HideInInspector] [SerializeField] private Camera cam;
+    [SerializeField] private Camera cam;
 
     //Node Click Variables
     const float RAYCAST_DISTANCE = 100000;
@@ -25,6 +29,9 @@ public class NetworkCamera : MonoBehaviour
     [SerializeField] private Transform camOriginParent;
     [SerializeField] private Transform camLookAtParent;
 
+    [SerializeField] private GameObject highlightedBillboard;
+    [HideInInspector] public List<GameObject> highlightBillboardObjects = new List<GameObject>();
+    [SerializeField] public Toggle highlightShowHideUI;
     [SerializeField] private GameObject selectedNodeUI;
     [SerializeField] private Text nodeNameText;
     [SerializeField] private Text nodeDescriptionText;
@@ -35,6 +42,7 @@ public class NetworkCamera : MonoBehaviour
     private bool nodeSelected;
     [SerializeField] private Dropdown viewAxisDropdown;
     [SerializeField] private NetworkSceneManager sceneManager;
+    [SerializeField] private NodeObjectScaling nodeScaleManager;
     
     // Fly Cam Variables
     public float mainSpeed = 10.0f;   // Default speed
@@ -47,6 +55,7 @@ public class NetworkCamera : MonoBehaviour
     public Text lockCursorText;
     private bool cameraLocked = false;
     private bool cursorLocked = false;
+
 
 
     private void Start() 
@@ -245,7 +254,54 @@ public class NetworkCamera : MonoBehaviour
         return selectedEntity;
     }
 
+    public void SetHighlightedNodes(List<Entity> toBeHighlighted) 
+    {
+        ClearHighlights();
+
+        foreach (Entity curEntity in toBeHighlighted)
+        {
+            float3 entityPos = new float3(
+                entityManager.GetComponentData<Translation>(curEntity).Value.x, 
+                entityManager.GetComponentData<Translation>(curEntity).Value.y, 
+                entityManager.GetComponentData<Translation>(curEntity).Value.z);
+
+            GameObject newObject = Instantiate(highlightedBillboard, entityPos, Quaternion.identity);
+            newObject.transform.localScale *= nodeScaleManager.nodeScale;
+            highlightBillboardObjects.Add(newObject);
+        }
+        highlightShowHideUI.isOn = true;
+    }
+
+    public void ClearHighlights()
+    {
+        foreach (GameObject curObject in highlightBillboardObjects)
+        {
+            Destroy(curObject);
+        }
+    }
+
     // called by UI
+    private bool showingHighlights = true;
+    public void ShowHideHighlights()
+    {
+        if (showingHighlights == true)
+        {
+            foreach (GameObject curObject in highlightBillboardObjects)
+            {
+                try { curObject.SetActive(false); } catch { }
+            }
+            showingHighlights = false;
+        } 
+        else if (showingHighlights == false)
+        {
+           foreach (GameObject curObject in highlightBillboardObjects)
+            {
+                try { curObject.SetActive(true); } catch { }
+            } 
+            showingHighlights = true;
+        }
+    }
+
     public void SetViewAxis(int view) // if the user clicks a view option from the dropdown menu it will bring them to a zoomed out view from that axis
     {
         if (view == 0) { return; } // if the user chooses the blank option return because we don't want anything to happen

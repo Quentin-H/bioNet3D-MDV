@@ -11,7 +11,7 @@ public class MainMenuManager : MonoBehaviour
 	public ErrorMessenger errorMessenger;
 	private bool nodeLayoutFileSet = false;
 	private bool nodeInformationFileSet = false;
-	private bool nodeScoreFileSet = false;
+	public bool nodeScoreFileSet = false;
 
 	//debugging only --------------------------
 	public TextAsset nodeLayoutFile;

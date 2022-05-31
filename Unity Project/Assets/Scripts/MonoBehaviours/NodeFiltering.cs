@@ -10,6 +10,7 @@ using TMPro;
 public class NodeFiltering : MonoBehaviour
 {
     [SerializeField] private NetworkSceneManager networkSceneManager;
+    [SerializeField] private NetworkCamera networkCamera;
     [SerializeField] private ErrorMessenger errorMessenger;
     private EntityManager entityManager;
     //private ReadOnlyCollection<Entity> allEntities = new ReadOnlyCollection<Entity>();
@@ -94,6 +95,8 @@ public class NodeFiltering : MonoBehaviour
 
         showingOptionsField.value = 2;
 
+        networkCamera.ClearHighlights();
+
         ShowAllNodes();
     }
 
@@ -117,7 +120,17 @@ public class NodeFiltering : MonoBehaviour
 
         if (showingOptionsField.value == 1) // highlight
         {
+            List<Entity> filtered = Filter();
+            List<Entity> nonFiltered = new List<Entity>();
 
+            foreach (Entity curEntity in allEntities)
+            {
+                if (!filtered.Contains(curEntity))
+                {
+                    nonFiltered.Add(curEntity);
+                }
+            }
+            HighlightNodes( nonFiltered );
         }
 
         if (showingOptionsField.value == 2) // Show all
@@ -223,9 +236,6 @@ public class NodeFiltering : MonoBehaviour
 
     private void HighlightNodes(List<Entity> entitiesToHide) // need to make remove highlight method
     {
-        foreach (Entity entity in entitiesToHide)
-        {
-            //entityManager.AddComponentData( entity,  );
-        }
+        networkCamera.SetHighlightedNodes(entitiesToHide);
     }
 }
