@@ -448,7 +448,16 @@ public class NetworkSceneManager : MonoBehaviour
         {            
             double blineScore = entityManager.GetComponentData<NodeData>(entry.Value).baselineScore;
             double normalizedblineScore = (blineScore - (-maxAbsBlineScore)) / (maxAbsBlineScore - (-maxAbsBlineScore));
-            Color evaluatedColor = gradient.Evaluate((float)normalizedblineScore);
+            Color evaluatedColor = Color.white;
+            if (blineScore == 0)
+            {
+                evaluatedColor = Color.white;
+            } 
+            else
+            {
+                evaluatedColor = gradient.Evaluate((float)normalizedblineScore);
+            }
+
             float4 colorF = new float4( evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a );
             
             ColorOverride colorOverride = new ColorOverride()
@@ -510,10 +519,9 @@ public class NetworkSceneManager : MonoBehaviour
                 circle.transform.position.x * scale, 
                 circle.transform.position.y * scale, 
                 circle.transform.position.z * scale);
-
-            circle.transform.localScale = new float3(scale, scale, scale); // maybe sqrt?
+            circle.transform.localScale *= scale;
         }
-        innerSphere.transform.localScale = new float3(scale, scale, scale); //1.9
+        innerSphere.transform.localScale *= scale * 2;
     }
     
     //  U      U    I

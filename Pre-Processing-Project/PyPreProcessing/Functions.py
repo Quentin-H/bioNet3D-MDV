@@ -25,12 +25,12 @@ class Functions:
 			print("Opening node file failed, quitting...")
 			sys.exit()
 
-		scoreFileLines = []
-		try:
-			scoreFileLines = open(scorePath, 'r').readlines() 
-		except:
-			scoreFileLines = None
-			print("Opening score file failed, continuing without...")
+		#scoreFileLines = []
+		#try:
+			#scoreFileLines = open(scorePath, 'r').readlines() 
+		#except:
+			#scoreFileLines = None
+			#print("Opening score file failed, continuing without...")
 
 		edgeFileLines = []
 		try:
@@ -50,33 +50,33 @@ class Functions:
 			vertex_attrs={
 				"displayName": "",
 				"description": "",
-				"networkRank": 0,
-				"baselineScore": 0,
+				#"networkRank": 0,
+				#"baselineScore": 0,
 				# degrees is fetched with a function and the feature ID is the name of the vertex
 				"coordinates": "",
 				"cluster": -1
 			}, edge_attrs={"Edge_Weight": 0})
 
-		scoreParseFails = 0
+		#scoreParseFails = 0
 		nodeParseFails = 0
 		edgeParseFails = 0
 		invalidEdges = 0
 
 		node_time = time.time()
-		i = 1 # first line has headers
 
-		if (scoreFileLines is not None):
-			bScores = {}
-			ranks = {}
+		#i = 1 # first line has headers
+		#if (scoreFileLines is not None):
+			#bScores = {}
+			#ranks = {}
 
-			i = 0
-			for scoreLine in scoreFileLines:
-				if i != 0:
-					splitLine = scoreLine.split()
-					featureID = splitLine[1]
-					bScores[featureID] = splitLine[4]
-					ranks[featureID] = i
-				i += 1
+			#i = 0
+			#for scoreLine in scoreFileLines:
+				#if i != 0:
+					#splitLine = scoreLine.split()
+					#featureID = splitLine[1]
+					#bScores[featureID] = splitLine[4]
+					#ranks[featureID] = i
+				#i += 1
 
 		nodeParsePercent = 0
 		i = 0
@@ -238,11 +238,15 @@ class Functions:
 		for pos in OnSpherePositions:
 			NewOnSpherePositions.append(pos.tolist())
 		OnSpherePositions = NewOnSpherePositions
+
+		i = 0
 		for pos in OnSpherePositions:
-			facetClusterNumber = 0 # how to get this
-			facetScale = 1 # how to get this
+			facetClusterNumber = i + 1
+			tfm4 = hullnet.findcentertfm( i, on_facet=False )
+			facetScale = numpy.sqrt( numpy.square( tfm4[0, 0:3] ).sum() )
 			pos.append(facetClusterNumber) 
 			pos.append(facetScale)
+			i += 1
 
 		# final format is list of lists like x, y, z, clusternumber, clusterfacetscale
 		###

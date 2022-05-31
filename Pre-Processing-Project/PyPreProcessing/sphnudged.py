@@ -15,6 +15,7 @@ except:
 
 def initpoints(sizes):
     """Plant seed points.  Returns 3D points on unit sphere, roughly equally spaced"""
+    print(scipy.__version__)
     npts = len(sizes)
     gr = igraph.Graph.Full(npts)
     la = gr.layout_circle(dim=3)
