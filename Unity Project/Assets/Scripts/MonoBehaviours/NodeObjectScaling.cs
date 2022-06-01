@@ -65,27 +65,5 @@ public class NodeObjectScaling : MonoBehaviour
                 scPtr->Geometry = sphereGeometry;
             }
         }
-
-        float3 scaleAsFloat3 = new float3(nodeScale, nodeScale, nodeScale);
-
-        foreach(GameObject curObject in topRankObjects)
-        {
-            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().initialScale;
-        }
-
-        foreach(GameObject curObject in topBaselineObjects)
-        {
-            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().initialScale;
-        }
-
-        foreach(GameObject curObject in topDegreeObjects)
-        {
-            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().initialScale;
-        }
-
-        foreach(GameObject curObject in highlightedBillboardObjects)
-        {
-            try { curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().initialScale; } catch { }
-        }
     }
 }

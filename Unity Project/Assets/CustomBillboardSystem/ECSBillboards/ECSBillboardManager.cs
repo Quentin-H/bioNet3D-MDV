@@ -7,6 +7,7 @@ using Unity.Transforms;
 
 public class ECSBillboardManager : MonoBehaviour
 {
+    [HideInInspector] public static ECSBillboardManager instance;
     private EntityManager entityManager;
     private BlobAssetStore blobAssetStore;
     private GameObjectConversionSettings gameObjectConversionSettings;
@@ -29,6 +30,22 @@ public class ECSBillboardManager : MonoBehaviour
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         blobAssetStore = new BlobAssetStore();
         gameObjectConversionSettings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
+    }
+
+    private void Start()
+    {
+        if (instance != null && instance != this) 
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        entityManager.DestroyEntity(entityManager.UniversalQuery);
+        blobAssetStore.Dispose();
     }
 
     public void HighlightSelectedNode(Entity selectedEntity)

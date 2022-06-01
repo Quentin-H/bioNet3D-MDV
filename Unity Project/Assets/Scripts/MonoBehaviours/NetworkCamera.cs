@@ -51,8 +51,6 @@ public class NetworkCamera : MonoBehaviour
     public float maxShift  = 100.0f;  // Maximum speed when holding shift
     public float camSens   = 0.15f;   // Mouse sensitivity
     private Vector3 lastMouse = new Vector3(255, 255, 255);  // middle of the screen, rather than at the top (play)
-    private float totalRun = 1.0f;
-
 
 
     private void Start() 
@@ -67,12 +65,12 @@ public class NetworkCamera : MonoBehaviour
             SendRay();
         }
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && EventSystem.current.currentSelectedGameObject == null)
         {
             FocusOnSelectedNode();
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P) && EventSystem.current.currentSelectedGameObject == null)
         {
             ScreenCapture.CaptureScreenshot("C:/Users/Quentin/Desktop/MDV_Screencap.png", 1);
         }

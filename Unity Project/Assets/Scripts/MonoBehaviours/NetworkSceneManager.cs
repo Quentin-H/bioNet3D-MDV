@@ -77,6 +77,12 @@ public class NetworkSceneManager : MonoBehaviour
         try { rawLayoutInput = inputDataHolder.GetComponent<DataHolder>().nodeLayoutFile; } catch { Debug.Log("Failed to import node layout file"); }
         try { SpawnFacetCircles(rawLayoutInput); } catch { Debug.Log("Facet Circle Spawn Failed"); }
 
+        if (instance != null && instance != this) 
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
         
         ConvertRawInputNodes(); 
         ChangeNodeColors(nodeValueGradient);
@@ -91,7 +97,7 @@ public class NetworkSceneManager : MonoBehaviour
     private void OnDestroy()
     {
         Destroy(inputDataHolder);
-        //entityManager.DestroyEntity(entityManager.UniversalQuery);
+        entityManager.DestroyEntity(entityManager.UniversalQuery);
         blobAssetStore.Dispose();
     }
 
@@ -232,7 +238,6 @@ public class NetworkSceneManager : MonoBehaviour
             blinePos.Add(new float3(blineList[i].x, blineList[i].y, blineList[i].z));
             degreePos.Add(new float3(degreeList[i].x, degreeList[i].y, degreeList[i].z));
         }
-        Debug.Log(rankPos.Count);
         ecsBillboardManager.SetTopRankHighlights(rankPos);
         ecsBillboardManager.SetTopBaselineHighlights(blinePos);
         ecsBillboardManager.SetTopDegreeHighlights(degreePos);

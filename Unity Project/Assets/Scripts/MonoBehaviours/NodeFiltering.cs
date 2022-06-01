@@ -239,6 +239,7 @@ public class NodeFiltering : MonoBehaviour
 
     private void HighlightNodes(List<Entity> entitiesToHighlight) // need to make remove highlight method
     {
+        ecsBillboardManager.ClearFilteredHighlights();
         ecsBillboardManager.SetFilteredHighlights(entitiesToHighlight);
     }
 }
