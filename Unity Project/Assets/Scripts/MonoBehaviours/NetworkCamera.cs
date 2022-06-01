@@ -137,9 +137,6 @@ public class NetworkCamera : MonoBehaviour
             float4 entityPos4 = entityManager.GetComponentData<LocalToWorld>(selectedEntity).Value[3];
             float3 entityPos = new float3(entityPos4.x, entityPos4.y, entityPos4.z);
 
-            //find distance between node and orange
-            // make camera parent look at node
-            // set z of camera as subtracting distance + 10
             camOriginParent.transform.LookAt(entityPos, Vector3.right);
 
             camOriginParent.eulerAngles = new float3(
