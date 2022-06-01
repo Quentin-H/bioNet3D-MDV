@@ -85,7 +85,7 @@ public class NodeObjectScaling : MonoBehaviour
 
         foreach(GameObject curObject in highlightedBillboardObjects)
         {
-            curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().initialScale;
+            try { curObject.transform.localScale = scaleAsFloat3 * curObject.GetComponent<Billboard>().initialScale; } catch { }
         }
     }
 }

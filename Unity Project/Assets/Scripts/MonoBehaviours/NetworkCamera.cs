@@ -52,10 +52,6 @@ public class NetworkCamera : MonoBehaviour
     public float camSens   = 0.15f;   // Mouse sensitivity
     private Vector3 lastMouse = new Vector3(255, 255, 255);  // middle of the screen, rather than at the top (play)
     private float totalRun = 1.0f;
-    public Text lockCameraText;
-    public Text lockCursorText;
-    private bool cameraLocked = false;
-    private bool cursorLocked = false;
 
 
 

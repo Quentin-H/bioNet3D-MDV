@@ -201,7 +201,6 @@ public class NodeFiltering : MonoBehaviour
                 }
             }
         }
-        
         return toHide;
     }
 
@@ -209,11 +208,7 @@ public class NodeFiltering : MonoBehaviour
     {
         foreach (Entity entity in allEntities)
         {
-            try 
-            {
-                entityManager.RemoveComponent<Disabled>(entity);
-            } 
-            catch { } //maybe make this catch specifically for error when an netity doesn't have disabled
+            try { entityManager.RemoveComponent<Disabled>(entity); } catch { }
         }
     }
 

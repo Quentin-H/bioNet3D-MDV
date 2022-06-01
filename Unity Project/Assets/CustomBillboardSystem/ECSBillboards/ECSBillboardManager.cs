@@ -21,6 +21,7 @@ public class ECSBillboardManager : MonoBehaviour
     private List<Entity> topBaselineBillboards = new List<Entity>();
     private List<Entity> topDegreeBillboards = new List<Entity>();
     private List<Entity> filteredHighlightBillboards = new List<Entity>();
+
     private Entity selectionHighlight;
 
     private void Start()
@@ -41,66 +42,108 @@ public class ECSBillboardManager : MonoBehaviour
             entityManager.GetComponentData<Translation>(selectedEntity).Value.z
         );
         
-        Entity selectionPrefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy( selectionPrefab, gameObjectConversionSettings );
-        selectionHighlight = entityManager.Instantiate( selectionPrefabEntity );
-        
-        Translation translation = new Translation() { Value = entityPos };
-        entityManager.AddComponentData( selectionHighlight, translation );
+        selectionHighlight = InstantiateHelper(selectionPrefab, entityPos);
         entityManager.SetComponentData<BillboardData>(selectionHighlight, new BillboardData 
         {
-            initialScale = 3f,
+            initialScale = 4f,
             yawAngleOffset = 0.0f
         });
-
-        Debug.Log(selectionHighlight);
     }
 
     public void SetTopRankHighlights(List<float3> positions)
     {
-
+        topRankBillboards = BatchInstantiateHelper(topRankPrefab, positions);
     }
 
     public void SetTopBaselineHighlights(List<float3> positions)
     {
-
+        topBaselineBillboards = BatchInstantiateHelper(topBaselinePrefab, positions);
     }
 
     public void SetTopDegreeHighlights(List<float3> positions)
     {
+        topDegreeBillboards = BatchInstantiateHelper(topDegreePrefab, positions);
+    }
 
+    public void SetFilteredHighlights(List<float3> positions)
+    {
+        filteredHighlightBillboards = BatchInstantiateHelper(filteredHighlightPrefab, positions);
     }
 
     public void ClearFilteredHighlights()
     {
-
+        try 
+        {
+            foreach (Entity entity in filteredHighlightBillboards)
+            {
+                entityManager.DestroyEntity(entity);
+            }
+        } catch { }
+        filteredHighlightBillboards.Clear();
     }
 
-    public void SetFilteredHighlights()
-    {
-
-    }
-
-    private bool showingTopRankHighlights;
+    private bool showingTopRankHighlights = true;
     public void ShowHideTopRankHighlights()
     {
-
+        ShowHideHelper(topRankBillboards, !showingTopRankHighlights);
     }
 
-    private bool showingTopBaselineHighlights;
+    private bool showingTopBaselineHighlights = true;
     public void ShowHideTopBaselineHighlights()
     {
-
+        ShowHideHelper(topBaselineBillboards, !showingTopBaselineHighlights);
     }
 
-    private bool showingTopDegreeHighlights;
+    private bool showingTopDegreeHighlights = true;
     public void ShowHideTopDegreeHighlights()
     {
-
+        ShowHideHelper(topDegreeBillboards, !showingTopDegreeHighlights);
     }
 
-    private bool showingFilteredHighlights;
+    private bool showingFilteredHighlights = true;
     public void ShowHideFilteredHighlights()
     {
+        ShowHideHelper(filteredHighlightBillboards, !showingFilteredHighlights);
+    }
 
+    private void ShowHideHelper(List<Entity> entities, bool showOrHide)
+    {
+        if (showOrHide) // shows
+        {
+            foreach (Entity entity in entities)
+            {
+                try { entityManager.RemoveComponent<Disabled>(entity); } catch { }
+            }
+        } 
+        else if (!showOrHide) // hides
+        {
+            foreach (Entity entity in entities)
+            {
+                entityManager.AddComponentData( entity, new Disabled() );
+            }
+        }
+    }
+
+    private List<Entity> BatchInstantiateHelper(GameObject prefab, List<float3> positions)
+    {
+        List<Entity> entities = new List<Entity>();
+
+        foreach (float3 position in positions)
+        {
+            Entity entity = InstantiateHelper(prefab, position);
+            entities.Add(entity);
+        }
+        return entities;
+    }
+
+    private Entity InstantiateHelper(GameObject prefab, float3 position)
+    {
+        Entity newEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy( prefab, gameObjectConversionSettings );
+        Entity newEntity = entityManager.Instantiate( newEntityPrefab );
+
+        Translation translation = new Translation() { Value = position };
+        entityManager.AddComponentData( newEntity, translation );
+
+        return newEntity;
     }
 }
