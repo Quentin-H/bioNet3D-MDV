@@ -4427,7 +4427,7 @@ MonoBehaviour:
   topBaselinePrefab: {fileID: 0}
   topDegreePrefab: {fileID: 0}
   filteredHighlightPrefab: {fileID: 0}
-  selectionPrefab: {fileID: 0}
+  selectionPrefab: {fileID: 762209328323646908, guid: f8ebb99762652b34ebf6d2aec9a4fd4b, type: 3}
 --- !u!1 &728852450
 GameObject:
   m_ObjectHideFlags: 0

@@ -32,9 +32,9 @@ public class ECSBillboardManager : MonoBehaviour
 
     public void HighlightSelectedNode(Entity selectedEntity)
     {
-        //try { entityManager.DestroyEntity(selectionHighlight); } catch { }
+        try { entityManager.DestroyEntity(selectionHighlight); } catch { }
 
-        /*float3 entityPos = new float3
+        float3 entityPos = new float3
         (
             entityManager.GetComponentData<Translation>(selectedEntity).Value.x, 
             entityManager.GetComponentData<Translation>(selectedEntity).Value.y, 
@@ -45,7 +45,14 @@ public class ECSBillboardManager : MonoBehaviour
         selectionHighlight = entityManager.Instantiate( selectionPrefabEntity );
         
         Translation translation = new Translation() { Value = entityPos };
-        entityManager.AddComponentData( selectionHighlight, translation );*/
+        entityManager.AddComponentData( selectionHighlight, translation );
+        entityManager.SetComponentData<BillboardData>(selectionHighlight, new BillboardData 
+        {
+            initialScale = 3f,
+            yawAngleOffset = 0.0f
+        });
+
+        Debug.Log(selectionHighlight);
     }
 
     public void SetTopRankHighlights(List<float3> positions)

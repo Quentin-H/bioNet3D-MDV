@@ -52,6 +52,8 @@ public class NodeObjectScaling : MonoBehaviour
                 )
             });
 
+            World.DefaultGameObjectInjectionWorld.GetExistingSystem<BillboardSystem>().userScaling = nodeScale;
+
             //Modify entity's collider scale (this is supposed to fix the node selection bug when nodes are scaled larger)
             unsafe
             {

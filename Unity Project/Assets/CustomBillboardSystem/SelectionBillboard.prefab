@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 762209328323646897}
   - component: {fileID: 762209328323646898}
   - component: {fileID: 762209328323646899}
+  - component: {fileID: 743546984}
+  - component: {fileID: 743546983}
   m_Layer: 0
   m_Name: SelectionBillboard
   m_TagString: Untagged
@@ -81,3 +83,30 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &743546984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762209328323646908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConversionMode: 0
+--- !u!114 &743546983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762209328323646908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2f1b2a16db85a642b3e57090a43dbeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialScale: 1
+  yawAngleOffset: 0

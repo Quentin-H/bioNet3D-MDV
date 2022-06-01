@@ -92,7 +92,7 @@ public class NetworkSceneManager : MonoBehaviour
     private void OnDestroy()
     {
         Destroy(inputDataHolder);
-        entityManager.DestroyEntity(entityManager.UniversalQuery);
+        //entityManager.DestroyEntity(entityManager.UniversalQuery);
         blobAssetStore.Dispose();
     }
 
