@@ -24,7 +24,7 @@ public class ECSBillboardManager : MonoBehaviour
 
     private Entity selectionHighlight;
 
-    private void Start()
+    private void Awake()
     {
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         blobAssetStore = new BlobAssetStore();
@@ -45,7 +45,7 @@ public class ECSBillboardManager : MonoBehaviour
         selectionHighlight = InstantiateHelper(selectionPrefab, entityPos);
         entityManager.SetComponentData<BillboardData>(selectionHighlight, new BillboardData 
         {
-            initialScale = 4f,
+            initialScale = 10f,
             yawAngleOffset = 0.0f
         });
     }
@@ -53,21 +53,57 @@ public class ECSBillboardManager : MonoBehaviour
     public void SetTopRankHighlights(List<float3> positions)
     {
         topRankBillboards = BatchInstantiateHelper(topRankPrefab, positions);
+
+        foreach(Entity entity in topRankBillboards)
+        {
+            entityManager.SetComponentData<BillboardData>(entity, new BillboardData 
+            {
+                initialScale = 10f,
+                yawAngleOffset = 0.0f
+            });
+        }
     }
 
     public void SetTopBaselineHighlights(List<float3> positions)
     {
         topBaselineBillboards = BatchInstantiateHelper(topBaselinePrefab, positions);
+
+        foreach(Entity entity in topBaselineBillboards)
+        {
+            entityManager.SetComponentData<BillboardData>(entity, new BillboardData 
+            {
+                initialScale = 10f,
+                yawAngleOffset = 45.0f
+            });
+        }
     }
 
     public void SetTopDegreeHighlights(List<float3> positions)
     {
         topDegreeBillboards = BatchInstantiateHelper(topDegreePrefab, positions);
+
+        foreach(Entity entity in topDegreeBillboards)
+        {
+            entityManager.SetComponentData<BillboardData>(entity, new BillboardData 
+            {
+                initialScale = 10f,
+                yawAngleOffset = 0.0f
+            });
+        }
     }
 
-    public void SetFilteredHighlights(List<float3> positions)
+    public void SetFilteredHighlights(List<Entity> entitiesToHighlight) // not working
     {
-        filteredHighlightBillboards = BatchInstantiateHelper(filteredHighlightPrefab, positions);
+        filteredHighlightBillboards = BatchInstantiateHelper(filteredHighlightPrefab, entitiesToHighlight);
+
+        foreach(Entity entity in filteredHighlightBillboards)
+        {
+            entityManager.SetComponentData<BillboardData>(entity, new BillboardData 
+            {
+                initialScale = 1.5f,
+                yawAngleOffset = 0.0f
+            });
+        }
     }
 
     public void ClearFilteredHighlights()
@@ -86,24 +122,28 @@ public class ECSBillboardManager : MonoBehaviour
     public void ShowHideTopRankHighlights()
     {
         ShowHideHelper(topRankBillboards, !showingTopRankHighlights);
+        showingTopRankHighlights = !showingTopRankHighlights;
     }
 
     private bool showingTopBaselineHighlights = true;
     public void ShowHideTopBaselineHighlights()
     {
         ShowHideHelper(topBaselineBillboards, !showingTopBaselineHighlights);
+        showingTopBaselineHighlights = !showingTopBaselineHighlights;
     }
 
     private bool showingTopDegreeHighlights = true;
     public void ShowHideTopDegreeHighlights()
     {
         ShowHideHelper(topDegreeBillboards, !showingTopDegreeHighlights);
+        showingTopDegreeHighlights = !showingTopDegreeHighlights;
     }
 
     private bool showingFilteredHighlights = true;
     public void ShowHideFilteredHighlights()
     {
         ShowHideHelper(filteredHighlightBillboards, !showingFilteredHighlights);
+        showingFilteredHighlights = !showingFilteredHighlights;
     }
 
     private void ShowHideHelper(List<Entity> entities, bool showOrHide)
@@ -126,19 +166,34 @@ public class ECSBillboardManager : MonoBehaviour
 
     private List<Entity> BatchInstantiateHelper(GameObject prefab, List<float3> positions)
     {
-        List<Entity> entities = new List<Entity>();
+        List<Entity> billBoardEntities = new List<Entity>();
 
         foreach (float3 position in positions)
         {
             Entity entity = InstantiateHelper(prefab, position);
-            entities.Add(entity);
+            billBoardEntities.Add(entity);
         }
-        return entities;
+        return billBoardEntities;
+    }
+
+    private List<Entity> BatchInstantiateHelper(GameObject prefab, List<Entity> entitiesToHighlight)
+    {
+        List<Entity> billboardEntities = new List<Entity>();
+
+        foreach (Entity entity in entitiesToHighlight)
+        {
+            float3 position = entityManager.GetComponentData<Translation>(entity).Value;
+            Entity newEntity = InstantiateHelper(prefab, position);
+            billboardEntities.Add(newEntity);
+        }
+        return billboardEntities;
     }
 
     private Entity InstantiateHelper(GameObject prefab, float3 position)
     {
+        //Entity newEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy( prefab, gameObjectConversionSettings );
         Entity newEntityPrefab = GameObjectConversionUtility.ConvertGameObjectHierarchy( prefab, gameObjectConversionSettings );
+
         Entity newEntity = entityManager.Instantiate( newEntityPrefab );
 
         Translation translation = new Translation() { Value = position };

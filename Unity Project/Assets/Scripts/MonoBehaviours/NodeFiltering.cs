@@ -1,16 +1,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
 using UnityEngine;
 using UnityEngine.UI;
+
 using Unity.Entities;
-using System.Collections.ObjectModel;
+using Unity.Mathematics;
+using Unity.Transforms;
+
 using TMPro;
+
+
 
 public class NodeFiltering : MonoBehaviour
 {
     [SerializeField] private NetworkSceneManager networkSceneManager;
     [SerializeField] private NetworkCamera networkCamera;
+    [SerializeField] private ECSBillboardManager ecsBillboardManager;
     [SerializeField] private ErrorMessenger errorMessenger;
     private EntityManager entityManager;
     //private ReadOnlyCollection<Entity> allEntities = new ReadOnlyCollection<Entity>();
@@ -95,7 +103,7 @@ public class NodeFiltering : MonoBehaviour
 
         showingOptionsField.value = 2;
 
-        networkCamera.ClearHighlights();
+        ecsBillboardManager.ClearFilteredHighlights();
 
         ShowAllNodes();
     }
@@ -229,8 +237,8 @@ public class NodeFiltering : MonoBehaviour
         }
     }
 
-    private void HighlightNodes(List<Entity> entitiesToHide) // need to make remove highlight method
+    private void HighlightNodes(List<Entity> entitiesToHighlight) // need to make remove highlight method
     {
-        networkCamera.SetHighlightedNodes(entitiesToHide);
+        ecsBillboardManager.SetFilteredHighlights(entitiesToHighlight);
     }
 }

@@ -23,6 +23,7 @@ public class NetworkSceneManager : MonoBehaviour
     // Scene stuff
     [HideInInspector] public static NetworkSceneManager instance;
     [SerializeField] private NetworkCamera networkCamera;
+    [SerializeField] private ECSBillboardManager ecsBillboardManager;
     [SerializeField] private ErrorMessenger errorMessenger;
     [SerializeField] private GameObject innerSphere;
     [SerializeField] private GameObject nodePrefab;
@@ -62,6 +63,13 @@ public class NetworkSceneManager : MonoBehaviour
 
     
 
+    private void Awake()
+    {
+        entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        blobAssetStore = new BlobAssetStore();
+        gameObjectConversionSettings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
+    }
+
     private void Start() 
     {
         inputDataHolder = GameObject.Find("InputDataHolder");
@@ -69,16 +77,7 @@ public class NetworkSceneManager : MonoBehaviour
         try { rawLayoutInput = inputDataHolder.GetComponent<DataHolder>().nodeLayoutFile; } catch { Debug.Log("Failed to import node layout file"); }
         try { SpawnFacetCircles(rawLayoutInput); } catch { Debug.Log("Facet Circle Spawn Failed"); }
 
-        if (instance != null && instance != this) 
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
-        entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        blobAssetStore = new BlobAssetStore();
-        gameObjectConversionSettings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, blobAssetStore);
-
+        
         ConvertRawInputNodes(); 
         ChangeNodeColors(nodeValueGradient);
         AutoScaleNetwork();
@@ -224,19 +223,19 @@ public class NetworkSceneManager : MonoBehaviour
         blineList = blineList.OrderByDescending(o => o.w).ToList();
         degreeList = degreeList.OrderByDescending(o => o.w).ToList();
 
+        List<float3> rankPos = new List<float3>();
+        List<float3> blinePos = new List<float3>();
+        List<float3> degreePos = new List<float3>();
         for(int i = 1; i <= 200; i++)
         {
-            GameObject newObject;
-
-            newObject = Instantiate(topNetworkRankObject, new float3(rankList[i].x, rankList[i].y, rankList[i].z), Quaternion.identity);
-            topNetworkRankObjects.Add(newObject);
-
-            newObject = Instantiate(topBaselineScoreObject, new float3(blineList[i].x, blineList[i].y, blineList[i].z), Quaternion.identity);
-            topBaselineScoreObjects.Add(newObject);
-
-            newObject = Instantiate(topDegreeObject, new float3(degreeList[i].x, degreeList[i].y, degreeList[i].z), Quaternion.identity);
-            topDegreeObjects.Add(newObject);
+            rankPos.Add(new float3(rankList[i].x, rankList[i].y, rankList[i].z));
+            blinePos.Add(new float3(blineList[i].x, blineList[i].y, blineList[i].z));
+            degreePos.Add(new float3(degreeList[i].x, degreeList[i].y, degreeList[i].z));
         }
+        Debug.Log(rankPos.Count);
+        ecsBillboardManager.SetTopRankHighlights(rankPos);
+        ecsBillboardManager.SetTopBaselineHighlights(blinePos);
+        ecsBillboardManager.SetTopDegreeHighlights(degreePos);
     }
 
     private async void ConvertRawInputNodes() 

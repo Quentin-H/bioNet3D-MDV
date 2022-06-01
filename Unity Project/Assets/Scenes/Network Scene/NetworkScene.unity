@@ -1060,6 +1060,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 391156892}
   - {fileID: 2090804144}
   - {fileID: 1584761077}
   - {fileID: 2046932401}
@@ -1069,7 +1070,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -117.5, y: -52.02}
+  m_AnchoredPosition: {x: -117.5, y: -80}
   m_SizeDelta: {x: 225, y: 95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &218261782
@@ -2122,6 +2123,82 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &391156891
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 391156892}
+  - component: {fileID: 391156894}
+  - component: {fileID: 391156893}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &391156892
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391156891}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1779412807}
+  m_Father: {fileID: 218261781}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 12.5}
+  m_SizeDelta: {x: 0, y: 25}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &391156893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391156891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &391156894
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391156891}
+  m_CullTransparentMesh: 1
 --- !u!1 &395898796
 GameObject:
   m_ObjectHideFlags: 0
@@ -3533,7 +3610,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Show top 200 degree nodes
+  m_Text: Top 200 degree nodes
 --- !u!222 &545348438
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3926,7 +4003,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Show top 200 ranked nodes
+  m_Text: 'Top 200 ranked nodes
 
 '
 --- !u!222 &627012521
@@ -4281,6 +4358,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   networkCamera: {fileID: 1956825215}
+  ecsBillboardManager: {fileID: 684218370}
   errorMessenger: {fileID: 739263256}
   innerSphere: {fileID: 2058229521}
   nodePrefab: {fileID: 3965336401097284566, guid: 70549e732c38e9b4ea38873e27940219, type: 3}
@@ -4394,6 +4472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   networkSceneManager: {fileID: 684218366}
   networkCamera: {fileID: 1956825215}
+  ecsBillboardManager: {fileID: 684218370}
   errorMessenger: {fileID: 739263256}
   clusterOptionsField: {fileID: 1534425984}
   minRankField: {fileID: 1535256153}
@@ -4423,10 +4502,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b37485df100bb51469803a3c8de1cb7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topRankPrefab: {fileID: 0}
-  topBaselinePrefab: {fileID: 0}
-  topDegreePrefab: {fileID: 0}
-  filteredHighlightPrefab: {fileID: 0}
+  topRankPrefab: {fileID: 8138096982709289787, guid: 08884c52dea0e784a90715356828bd52, type: 3}
+  topBaselinePrefab: {fileID: 3487573651647648863, guid: b58a8cdfc099a0d4fa46933f90a53de0, type: 3}
+  topDegreePrefab: {fileID: 8881776253432505988, guid: 756fba98f9a75a3419b9d5af2dce5edb, type: 3}
+  filteredHighlightPrefab: {fileID: 8305313322847630554, guid: d7c96492489a4ae47bada756c2807bfd, type: 3}
   selectionPrefab: {fileID: 762209328323646908, guid: f8ebb99762652b34ebf6d2aec9a4fd4b, type: 3}
 --- !u!1 &728852450
 GameObject:
@@ -5450,7 +5529,7 @@ RectTransform:
   m_Children:
   - {fileID: 1779385110}
   m_Father: {fileID: 2030246622}
-  m_RootOrder: 12
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -5910,7 +5989,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Show top 200 degree nodes
+  m_Text: Filtering Results
 --- !u!222 &838540895
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6251,7 +6330,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2030246622}
-  m_RootOrder: 19
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6559,7 +6638,7 @@ RectTransform:
   - {fileID: 1164304954}
   - {fileID: 838540893}
   m_Father: {fileID: 218261781}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -6613,9 +6692,9 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1956825215}
-        m_TargetAssemblyTypeName: NetworkCamera, Assembly-CSharp
-        m_MethodName: ShowHideHighlights
+      - m_Target: {fileID: 684218370}
+        m_TargetAssemblyTypeName: ECSBillboardManager, Assembly-CSharp
+        m_MethodName: ShowHideFilteredHighlights
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7173,7 +7252,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 341617661119094853, guid: e1d15802ea542f14f8eff37f3e9a2078, type: 3}
       propertyPath: m_RootOrder
-      value: 20
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 341617661119094853, guid: e1d15802ea542f14f8eff37f3e9a2078, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9789,7 +9868,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7210159926435700206, guid: befc66f7dc7988a49b5a7ebc436d432d, type: 3}
       propertyPath: m_RootOrder
-      value: 19
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 7210159926435700206, guid: befc66f7dc7988a49b5a7ebc436d432d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10552,7 +10631,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Show top 200 baseline scores
+  m_Text: Top 200 baseline scores
 --- !u!222 &1556882216
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10592,7 +10671,7 @@ RectTransform:
   - {fileID: 1977909630}
   - {fileID: 1556882214}
   m_Father: {fileID: 218261781}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -10646,10 +10725,10 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 684218366}
-        m_TargetAssemblyTypeName: NetworkSceneManager, Assembly-CSharp
-        m_MethodName: showTopBaselineBillboards
-        m_Mode: 0
+      - m_Target: {fileID: 684218370}
+        m_TargetAssemblyTypeName: ECSBillboardManager, Assembly-CSharp
+        m_MethodName: ShowHideTopBaselineHighlights
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -11092,11 +11171,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2645092812384357787, guid: 8f33aa5f573e8b84c9d1cfc653ca2ac8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -15
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 2645092812384357787, guid: 8f33aa5f573e8b84c9d1cfc653ca2ac8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 21
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2645092812384357787, guid: 8f33aa5f573e8b84c9d1cfc653ca2ac8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11308,7 +11387,7 @@ RectTransform:
   - {fileID: 1410411514}
   - {fileID: 1437513263}
   m_Father: {fileID: 2030246622}
-  m_RootOrder: 11
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -11922,6 +12001,85 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1779385109}
+  m_CullTransparentMesh: 1
+--- !u!1 &1779412806
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1779412807}
+  - component: {fileID: 1779412809}
+  - component: {fileID: 1779412808}
+  m_Layer: 5
+  m_Name: Node Highlighting
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1779412807
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779412806}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 391156892}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 45}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1779412808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779412806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Node Highlighting Options
+--- !u!222 &1779412809
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779412806}
   m_CullTransparentMesh: 1
 --- !u!1 &1818276288
 GameObject:
@@ -13752,7 +13910,7 @@ RectTransform:
   m_GameObject: {fileID: 2025538815}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
   m_Children: []
   m_Father: {fileID: 1164304954}
   m_RootOrder: 0
@@ -13774,7 +13932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: f20cd951ec588b1499fabf172d19c3c7, type: 2}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.85882354, b: 0.85882354, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -13900,17 +14058,17 @@ RectTransform:
   - {fileID: 728852451}
   - {fileID: 1453313700}
   - {fileID: 884097905}
-  - {fileID: 6400963023247716107}
-  - {fileID: 298473910}
   - {fileID: 1705969131}
   - {fileID: 823509528}
+  - {fileID: 6400963023247716107}
+  - {fileID: 298473910}
   - {fileID: 1908208340}
   - {fileID: 1890056628}
   - {fileID: 1147882339}
   - {fileID: 218261781}
+  - {fileID: 880779841}
   - {fileID: 1486251066}
   - {fileID: 1024126884}
-  - {fileID: 880779841}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14029,7 +14187,7 @@ RectTransform:
   - {fileID: 1954839431}
   - {fileID: 545348436}
   m_Father: {fileID: 218261781}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -14083,10 +14241,10 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 684218366}
-        m_TargetAssemblyTypeName: NetworkSceneManager, Assembly-CSharp
-        m_MethodName: showTopDegreeBillboards
-        m_Mode: 0
+      - m_Target: {fileID: 684218370}
+        m_TargetAssemblyTypeName: ECSBillboardManager, Assembly-CSharp
+        m_MethodName: ShowHideTopDegreeHighlights
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -14384,7 +14542,7 @@ RectTransform:
   - {fileID: 237122356}
   - {fileID: 627012519}
   m_Father: {fileID: 218261781}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -14438,10 +14596,10 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 684218366}
-        m_TargetAssemblyTypeName: NetworkSceneManager, Assembly-CSharp
-        m_MethodName: showTopRankedBillboards
-        m_Mode: 0
+      - m_Target: {fileID: 684218370}
+        m_TargetAssemblyTypeName: ECSBillboardManager, Assembly-CSharp
+        m_MethodName: ShowHideTopRankHighlights
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

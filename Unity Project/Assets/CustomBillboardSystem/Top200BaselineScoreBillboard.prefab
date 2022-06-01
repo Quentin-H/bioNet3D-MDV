@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 3487573651647648859}
   - component: {fileID: 3487573651647648858}
   - component: {fileID: 3487573651647648861}
-  - component: {fileID: 3487573651647648860}
+  - component: {fileID: -3973194008271874476}
+  - component: {fileID: -1105327003519053800}
   m_Layer: 0
   m_Name: Top200BaselineScoreBillboard
   m_TagString: Untagged
@@ -82,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3487573651647648860
+--- !u!114 &-3973194008271874476
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,9 +92,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 3487573651647648863}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5eef586effe51aa44ba57abdd95505ff, type: 3}
+  m_Script: {fileID: 11500000, guid: e2f1b2a16db85a642b3e57090a43dbeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialScale: 10
-  yawAngleOffset: 45
-  screenspace: 0
+  initialScale: 0
+  yawAngleOffset: 0
+--- !u!114 &-1105327003519053800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3487573651647648863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7d7495833204790ba1d3a8755397f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConversionMode: 0
