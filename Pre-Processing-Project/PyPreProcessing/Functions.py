@@ -15,7 +15,8 @@ import spacedpoints
 
 class Functions:
 
-	def FileToGraph(nodePath, scorePath, edgePath):
+	#def FileToGraph(nodePath, scorePath, edgePath):
+	def FileToGraph(nodePath, edgePath):
 		import_time = time.time()
 
 		nodeFileLines = []
