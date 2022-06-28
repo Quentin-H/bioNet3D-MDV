@@ -62,7 +62,7 @@ public class ECSBillboardManager : MonoBehaviour
         selectionHighlight = InstantiateHelper(selectionPrefab, entityPos);
         entityManager.SetComponentData<BillboardData>(selectionHighlight, new BillboardData 
         {
-            initialScale = 10f,
+            initialScale = 5f,
             yawAngleOffset = 0.0f
         });
     }

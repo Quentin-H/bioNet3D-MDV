@@ -109,7 +109,10 @@ public class NetworkCamera : MonoBehaviour
         // sets the node ui panel to the attributes the selected node has
         nodeNameText.text = "Node Name: " + selectedNodeData.displayName;
         nodeDescriptionText.text = "Description: " + selectedNodeData.description;
-        nodeNetworkRank.text = "Network Rank: " + selectedNodeData.networkRank;
+        if (selectedNodeData.networkRank == -1)
+            nodeNetworkRank.text = "Network Rank: Unranked";
+        else
+            nodeNetworkRank.text = "Network Rank: " + selectedNodeData.networkRank;
         nodeBaselineScore.text = "Baseline Value: " + selectedNodeData.baselineScore;
         nodeDegreeText.text = "Degree: " + selectedNodeData.degree;
         nodeClusterText.text = "Cluster: " + selectedNodeData.cluster;
@@ -117,7 +120,7 @@ public class NetworkCamera : MonoBehaviour
         selectedNodeUI.SetActive(true); 
     }   
 
-    public void SearchForNode(string query)
+    public void searchForNode(string query) // must be lowercase to be used as dynamic string for search box unity ui
     {        
         try 
         {

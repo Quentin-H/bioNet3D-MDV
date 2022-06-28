@@ -220,7 +220,8 @@ public class NetworkSceneManager : MonoBehaviour
             float blineScore = (float)entityManager.GetComponentData<NodeData>(entity).baselineScore;
             float degree = (float)entityManager.GetComponentData<NodeData>(entity).degree;
 
-            rankList.Add(new float4(entityPos.x, entityPos.y, entityPos.z, rank));
+            if (rank != -1)
+                rankList.Add(new float4(entityPos.x, entityPos.y, entityPos.z, rank));
             blineList.Add(new float4(entityPos.x, entityPos.y, entityPos.z, blineScore));
             degreeList.Add(new float4(entityPos.x, entityPos.y, entityPos.z, degree));
         }
@@ -315,7 +316,14 @@ public class NetworkSceneManager : MonoBehaviour
                 {
                     nRank = fIDsToRanks[fID];
                     blineScore = fIDsToBlineScoresLines[fID];
-                } catch { }
+                } 
+                catch 
+                { 
+                    nRank = -1;
+                    // set to some hyperspecific unique value if wanting to 
+                    // add functionality to mark "unscored" nodes as such in user facing UI
+                    blineScore = 0; 
+                }
 
                 Entity e = SpawnNode(fID, coord, dName, desc, nRank, blineScore, deg, clusterNum);
 
@@ -476,7 +484,7 @@ public class NetworkSceneManager : MonoBehaviour
             }
             catch
             {
-                throw new ArgumentException("Node not found");
+                throw new ArgumentException("Node not found in ID or name dictionaries!");
             }
         }
     }

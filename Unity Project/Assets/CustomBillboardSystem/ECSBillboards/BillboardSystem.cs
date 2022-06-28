@@ -25,7 +25,7 @@ public class BillboardSystem : ComponentSystem
             (
                 rotation.eulerAngles.x, 
                 rotation.eulerAngles.y, 
-                rotation.eulerAngles.z * billboardData.yawAngleOffset
+                rotation.eulerAngles.z + billboardData.yawAngleOffset
             );
             rotation.eulerAngles = asEuler;
 
