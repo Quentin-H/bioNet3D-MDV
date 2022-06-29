@@ -110,10 +110,15 @@ public class NetworkCamera : MonoBehaviour
         nodeNameText.text = "Node Name: " + selectedNodeData.displayName;
         nodeDescriptionText.text = "Description: " + selectedNodeData.description;
         if (selectedNodeData.networkRank == -1)
+        {
             nodeNetworkRank.text = "Network Rank: Unranked";
+            nodeBaselineScore.text = "Baseline Value: Unscored";
+        }
         else
+        {
             nodeNetworkRank.text = "Network Rank: " + selectedNodeData.networkRank;
-        nodeBaselineScore.text = "Baseline Value: " + selectedNodeData.baselineScore;
+            nodeBaselineScore.text = "Baseline Value: " + selectedNodeData.baselineScore;
+        }
         nodeDegreeText.text = "Degree: " + selectedNodeData.degree;
         nodeClusterText.text = "Cluster: " + selectedNodeData.cluster;
 

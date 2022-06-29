@@ -451,15 +451,22 @@ public class NetworkSceneManager : MonoBehaviour
     public void ChangeNodeColors(Gradient gradient) 
     {
         foreach (KeyValuePair<FixedString32, Entity> entry in fixedIDsToSceneNodeEntities) 
-        {            
-            double blineScore = entityManager.GetComponentData<NodeData>(entry.Value).baselineScore;
-            double normalizedblineScore = (blineScore - (-maxAbsBlineScore)) / (maxAbsBlineScore - (-maxAbsBlineScore));
+        {   
             Color evaluatedColor = Color.white;
-            if (inputDataHolder.GetComponent<DataHolder>().nodeRankingFile.Trim() != "")
+  
+            // the if statement makes it so unscored/unranked nodes are coloured white.
+            // if this is not desired just remove the if condition.
+            if (entityManager.GetComponentData<NodeData>(entry.Value).networkRank != -1)
             {
-                evaluatedColor = gradient.Evaluate((float)normalizedblineScore);
-            } 
-
+                double blineScore = entityManager.GetComponentData<NodeData>(entry.Value).baselineScore;
+                double normalizedblineScore = (blineScore - (-maxAbsBlineScore)) / (maxAbsBlineScore - (-maxAbsBlineScore));
+                
+                if (inputDataHolder.GetComponent<DataHolder>().nodeRankingFile.Trim() != "")
+                {
+                    evaluatedColor = gradient.Evaluate((float)normalizedblineScore);
+                } 
+            }
+            
             float4 colorF = new float4( evaluatedColor.r, evaluatedColor.g, evaluatedColor.b, evaluatedColor.a );
             
             ColorOverride colorOverride = new ColorOverride()
