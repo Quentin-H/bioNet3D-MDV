@@ -93,7 +93,6 @@ public class NetworkSceneManager : MonoBehaviour
 
         gradientMinBaselineText.text = (-maxAbsBlineScore).ToString("0.00");
         gradientMaxBaselineText.text = maxAbsBlineScore.ToString("0.00");
-        Debug.Log(numberOfLinesInRankFile);
     }
 
     private void OnDestroy()
