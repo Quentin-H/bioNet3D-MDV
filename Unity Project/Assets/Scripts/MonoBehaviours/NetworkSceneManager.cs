@@ -60,6 +60,7 @@ public class NetworkSceneManager : MonoBehaviour
     private double maxAbsBlineScore = -1.0;
     private double maxBlineScore = Double.NegativeInfinity;
     private double minBlineScore = Double.PositiveInfinity;
+    public int numberOfLinesInRankFile;
 
     
 
@@ -92,6 +93,7 @@ public class NetworkSceneManager : MonoBehaviour
 
         gradientMinBaselineText.text = (-maxAbsBlineScore).ToString("0.00");
         gradientMaxBaselineText.text = maxAbsBlineScore.ToString("0.00");
+        Debug.Log(numberOfLinesInRankFile);
     }
 
     private void OnDestroy()
@@ -220,7 +222,7 @@ public class NetworkSceneManager : MonoBehaviour
             float blineScore = (float)entityManager.GetComponentData<NodeData>(entity).baselineScore;
             float degree = (float)entityManager.GetComponentData<NodeData>(entity).degree;
 
-            if (rank != -1)
+            if (rank != numberOfLinesInRankFile)
                 rankList.Add(new float4(entityPos.x, entityPos.y, entityPos.z, rank));
             blineList.Add(new float4(entityPos.x, entityPos.y, entityPos.z, blineScore));
             degreeList.Add(new float4(entityPos.x, entityPos.y, entityPos.z, degree));
@@ -278,6 +280,8 @@ public class NetworkSceneManager : MonoBehaviour
             }
         } catch { Debug.Log("No ranking file"); }
 
+        numberOfLinesInRankFile = rawNumericInfoInputLines.Length;
+
         Dictionary<Entity, List<String>> entitiesToConnectedIDs = new Dictionary<Entity, List<String>>();
 
         int i = 0;
@@ -308,9 +312,11 @@ public class NetworkSceneManager : MonoBehaviour
                 coord.y = float.Parse(nodeLayoutFileLine.Split(',')[1].Split(',')[0].Trim());
                 coord.z = float.Parse(nodeLayoutFileLine.Split(',')[2].Split(']')[0].Trim());
                 deg = connectionIDsFromFile.Length;
+
                 //From descriptive file
                 dName = fIDsToNodeDescriptiveInfoLines[fID].Split('\t')[3].Trim(); 
                 desc = fIDsToNodeDescriptiveInfoLines[fID].Split('\t')[4].Trim(); 
+
                 //From rank file
                 try 
                 {
@@ -319,7 +325,7 @@ public class NetworkSceneManager : MonoBehaviour
                 } 
                 catch 
                 { 
-                    nRank = -1;
+                    nRank = numberOfLinesInRankFile;
                     // set to some hyperspecific unique value if wanting to 
                     // add functionality to mark "unscored" nodes as such in user facing UI
                     blineScore = 0; 

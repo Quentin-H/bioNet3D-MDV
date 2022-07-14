@@ -20,6 +20,8 @@ public class NetworkCamera : MonoBehaviour
 {
     [SerializeField] private Camera cam;
 
+    public NetworkSceneManager networkSceneManager;
+
     //Node Click Variables
     const float RAYCAST_DISTANCE = 100000;
     PhysicsWorld physicsWorld => World.DefaultGameObjectInjectionWorld.GetExistingSystem<BuildPhysicsWorld>().PhysicsWorld;
@@ -109,7 +111,7 @@ public class NetworkCamera : MonoBehaviour
         // sets the node ui panel to the attributes the selected node has
         nodeNameText.text = "Node Name: " + selectedNodeData.displayName;
         nodeDescriptionText.text = "Description: " + selectedNodeData.description;
-        if (selectedNodeData.networkRank == -1)
+        if (selectedNodeData.networkRank == networkSceneManager.numberOfLinesInRankFile)
         {
             nodeNetworkRank.text = "Network Rank: Unranked";
             nodeBaselineScore.text = "Baseline Value: Unscored";

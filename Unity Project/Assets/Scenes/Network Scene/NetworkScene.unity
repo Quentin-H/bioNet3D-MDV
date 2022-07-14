@@ -4429,6 +4429,7 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
+  numberOfLinesInRankFile: 0
 --- !u!4 &684218367
 Transform:
   m_ObjectHideFlags: 0
@@ -13459,6 +13460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
+  networkSceneManager: {fileID: 684218366}
   camOriginParent: {fileID: 2024184175}
   camLookAtParent: {fileID: 536108965}
   highlightedBillboard: {fileID: 8305313322847630554, guid: d7c96492489a4ae47bada756c2807bfd, type: 3}
